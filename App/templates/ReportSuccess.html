@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Submitted</title>
+</head>
+<body>
+
+<h2 style="color:green;">✅ Reported Successfully</h2>
+
+<p><strong>Animal Type:</strong> {{ report.animal_type|title }}</p>
+
+<p><strong>Condition:</strong>
+    {% for c in report.conditions.all %}
+        {{ c|title }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+
+<p><strong>Number of Animals:</strong> {{ report.animal_count }}</p>
+
+<p><strong>Manual Location:</strong><br>
+{{ report.manual_location }}
+</p>
+
+{% if report.latitude and report.longitude %}
+<p><strong>Live Location:</strong><br>
+Latitude: {{ report.latitude }} <br>
+Longitude: {{ report.longitude }}
+</p>
+{% endif %}
+
+
+
+<p><strong>Reported On:</strong> {{ report.created_at }}</p>
+
+<hr>
+
+<h3>Uploaded Images</h3>
+{% for img in report.images.all %}
+    <img src="{{ img.image.url }}" width="200" style="margin: 5px;">
+{% empty %}
+    <p>No images uploaded.</p>
+{% endfor %}
+
+<br><br>
+
+{% if report.location_source == "gps" %}
+    <p>
+        <strong>Live GPS Location:</strong><br>
+        Latitude: {{ report.auto_latitude }}<br>
+        Longitude: {{ report.auto_longitude }}<br>
+
+        <a href="https://www.google.com/maps?q={{ report.auto_latitude }},{{ report.auto_longitude }}"
+           target="_blank">
+            📍 Open in Google Maps
+        </a>
+    </p>
+{% else %}
+    <p>
+        <strong>Location (Manual):</strong><br>
+        {{ report.manual_location }}
+    </p>
+{% endif %}
+
+<a href="{% url 'DownloadReportPDF' report.id %}" 
+   style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+   📥 Download PDF for Police Complaint
+</a>
+
+</body>
+</html>

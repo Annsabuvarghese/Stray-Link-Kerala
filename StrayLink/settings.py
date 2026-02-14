@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+import os
+from dotenv import load_dotenv
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -116,3 +118,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+#njn cheythath
+# .env file load cheyyanulla settings
+# BASE_DIR upayogichu path nischayikkunnathaanu nallath
+load_dotenv(BASE_DIR / '.env') 
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# .env file-il ninnu email-um password-um edukkunnu
+# EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+
+EMAIL_HOST_USER = 'annsabu12@gmail.com'
+EMAIL_HOST_PASSWORD = 'rxsritlafgalrngh'
+
+# Default From Email (Optional pakshe nallathaanu)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+print(f"DEBUG: Email User is {EMAIL_HOST_USER}")
+print(f"DEBUG: Email Pass length is {len(EMAIL_HOST_PASSWORD) if EMAIL_HOST_PASSWORD else 0}")

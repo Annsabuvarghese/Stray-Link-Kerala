@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { size: a4; margin: 1cm; }
+        body { font-family: Helvetica, sans-serif; color: #333; }
+        .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .section-title { background: #eee; padding: 5px; font-weight: bold; margin-top: 20px; }
+        table { width: 100%; margin-top: 10px; }
+        td { padding: 5px; border-bottom: 1px solid #eee; }
+        .label { font-weight: bold; width: 30%; }
+        .img-container { text-align: center; margin-top: 20px; }
+        .evidence-img { width: 250px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>STRAY ANIMAL INCIDENT REPORT</h1>
+        <p>Reference ID: #{{ report.id }} | Date: {{ report.created_at|date:"d M Y, H:i" }}</p>
+    </div>
+
+    <div class="section-title">Incident Details</div>
+    <table>
+        <tr><td class="label">Animal Type:</td><td>{{ report.animal_type|title }}</td></tr>
+        <tr><td class="label">Conditions:</td>
+            <td>{% for c in report.conditions.all %}{{ c.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+        </tr>
+        <tr><td class="label">Count:</td><td>{{ report.animal_count }}</td></tr>
+        <tr><td class="label">Location:</td><td>{{ report.manual_location }}</td></tr>
+    </table>
+
+    <div class="section-title">Evidence Photos</div>
+    <div class="img-container">
+        {% for img in report.images.all %}
+            <img src="{{ img.image.path }}" class="evidence-img">
+        {% empty %}
+            <p>No photos attached to this report.</p>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 50px;">
+        <p><strong>Declaration:</strong> I hereby certify that the information provided is true to the best of my knowledge.</p>
+        <br><br>
+        <p>__________________________<br>Volunteer Signature</p>
+    </div>
+</body>
+</html>

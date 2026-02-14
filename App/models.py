@@ -8,29 +8,21 @@ class Condition(models.Model):
     
 class ReportSubmit(models.Model):
 
-    # Animal type (Radio button)
+
     ANIMAL_TYPE_CHOICES = [
         ('dog', 'Dog'),
         ('cat', 'Cat'),
         ('other', 'Other'),
     ]
-
     animal_type = models.CharField(
         max_length=10,
         choices=ANIMAL_TYPE_CHOICES
     )
-
-    # Condition (Checkbox - multiple)
     conditions = models.ManyToManyField(
         Condition,
         blank=True
     )
-
     animal_count = models.PositiveIntegerField(default=1)
-
-    # -------------------------
-    # Location (Manual + Auto)
-    # -------------------------
     manual_location = models.CharField(
         max_length=255,
         help_text="Road name and nearby landmark"
@@ -52,8 +44,7 @@ class ReportSubmit(models.Model):
 
     LOCATION_SOURCE_CHOICES = [
         ('manual', 'Manual'),
-        ('auto', 'Automatic'),
-        ('mixed', 'Manual + Automatic'),
+        ('gps', 'GPS'),
     ]
 
     location_source = models.CharField(
@@ -61,10 +52,6 @@ class ReportSubmit(models.Model):
         choices=LOCATION_SOURCE_CHOICES,
         default='manual'
     )
-
-    description = models.TextField(blank=True)
-
-    # Auto date & time
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -82,4 +69,5 @@ class ReportImage(models.Model):
 
     def __str__(self):
         return f"Image for report {self.report.id}"
+
 

@@ -5,73 +5,64 @@
 </head>
 <body>
 
-<h2>Report Stray Animal Case</h2>
+<h2>Report Abandoned / Injured Animal</h2>
 
-<form method="post" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <!-- Animal Type (Radio) -->
-    <p><strong>Animal Type:</strong></p>
-    {{ form.animal_type }}
+    <!-- Animal Type (Radio Button) -->
+    <p><strong>Animal Type</strong></p>
+    <input type="radio" name="animal_type" value="dog" required> Dog <br>
+    <input type="radio" name="animal_type" value="cat"> Cat <br>
 
     <!-- Condition (Checkbox) -->
-    <p><strong>Condition:</strong></p>
-    {{ form.conditions }}
+    <p><strong>Condition</strong></p>
+    {% for condition in conditions %}
+        <input type="checkbox"
+               name="conditions"
+               value="{{ condition.id }}">
+        {{ condition.name|title }} <br>
+    {% endfor %}
 
     <!-- Number -->
-    <p>
-        <label>Number of Animals:</label><br>
-        {{ form.animal_count }}
-    </p>
+    <p><strong>Number of animals</strong></p>
+    <input type="number" name="animal_count">
 
     <!-- Manual Location -->
-    <p>
-        <label>Location (Road / Landmark):</label><br>
-        <input type="text" name="manual_location" id="manual_location" required>
-    </p>
+    <p><strong>Location (Landmark / Address)</strong></p>
+    <textarea name="manual_location" required></textarea>
 
-    <!-- Hidden Auto Location -->
-    <input type="hidden" name="auto_latitude" id="auto_latitude">
-    <input type="hidden" name="auto_longitude" id="auto_longitude">
-    <input type="hidden" name="location_source" id="location_source" value="manual">
+    <!-- Live Location -->
+    <input type="hidden" name="auto_latitude" id="latitude">
+    <input type="hidden" name="auto_longitude" id="longitude">
 
-    <button type="button" onclick="getLocation()">Use Live Location</button>
+    <button type="button" onclick="getLocation()">Get Live Location</button>
 
-    <!-- Description -->
-    <p>
-        <label>Description (optional):</label><br>
-        {{ form.description }}
-    </p>
+    <p id="location_status"></p>
 
     <!-- Images -->
-    <p>
-        <label>Upload Photos:</label><br>
-        <input type="file" name="images" multiple>
-    </p>
+    <p><strong>Upload Photos</strong></p>
+    <input type="file" name="pic1"><br>
+    <input type="file" name="pic2"><br>
+    <input type="file" name="pic3"><br>
+    <input type="file" name="pic4"><br>
 
+    <br>
     <button type="submit">Submit Report</button>
 </form>
 
 <script>
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                document.getElementById("auto_latitude").value = position.coords.latitude;
-                document.getElementById("auto_longitude").value = position.coords.longitude;
-                document.getElementById("location_source").value = "auto";
-
-                document.getElementById("manual_location").value =
-                    "Live location captured. You may edit landmark.";
-
-                alert("Live location captured successfully.");
-            },
-            function() {
-                alert("Unable to fetch location. Please enter manually.");
-            }
-        );
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById("latitude").value = position.coords.latitude;
+            document.getElementById("longitude").value = position.coords.longitude;
+            document.getElementById("location_status").innerText = "Live location captured ✔";
+        }, function() {
+            document.getElementById("location_status").innerText = "Location access denied ❌";
+        });
     } else {
-        alert("Geolocation not supported by this browser.");
+        alert("Geolocation not supported");
     }
 }
 </script>
