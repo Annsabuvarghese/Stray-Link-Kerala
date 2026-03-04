@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case #{{ report.id }} | Details</title>
+    <link rel="stylesheet" href="{% static 'css/reportdetail.css' %}">
+</head>
+<body>
+
+<div class="container">
+    <a href="{% url 'ReportList' %}" style="text-decoration: none; color: #666;">← Back to Rescue Feed</a>
+    
+    <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>{{ report.get_animal_type_display|title }} at {{ report.manual_location }}</h1>
+        <div class="status-banner {{ report.status|lower }}">
+            STATUS: {{ report.get_status_display|upper }}
+        </div>
+    </div>
+
+    <div class="gallery">
+        {% for img in images %}
+            <img src="{{ img.image.url }}" alt="Animal Proof">
+        {% empty %}
+            <p>No photos available for this report.</p>
+        {% endfor %}
+    </div>
+
+    <div class="details-section">
+        <h3>Incident Information</h3>
+        <p><strong>Conditions:</strong> 
+            {% for c in report.conditions.all %}
+                <span class="tag" style="background: #eee; padding: 4px 8px; border-radius: 4px;">{{ c.name }}</span>
+            {% empty %} None specified {% endfor %}
+        </p>
+        <p><strong>Animal Count:</strong> {{ report.animal_count }}</p>
+        <p><strong>Reported By:</strong> {{ report.user.username }} on {{ report.created_at|date:"M d, Y" }}</p>
+    </div>
+
+    <hr>
+
+    <div class="action-card">
+        <h3>Manage This Case</h3>
+
+        {% if report.status == 'pending' %}
+            <p>This case is currently open. Are you able to help this animal?</p>
+            <form action="{% url 'ClaimCase' report.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">I Will Claim This Case</button>
+            </form>
+            <!-- <small style="color: #999; display: block; margin-top: 10px;">Notice:Dear fellow user/volunteer if you claimed this case then you are in a 
+                very responsible position and need to resue /or lead the full rescue process.If you realized you can't then without wasting your time you have 
+                to unclaim the case or else the other users/volunteers will be unaware of this and they can't claim the case anymore,
+                so you have to understand your own responsibility that the life of that animal is in your hands
+            </small> -->
+    <a href="{% url 'RescueExp' report.id %}">How the rescue works</a>
+
+            <small style="color: #666; display: block; margin-top: 10px; padding: 10px; border-left: 3px solid #f39c12; background: #fffaf5;">
+    <strong>Volunteer Notice:</strong> By claiming this case, 
+    you have taken on a significant responsibility for this animal's rescue. 
+    If you realize you are unable to proceed, please <strong>unclaim the case immediately</strong>. 
+    This ensures another volunteer can step in to help without delay.
+     Please remember: the animal's safety relies on timely action.
+    </small>
+
+
+            
+
+            {% elif report.status == 'in_progress' %}
+            {% if report.claimed_by == request.user %}
+            <p>You have claimed this case. Please proceed with the rescue.</p>
+            <div class="rescue-actions">
+                <a href="{% url 'FinalizeRescue' report.id %}" class="btn-finalize"><button>Finalize & Provide Proof ✨</button>
+          
+                </a>
+
+                <form action="{% url 'UnclaimCase' report.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-unclaim" onclick="return confirm('Are you sure you want to unclaim?')">
+                        Unclaim Case
+                    </button>
+                </form>
+                    <strong>Volunteer Notice:</strong> By claiming this case, 
+                    you have taken on a significant responsibility for this animal's rescue. 
+                    If you realize you are unable to proceed, please <strong>unclaim the case immediately</strong>. 
+                    This ensures another volunteer can step in to help without delay.
+                    Please remember: the animal's safety relies on timely action.
+                    </small>
+        
+            </div>
+            {% else %}
+                <p>This animal is currently being assisted by <strong>{{ report.claimed_by.username }}</strong>.</p>
+                <button class="btn" style="background:#ccc; cursor:not-allowed;" disabled>Currently In Progress</button>
+            {% endif %}
+
+        {% elif report.status == 'rescued' %}
+            {% if is_in_adoption %}
+                <p>This animal is safe and listed in the adoption center!</p>
+                <a href="{% url 'AnimalAdoptDetail' animal_obj.id %}" class="btn btn-primary">View Adoption Profile & Apply</a>
+            {% elif report.claimed_by == request.user %}
+                <p><strong>Verification Complete!</strong> Now, list this animal for adoption.</p>
+                <a href="{% url 'AddToAdoption' report.id %}" class="btn btn-orange">Add to Adoption Center</a>
+            {% else %}
+                <p>Rescued by <strong>{{ report.claimed_by.username }}</strong>. Waiting for adoption listing.</p>
+            {% endif %}
+            
+
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

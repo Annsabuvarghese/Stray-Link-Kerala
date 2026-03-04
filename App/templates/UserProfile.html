@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+
+</style>
+</head>
+<body>
+    <div class="profile-container">
+    <h2>My Profile</h2>
+    <div class="profile-card">
+        <p><strong>Full Name:</strong> {{ profile.full_name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone:</strong> {{ profile.phone }}</p>
+        <p><strong>Date of Birth:</strong> {{ profile.dob }}</p>
+        <hr>
+        <h3>Address Details</h3>
+        <p><strong>District:</strong> {{ profile.district }}</p>
+        <p><strong>Local Body:</strong> {{ profile.local_body }}</p>
+        <p><strong>Ward No:</strong> {{ profile.ward_no }}</p>
+        <p><strong>House No:</strong> {{ profile.house_no }}</p>
+        <p><strong>Address:</strong> {{ profile.address }}</p>
+    </div>
+    <a href="{% url 'Home' %}">Back to Home</a>
+
+    <div class="profile-container">
+    <h2>My Profile</h2>
+
+    <div class="volunteer-status-area">
+        {% if profile.is_volunteer %}
+            <div class="status-badge volunteer">
+                <span class="icon">🐾</span> Verified StrayLink Volunteer
+            </div>
+        {% else %}
+            <div class="volunteer-invite-card">
+                <p>Want to do more for the strays in {{ profile.district }}?</p>
+                <a href="{% url 'VolunteerIns' %}" class="btn-join-volunteer">Join as a Volunteer</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="profile-card">
+        </div>
+</div>
+</div>
+</body>
+</html>

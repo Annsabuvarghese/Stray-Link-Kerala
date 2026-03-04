@@ -1,0 +1,72 @@
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Rescue Feed | StrayLink</title>
+    <link rel="stylesheet" href="{% static 'css/reportlist.css' %}">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="{% url 'Home' %}">Home</a>
+            <a href="{% url 'Report' %}">Report Animal</a>
+            <a href="{% url 'ReportList' %}" class="active">Report List</a>
+            <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+            
+            {% if user.is_authenticated %}
+                <a href="{% url 'UserProfile' %}" style="font-weight: bold; color: #d35400;">👤 {{ user.username }}</a>
+                <a href="{% url 'UserLogout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'UserLogin' %}">Login</a>
+                <a href="{% url 'UserRegister' %}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="header-section">
+        <h2>Live Rescue Feed</h2>
+        <p>Click on a case to see full details and take action.</p>
+        <a href="{% url 'Report' %}" class="report-btn">Report New Case</a>
+    </div>
+
+    <div class="case-container">
+        {% for case in cases %}
+        <div class="case-card">
+            {% if case.images.exists %}
+                <img src="{{ case.images.first.image.url }}" class="case-image" alt="Animal Photo">
+            {% else %}
+                <div class="case-image-placeholder">No Image Available</div>
+            {% endif %}
+
+            <div class="case-info">
+                <h3>{{ case.get_animal_type_display }}</h3>
+                <p class="location">📍 {{ case.manual_location }}</p>
+
+                <div class="status-badge {{ case.status|lower }}">
+                    {{ case.get_status_display|upper }}
+                </div>
+
+                <hr>
+
+                <a href="{% url 'ReportDetail' case.id %}" class="view-btn">View Full Details</a>
+                
+                {% if case.status == 'in_progress' %}
+                    <p class="claimed-by-text">Handled by: {{ case.claimed_by.username }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-cases">
+            <p>No active rescue cases found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

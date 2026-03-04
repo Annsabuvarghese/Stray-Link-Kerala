@@ -1,70 +1,90 @@
+
+
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Report Submitted</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Submitted | StrayLink</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/reportsuccess.css' %}">
 </head>
 <body>
+    <!-- <nav class="nav-bar">
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'ReportList' %}">Rescue Feed</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+    </nav> -->
 
-<h2 style="color:green;">✅ Reported Successfully</h2>
+     <nav>
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+         {% if user.is_authenticated %}
+        <div class="user-menu">
+            <a href="{% url 'UserProfile' %}" class="profile-icon">
+                <span class="icon">👤</span> 
+                {{ user.username }}
+            </a>
+            <a href="{% url 'UserLogout' %}">Logout</a>
+        </div>
+    {% else %}
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+    {% endif %}
+    </nav>
 
-<p><strong>Animal Type:</strong> {{ report.animal_type|title }}</p>
+    <div class="success-container">
+        <div class="confirmation-card">
+            <header class="header-section">
+                <div class="check-icon">✓</div>
+                <h1 style="color: rgb(226, 181, 98);">Report Submitted Successfully</h1>
+                <p class="timestamp">Reference Case ID: #{{ report.id }} | {{ report.created_at|date:"M d, Y H:i" }}</p>
+            </header>
 
-<p><strong>Condition:</strong>
-    {% for c in report.conditions.all %}
-        {{ c|title }}{% if not forloop.last %}, {% endif %}
-    {% endfor %}
-</p>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <label>Animal Type</label>
+                    <strong>{{ report.animal_type|title }} ({{ report.animal_count }} count)</strong>
+                </div>
+                <div class="detail-item">
+                    <label>Reported Condition</label>
+                    <div class="tags">
+                        {% for c in report.conditions.all %}
+                            <span class="tag">{{ c|title }}</span>
+                        {% empty %} <span>No condition specified</span> {% endfor %}
+                    </div>
+                </div>
+                <div class="detail-item full-width">
+                    <label>Location Details</label>
+                    <p>{{ report.manual_location }}</p>
+                    {% if report.latitude and report.longitude %}
+                        <a href="https://www.google.com/maps?q={{ report.latitude }},{{ report.longitude }}" target="_blank" class="map-link">
+                            📍 View GPS Coordinates on Map
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
 
-<p><strong>Number of Animals:</strong> {{ report.animal_count }}</p>
+            {% if report.images.all %}
+            <div class="image-preview">
+                <h3>Evidence Photos</h3>
+                <div class="gallery">
+                    {% for img in report.images.all %}
+                        <img src="{{ img.image.url }}" alt="Proof">
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
 
-<p><strong>Manual Location:</strong><br>
-{{ report.manual_location }}
-</p>
-
-{% if report.latitude and report.longitude %}
-<p><strong>Live Location:</strong><br>
-Latitude: {{ report.latitude }} <br>
-Longitude: {{ report.longitude }}
-</p>
-{% endif %}
-
-
-
-<p><strong>Reported On:</strong> {{ report.created_at }}</p>
-
-<hr>
-
-<h3>Uploaded Images</h3>
-{% for img in report.images.all %}
-    <img src="{{ img.image.url }}" width="200" style="margin: 5px;">
-{% empty %}
-    <p>No images uploaded.</p>
-{% endfor %}
-
-<br><br>
-
-{% if report.location_source == "gps" %}
-    <p>
-        <strong>Live GPS Location:</strong><br>
-        Latitude: {{ report.auto_latitude }}<br>
-        Longitude: {{ report.auto_longitude }}<br>
-
-        <a href="https://www.google.com/maps?q={{ report.auto_latitude }},{{ report.auto_longitude }}"
-           target="_blank">
-            📍 Open in Google Maps
-        </a>
-    </p>
-{% else %}
-    <p>
-        <strong>Location (Manual):</strong><br>
-        {{ report.manual_location }}
-    </p>
-{% endif %}
-
-<a href="{% url 'DownloadReportPDF' report.id %}" 
-   style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-   📥 Download PDF for Police Complaint
-</a>
-
+            <div class="action-footer">
+                <p class="action-note">Need this for official documentation?</p>
+                <a href="{% url 'DownloadReportPDF' report.id %}" class="btn-pdf" style="background-color: rgb(241, 167, 82);">
+                    📥 Download Police Complaint PDF
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

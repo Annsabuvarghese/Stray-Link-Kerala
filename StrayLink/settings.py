@@ -124,21 +124,25 @@ STATIC_URL = 'static/'
 # BASE_DIR upayogichu path nischayikkunnathaanu nallath
 load_dotenv(BASE_DIR / '.env') 
 
-# Email Settings
+######Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# .env file-il ninnu email-um password-um edukkunnu
-# EMAIL_HOST_USER = os.getenv('EMAIL_USER')
-# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+####### .env file-il ninnu email-um password-um edukkunnu
+###### EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+######EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
 
 EMAIL_HOST_USER = 'annsabu12@gmail.com'
 EMAIL_HOST_PASSWORD = 'rxsritlafgalrngh'
 
-# Default From Email (Optional pakshe nallathaanu)
+######### Default From Email (Optional pakshe nallathaanu)
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 print(f"DEBUG: Email User is {EMAIL_HOST_USER}")
 print(f"DEBUG: Email Pass length is {len(EMAIL_HOST_PASSWORD) if EMAIL_HOST_PASSWORD else 0}")
+
+LOGIN_URL = 'UserLogin'
+LOGIN_REDIRECT_URL = 'Home'
+LOGOUT_REDIRECT_URL = 'Login'

@@ -1,0 +1,90 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+
+        <a href="{% url 'Report' %}">Report Animal</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserLogout' %}">Logout</a>
+    </nav>
+    <h2>User Login</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="username" placeholder="Username or Email" required><br><br>
+
+    <input type="password" name="password" placeholder="Password" required><br><br>
+
+    <button type="submit">Login</button>
+</form>
+
+<h4>If not a member Register here <a href="{% url 'UserRegister' %}"><button>REGISTER</button></a></h4>
+
+{% for message in messages %}
+    <p style="color:red;">{{ message }}</p>
+{% endfor %}
+
+</body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | StrayLink</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'ReportList' %}">Rescue Feed</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserRegister' %}" class="active">Join Us</a>
+    </nav>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="welcome-icon">🐾</div>
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Log in to continue saving lives</p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <input type="text" name="username" placeholder="Username or Email" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+
+
+                <button type="submit" class="login-btn">Login to Account</button>
+            </form>
+
+            <div class="register-prompt">
+                <p>Not a member yet?</p>
+                <a href="{% url 'UserRegister' %}" class="reg-link">Create an Account</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

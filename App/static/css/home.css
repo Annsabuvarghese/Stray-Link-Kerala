@@ -1,0 +1,853 @@
+/* Import a soft, friendly font */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Fraunces:opsz,wght@9..144,400;700&display=swap');
+
+:root {
+    --warm-cream: #fdfaf5;
+    --hope-orange: #ff9d6c;
+    --heart-red: #e8635a;
+    --leaf-green: #7ca982;
+    --soft-text: #4a3f35;
+    --ray-of-light: #fffcf0;
+    --hug-shadow: 0 10px 30px rgba(74, 63, 53, 0.08);
+}
+
+body {
+    background-color: var(--warm-cream);
+    color: var(--soft-text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    line-height: 1.6;
+}
+
+h1, h2, h4 {
+    font-family: 'Fraunces', serif; /* A soft, classy serif for a premium feel */
+    color: #2d2620;
+}
+
+/* --- Navigation: The Gentle Welcome --- */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 25px;
+    background: transparent;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--soft-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 50px;
+}
+
+nav a:hover {
+    background: white;
+    color: var(--hope-orange);
+    box-shadow: var(--hug-shadow);
+}
+
+/* --- Header: The Ray of Light --- */
+header {
+    /* background-image: linear-gradient(rgba(253, 250, 245, 0.7), rgba(253, 250, 245, 0.7)), 
+                      url('dogcatbg.png'); */
+    background-image: url('bgdogcat.png');
+    /* background-size: cover; */
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    padding: 140px 20px;
+    /* background: radial-gradient(circle at center, var(--ray-of-light) 0%, var(--warm-cream) 100%); */
+}
+
+header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+header p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    opacity: 0.8;
+}
+
+header a {
+    display: inline-block;
+    padding: 15px 35px;
+    margin: 10px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+header a:first-of-type {
+    background: var(--hope-orange);
+    color: white;
+    box-shadow: 0 10px 20px rgba(255, 157, 108, 0.3);
+}
+
+header a:last-of-type {
+    background: white;
+    color: var(--soft-text);
+    border: 1px solid #eee;
+}
+
+header a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(74, 63, 53, 0.15);
+}
+
+/* --- Sliders: The Caring Carousel --- */
+section {
+    padding: 60px 5%;
+}
+
+section h2 {
+    font-family: Pacifico;
+    color: #e8635a;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.container {
+    
+    /* background-color:  #ff9d6c; */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+.slider {
+    display: flex;
+    gap: 25px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 10px;
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+.slider::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    min-width: 90px;
+    max-width: 270px;
+    background:rgb(248, 241, 238);
+    border-radius: 24px; /* Extra rounded for a softer feel */
+    padding: 20px;
+
+    /* border-color: #e8635a; */
+    /* box-shadow: var(--hug-shadow); */
+    /* box-shadow:5px 5px 5px 0px #888888; */
+    /* box-shadow:0  0 3px #888888; */
+    border: 1px solid #e8635a;
+    /* box-shadow:0  2px 4px #888888;             */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 18px;
+    margin-bottom: 15px;
+}
+
+.card h4 {
+    margin: 10px 0;
+    font-size: 1.4rem;
+}
+
+.card p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+    color: #777;
+}
+
+.card a {
+    display: block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: var(--hope-orange);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- Slider Controls --- */
+.arrow {
+    background: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--hug-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--soft-text);
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.arrow:hover {
+    background: var(--hope-orange);
+    color: white;
+}
+
+
+.successimage {
+
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    
+} 
+
+ .successimage img {
+    max-width: 400px;
+    height: auto;
+    border-radius: 30px;  /*Extra rounded for softness */
+    box-shadow: var(--hug-shadow);
+    border: 8px solid white;   /*  Frame effect makes it look like a cherished photo */
+    transition: transform 0.3s ease;
+    max-height: 350px; /* Keeps the image from getting too tall */
+    width: auto;
+    object-fit: cover;
+
+}
+
+.successimage img:hover {
+    transform: rotate(-2deg) scale(1.02);  /*Gentle tilt when hovered */
+}
+
+.successcard {
+    flex: 1.2; /* Gives the story a bit more room than the image */
+    text-align: left;
+}
+
+.successcard h1 {
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.successcard h2 {
+    font-size: 1.1rem;
+    color: var(--hope-orange);
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Cleaner font for the subtitle */
+}
+
+.successcard p {
+    font-size: 1.05rem;
+    color: var(--soft-text);
+    opacity: 0.9;
+    line-height: 1.8;
+}
+
+/* Responsive: Stack them on mobile devices */
+@media (max-width: 768px) {
+    #success-storeies {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    .successcard {
+        text-align: center;
+    }
+    .successimage {
+        justify-content: center;
+    }
+}
+
+#success-stories-container {
+    position: relative;
+    background-color: #f4eae1;
+    max-width: 1300px;
+    margin: 50px auto;
+    min-height: 450px; 
+    border-radius: 5px;
+
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+
+    height: 500px; 
+    overflow: hidden;
+
+}
+
+.success-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 0 50px;
+    opacity: 0;
+    gap: 60px;
+    visibility: hidden;
+    transition: opacity 1.2s ease-in-out, transform 1.2s ease-out;
+    transform: translateX(10px); /* Subtle slide-in movement */
+}
+
+/* The magic class that shows the current story */
+.success-slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+
+.main-footer {
+    background-color: #f9f5f0; /* Slightly darker than warm-cream for contrast */
+    padding: 80px 0 20px;
+    color: var(--soft-text);
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.footer-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    color: #2d2620;
+}
+
+.footer-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.footer-logo span {
+    color: var(--hope-orange);
+}
+
+.footer-section p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    line-height: 1.8;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: var(--soft-text);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    opacity: 1;
+    color: var(--hope-orange);
+    padding-left: 5px;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: var(--soft-text);
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: var(--hope-orange);
+    opacity: 1;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.adoption-reports-area {
+    padding: 60px 20px;
+}
+
+.adopt-viewport {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden; 
+    border-radius: 40px;
+    box-shadow: var(--hug-shadow);
+}
+
+.adopt-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.adopt-track::-webkit-scrollbar { display: none; }
+
+.adopt-slide {
+    min-width: 100%; /* Shows one animal at a time for that premium feel */
+    height: 400px;
+    display: flex;
+    background: white;
+    scroll-snap-align: start;
+}
+
+.adopt-img-box {
+    flex: 1;
+    height: 100%;
+}
+
+.adopt-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Matching your Rescue Reports border */
+
+}
+
+.no-img-placeholder {
+    height: 100%;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.adopt-info-box {
+    flex: 1.2;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.adopt-info-box h4 { 
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem; 
+    margin-bottom: 15px; 
+}
+
+.adopt-info-box p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+    color: var(--soft-text);
+}
+
+.adopt-info-box .stat-text span { 
+    color: var(--hope-orange); 
+    font-weight: bold; 
+}
+
+.adopt-info-box .view-btn {
+    margin-top: 25px;
+    text-decoration: underline;
+    font-weight: 800;
+    color: var(--soft-text);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* Responsive Fix for Phones */
+@media (max-width: 768px) {
+    .adopt-slide { flex-direction: column; height: auto; }
+    .adopt-img-box { height: 250px; }
+    .adopt-img-box img { border-right: none; border-bottom: 10px solid #e8635a; }
+}
+
+
+/* 1. The Container - Centers the whole grid and limits its width */
+.rescue-grid-section {
+    max-width: 800px; /* Limits how wide the section can go */
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    color: #2d2620;
+}
+
+/* 2. The Grid - Forces 2 columns */
+.rescue-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Exactly 2 columns */
+    gap: 15px; /* Tight gap between cards */
+}
+
+/* 3. The Card - Image on top, Info on bottom */
+.rescue-card {
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* This puts image on top */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* 4. The Image Box - Forces a small, consistent height */
+.rescue-card-image {
+    position: relative;
+    width: 100%;
+    height: 140px; /* Small fixed height */
+}
+
+.rescue-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents image stretching */
+}
+
+/* 5. The Badge - Tiny and neat */
+.status-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #e8635a;
+}
+
+/* 6. Info Area - Compact text */
+.rescue-card-info {
+    padding: 12px;
+    text-align: center;
+}
+
+.rescue-card-info h4 {
+    margin: 0 0 4px 0; /* Removes messy default margins */
+    font-size: 1rem;
+    color: #333;
+}
+
+.location {
+    font-size: 0.75rem;
+    color: #777;
+    margin: 0 0 10px 0;
+}
+
+.rescue-link {
+    display: inline-block;
+    font-size: 0.7rem;
+    color: #e8635a;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid #e8635a;
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.rescue-link:hover {
+    background: #e8635a;
+    color: white;
+}
+
+/* Mobile: Switches to 1 column so it doesn't look squashed */
+@media (max-width: 500px) {
+    .rescue-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+
+
+
+
+
+
+
+.scroll-toast {
+    position: fixed;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-left: 5px solid #e8635a;
+    z-index: 1000;
+    /* We use transform for smoother movement */
+    will-change: transform, opacity; 
+    opacity: 0;
+}
+
+.top-left {
+    top: 30px;
+    left: 30px;
+    transform: translateX(-150%); /* Start completely off-screen */
+}
+
+.bottom-right {
+    bottom: 30px;
+    right: 30px;
+    transform: translateX(150%); /* Start completely off-screen */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- COMPACT MISSION SECTION --- */
+.mission-impact-section {
+    background-color: #fdfaf7;
+    padding: 50px 20px; /* Reduced vertical padding */
+    text-align: center;
+}
+
+.mission-heading {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem; /* Scaled down */
+    margin-bottom: 15px;
+}
+
+.mission-statement {
+    font-size: 0.95rem; /* Standard professional body size */
+    max-width: 700px;
+    margin: 0 auto 30px auto;
+    line-height: 1.6;
+}
+
+.milestones-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px; /* Closer icons */
+    margin-bottom: 30px;
+}
+
+.milestone-card {
+    padding: 10px;
+}
+
+.milestone-number {
+    font-size: 2rem; /* Shrunk numbers */
+    color: #e8635a;
+    display: block;
+}
+
+.milestone-label {
+    font-size: 0.7rem; /* Tiny, clean labels */
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+.mission-vision-footer {
+    font-size: 0.85rem; /* Subtitle size */
+    padding-top: 15px;
+}
+
+/* Mobile: Compact single column */
+@media (max-width: 600px) {
+    .rescue-grid {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+    }
+    .milestones-grid {
+        gap: 20px;
+    }
+}
+
+
+
+
+
+
+
+
+
+.mission-impact-section {
+    background-color: #fdfaf7; /* Very light neutral cream */
+    padding: 80px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.mission-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.mission-heading {
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem;
+    color: #2d2620;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+}
+
+.mission-statement {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #554d45;
+    margin-bottom: 45px;
+    font-weight: 400;
+}
+
+.milestones-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.milestone-card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.milestone-number {
+    font-family: 'Fraunces', serif;
+    font-size: 2.8rem;
+    color: #e8635a; /* Your signature accent color */
+    font-weight: 700;
+    line-height: 1;
+}
+
+.milestone-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #8c8279;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.mission-vision-footer {
+    font-size: 1rem;
+    color: #a0948a;
+    font-style: italic;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .milestones-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+/* Container must be relative for this to work */
+
+/* .inner-toast {
+    position: absolute;
+    background: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-left: 4px solid #e8635a;
+    z-index: 10;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+
+.top-left {
+    top: 20px;
+    left: 20px;
+    transform: translateX(-120%);
+}
+
+.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    transform: translateX(120%);
+}
+
+.inner-toast p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #444;
+    font-weight: 500;
+}
+
+.inner-toast strong {
+    color: #e8635a;
+} */

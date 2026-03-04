@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Adoption Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/.css' %}">
+</head>
+<body>
+
+<h1>Admin Adoption Dashboard</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Animal</th>
+            <th>Applicant</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Home</th>
+            <th>Status</th>
+            <th>Applied At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for app in applications %}
+        <tr>
+            <td>{{ app.id }}</td>
+            <td>{{ app.animal.name }}</td>
+            <td>{{ app.applicant_name }}</td>
+            <td>{{ app.applicant_email }}</td>
+            <td>{{ app.applicant_phone }}</td>
+            <td>{{ app.home_environment }}</td>
+            <td>{{ app.status }}</td>
+            <td>{{ app.applied_at|date:"d M Y H:i" }}</td>
+            <td>
+                {% if app.status == 'Waiting' %}
+                    <a href="{% url 'ProcessAdoption' app.id 'accept' %}" class="button accept">Accept</a><br>
+                    <a href="{% url 'ProcessAdoption' app.id 'reject' %}" class="button reject">Reject</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9" style="text-align:center;">No applications found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

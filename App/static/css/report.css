@@ -1,0 +1,205 @@
+/* Color Palette */
+:root {
+    --primary-warm: #f39c12;     /* Honey Orange */
+    --secondary-warm: #e67e22;   /* Pumpkin Orange */
+    --bg-soft: #fdfaf6;          /* Soft Cream */
+    --text-dark: #2c3e50;        /* Deep Charcoal */
+    --white: #ffffff;
+    --border-warm: #f9ebe0;      /* Gentle Peach Border */
+     --warm-cream: #fdfaf5;
+    --hope-orange: #ff9d6c;
+    --heart-red: #e8635a;
+    --leaf-green: #7ca982;
+    --soft-text: #4a3f35;
+    --ray-of-light: #fffcf0;
+    --hug-shadow: 0 10px 30px rgba(74, 63, 53, 0.08);
+}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Fraunces:opsz,wght@9..144,400;700&display=swap');
+
+
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-soft);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Animation: Form slides up gently on load */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+    max-width: 650px;
+    margin: 50px auto;
+    padding: 20px;
+    animation: slideUp 0.6s ease-out;
+}
+
+h2 {
+    text-align: center;
+    color: var(--secondary-warm);
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+/* Form Container */
+form {
+    background: var(--white);
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(230, 126, 34, 0.08);
+}
+
+/* Section Grouping (Cards) */
+.form-group {
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #fffcf9;
+    border: 1px solid var(--border-warm);
+    transition: transform 0.3s ease;
+}
+
+.form-group:hover {
+    transform: scale(1.01);
+}
+
+.form-group p {
+    margin-top: 0;
+    font-weight: 600;
+    color: var(--secondary-warm);
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+/* Input Fields */
+input[type="number"], textarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #f1f1f1;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-warm);
+    background: #fff;
+    box-shadow: 0 0 8px rgba(243, 156, 18, 0.2);
+}
+
+/* Radio & Checkbox Styling */
+.option-item {
+    display: block;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.option-item input {
+    margin-right: 10px;
+    accent-color: var(--secondary-warm);
+}
+
+.option-item:hover {
+    color: var(--secondary-warm);
+}
+
+/* Buttons */
+.btn-location {
+    background: #fff5eb;
+    color: var(--secondary-warm);
+    border: 2px dashed var(--secondary-warm);
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-location:hover {
+    background: var(--secondary-warm);
+    color: white;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary-warm), var(--secondary-warm));
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 15px;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(230, 126, 34, 0.25);
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(230, 126, 34, 0.4);
+}
+
+/* Location Status Text */
+#location_status {
+    text-align: center;
+    font-weight: 500;
+    margin-top: 12px;
+}
+
+/* Image Upload Grid */
+.file-input-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.file-input-wrapper input {
+    background: #fdfdfd;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 25px;
+    background: transparent;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--soft-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 50px;
+}
+
+nav a:hover {
+    background: white;
+    color: var(--hope-orange);
+    box-shadow: var(--hug-shadow);
+}

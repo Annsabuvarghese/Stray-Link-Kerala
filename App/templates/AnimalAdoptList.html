@@ -1,0 +1,116 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animals for Adoption</title>
+    <link rel="stylesheet" href="{% static 'css/animaladoptlist.css' %}">
+</head>
+<body>
+
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+    
+        <a href="{% url 'Report' %}">Report Animal</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserLogout' %}">Logout</a>
+    </nav>
+
+    <h1>Animals Available for Adoption</h1>
+
+
+    {% for animal in animals %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:15px;">
+            
+            <h2>{{ animal.name }}</h2>
+
+            {% if animal.image %}
+                <img src="{{ animal.image.url }}" alt="Animal Image" width="200">
+            {% endif %}
+
+            <p><strong>Breed:</strong> {{ animal.breed }}</p>
+            <p><strong>Age:</strong> {{ animal.age }}</p>
+
+            <a href="{% url 'AnimalAdoptDetail' animal.pk %}">View Details</a>
+                View Details
+            </a>
+
+        </div>
+    {% empty %}
+        <p>No animals available for adoption.</p>
+    {% endfor %}
+
+</body>
+</html> -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Best Friend | StrayLink</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/animaladoptlist.css' %}">
+</head>
+<body>
+
+ <nav>
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+         {% if user.is_authenticated %}
+        <div class="user-menu">
+            <a href="{% url 'UserProfile' %}" class="profile-icon">
+                <span class="icon">👤</span> 
+                {{ user.username }}
+            </a>
+            <a href="{% url 'UserLogout' %}">Logout</a>
+        </div>
+    {% else %}
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+    {% endif %}
+    </nav>
+
+    <header class="list-header">
+        <h1>Find Your New Best Friend</h1>
+        <p>Every animal here is waiting for a place to call home.</p>
+    </header>
+
+    <div class="animal-grid">
+        {% for animal in animals %}
+            <div class="animal-card">
+                <div class="card-image">
+                    {% if animal.image %}
+                        <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
+                    {% else %}
+                        <div class="placeholder-img">🐾</div>
+                    {% endif %}
+                    <div class="gender-badge">{{ animal.gender }}</div>
+                </div>
+
+                <div class="card-content">
+                    <h2>{{ animal.name }}</h2>
+                    <div class="short-info">
+                        <span> {{ animal.breed }}</span>
+                        <span> {{ animal.age }}</span>
+                    </div>
+                    
+                    <a href="{% url 'AnimalAdoptDetail' animal.pk %}" class="view-btn">
+                        Meet {{ animal.name }}
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="no-animals">
+                <p>Currently, all our furry friends have found homes. Check back soon! ❤️</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

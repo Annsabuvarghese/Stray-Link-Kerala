@@ -1,71 +1,98 @@
+
+
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Report Stray Animal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/report.css' %}">
 </head>
 <body>
 
-<h2>Report Abandoned / Injured Animal</h2>
+<nav>
+    <a href="{% url 'Home' %}">Home</a>
+    <a href="{% url 'Report' %}">Report Animal</a>
+    <a href="{% url 'ReportList' %}">Report List</a>
+    <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+    <a href="{% url 'UserLogout' %}">Logout</a>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+</nav>
 
-    <!-- Animal Type (Radio Button) -->
-    <p><strong>Animal Type</strong></p>
-    <input type="radio" name="animal_type" value="dog" required> Dog <br>
-    <input type="radio" name="animal_type" value="cat"> Cat <br>
+<div class="container">
+    <h2>🐾 Report a Soul in Need</h2>
 
-    <!-- Condition (Checkbox) -->
-    <p><strong>Condition</strong></p>
-    {% for condition in conditions %}
-        <input type="checkbox"
-               name="conditions"
-               value="{{ condition.id }}">
-        {{ condition.name|title }} <br>
-    {% endfor %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <!-- Number -->
-    <p><strong>Number of animals</strong></p>
-    <input type="number" name="animal_count">
+        <div class="form-group">
+            <p>Animal Type</p>
+            <label class="option-item"><input type="radio" name="animal_type" value="dog" required> &nbsp; Dog</label>
+            <label class="option-item"><input type="radio" name="animal_type" value="cat"> &nbsp; Cat</label>
+        </div>
 
-    <!-- Manual Location -->
-    <p><strong>Location (Landmark / Address)</strong></p>
-    <textarea name="manual_location" required></textarea>
+        <div class="form-group">
+            <p>Condition</p>
+            {% for condition in conditions %}
+                <label class="option-item">
+                    <input type="checkbox" name="conditions" value="{{ condition.id }}"> 
+                    &nbsp; {{ condition.name|title }}
+                </label>
+            {% endfor %}
+        </div>
 
-    <!-- Live Location -->
-    <input type="hidden" name="auto_latitude" id="latitude">
-    <input type="hidden" name="auto_longitude" id="longitude">
+        <div class="form-group">
+            <p>How many animals?</p>
+            <input type="number" name="animal_count" placeholder="e.g. 1" min="1">
+        </div>
 
-    <button type="button" onclick="getLocation()">Get Live Location</button>
+        <div class="form-group">
+            <p>Location Details</p>
+            <textarea name="manual_location" placeholder="Street name, landmark, or specific address..." required></textarea>
+            
+            <input type="hidden" name="auto_latitude" id="latitude">
+            <input type="hidden" name="auto_longitude" id="longitude">
+            <button type="button" class="btn-location" onclick="getLocation()">✨ Capture Live Location</button>
+            <p id="location_status"></p>
+        </div>
 
-    <p id="location_status"></p>
+        <div class="form-group">
+            <p>Upload Photos</p>
+            <small style="color: #999; display: block; margin-top: 10px;">requesting you to take  photos from four different angles(front,back,both sides) so it help our volunteers and other users for identifying the animal easily</small><br>
+            <div class="file-input-wrapper">
+                <input type="file" name="pic1">
+                <input type="file" name="pic2">
+                <input type="file" name="pic3">
+                <input type="file" name="pic4">
+            </div>
+            <small style="color: #999; display: block; margin-top: 10px;">Clear photos help rescuers find them faster.</small>
+        </div>
 
-    <!-- Images -->
-    <p><strong>Upload Photos</strong></p>
-    <input type="file" name="pic1"><br>
-    <input type="file" name="pic2"><br>
-    <input type="file" name="pic3"><br>
-    <input type="file" name="pic4"><br>
-
-    <br>
-    <button type="submit">Submit Report</button>
-</form>
+        <button type="submit" class="btn-submit">Submit Report</button>
+    </form>
+</div>
 
 <script>
 function getLocation() {
+    const status = document.getElementById("location_status");
+    status.innerText = "Locating... ⏳";
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             document.getElementById("latitude").value = position.coords.latitude;
             document.getElementById("longitude").value = position.coords.longitude;
-            document.getElementById("location_status").innerText = "Live location captured ✔";
+            status.innerText = "Live location captured ✔";
+            status.style.color = "#27ae60";
         }, function() {
-            document.getElementById("location_status").innerText = "Location access denied ❌";
+            status.innerText = "Location access denied ❌";
+            status.style.color = "#e74c3c";
         });
     } else {
         alert("Geolocation not supported");
     }
 }
 </script>
+
 
 </body>
 </html>

@@ -1,0 +1,84 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="rescue-form-container">
+    <h2>Finalize Rescue: Case #{{ report.id }}</h2>
+    <p>Please provide proof that the {{ report.animal_type }} is now safe.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label>Live Proof Photo (Required):</label>
+        <input type="file" name="rescue_image" accept="image/*" required>
+        <p><small>Take a photo of the animal at the shelter or clinic.</small></p>
+
+       <label>Rescue Questionnaire:</label>
+        <textarea name="rescue_notes" placeholder="Where did you take the animal? What is its current behavior? Any visible injuries?" required></textarea>
+
+        <div class="warning-box">
+            ⚠️ By submitting, you confirm the animal is in a safe location. False claims result in account suspension.
+        </div>
+
+        <button type="submit" class="btn-verify">Verify & Save Rescue</button>
+    </form>
+</div>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/finalizerescue.css' %}">
+    
+</head>
+<body>
+    <div class="rescue-page-container">
+    <div class="love-card">
+        <div class="love-icon">❤️</div>
+        
+        <header class="card-header">
+            <h2>Finalize Their Rescue</h2>
+            <p>Case #{{ report.id }} | {{ report.animal_type|title }}</p>
+        </header>
+
+        <p class="mission-text">You're doing something amazing. By providing proof, you help us celebrate a life saved and move this sweet soul one step closer to a forever home.</p>
+
+        <form method="POST" enctype="multipart/form-data" class="love-form">
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <label>📸 A photo of their new safety</label>
+                <div class="upload-area">
+                    <input type="file" name="rescue_image" id="rescue_image" accept="image/*" required>
+                    <p class="file-hint">Snap a photo at the shelter, clinic, or safe space.</p>
+                </div>
+            </div>
+
+            <!-- <div class="form-section">
+                <label>📝 Their Story & Current Health</label>
+                <textarea name="rescue_notes" 
+                    placeholder="Tell us about their journey... Where are they now? How is their spirit? Any special care needed?" 
+                    required></textarea>
+            </div> -->
+
+            <div class="integrity-box">
+                <span class="warning-pill">Trust Notice</span>
+                <p>We believe in you. By submitting, you confirm this animal is safe. Our community relies on honest heroes.</p>
+            </div>
+
+            <button type="submit" class="btn-verify">
+                Complete Rescue Mission 🐾
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

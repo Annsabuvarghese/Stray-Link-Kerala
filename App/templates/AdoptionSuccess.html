@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted | StrayLink</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/adoptionsucess.css' %}">
+</head>
+<body>
+    <div class="success-wrapper">
+        <div class="success-card">
+            <div class="icon-circle">
+                <span class="checkmark">✔</span>
+            </div>
+
+            <h1>Email Sent to Center!</h1>
+            
+            <p>Your application for <strong>{{ animal.name }}</strong> has been delivered. The center will now review your profile and contact you shortly.</p>
+            
+            <div class="instruction-container">
+                <div class="step">
+                    <span class="step-icon">📩</span>
+                    <p><strong>Step 1:</strong> Wait for the center to reach out via email or phone.</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-icon">📞</span>
+                    <p><strong>Step 2:</strong> If you haven't heard back in 3 days, try contacting the center directly.</p>
+                </div>
+
+                <div class="step volunteer-alert">
+                    <span class="step-icon">🤝</span>
+                    <p><strong>Step 3:</strong> If they are unreachable, <a href="#">contact our volunteers</a>. They will research the case and assist you.</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="{% url 'AnimalAdoptList' %}" class="btn btn-primary">Return to Adoption List</a>
+                <a href="{% url 'Home' %}" class="btn btn-outline">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

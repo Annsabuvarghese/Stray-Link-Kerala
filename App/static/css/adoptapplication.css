@@ -1,0 +1,192 @@
+/* Adoption Application - Golden Sunset Theme */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary-orange: #f39c12;    /* Vibrant Golden Orange */
+    --deep-orange: #e67e22;       /* Rich Sunset Orange */
+    --warm-bg: #fffaf5;           /* Soft peachy background */
+    --pure-white: #ffffff;        /* Card background */
+    --text-main: #4a3f35;         /* Warm charcoal for text */
+    --text-muted: #a69a8f;        /* Dusty sand for labels */
+    --input-border: #ffe0b3;      /* Soft amber border */
+    --input-bg: #fffdfb;          /* Eggshell input fill */
+}
+
+body {
+    background: linear-gradient(135deg, #fffcf9 0%, var(--warm-bg) 100%);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text-main);
+}
+
+/* Nav Bar - Warm & Glowing */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+    background: var(--pure-white);
+    color: var(--deep-orange);
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.1);
+}
+
+h1 {
+    font-family: 'Fredoka', sans-serif;
+    color: var(--deep-orange);
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* The Main Application Card */
+form {
+    background-color: var(--pure-white);
+    padding: 45px;
+    border-radius: 35px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(230, 126, 34, 0.08);
+    border: 1px solid var(--input-border);
+    box-sizing: border-box;
+}
+
+/* Featured Animal Info Box */
+.animal-info {
+    background: #fff4e6;
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    border: 1px solid #ffe8cc;
+}
+
+.animal-info p {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.1rem;
+}
+
+.animal-info span {
+    color: var(--deep-orange);
+    font-weight: 700;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--deep-orange);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 5px;
+}
+
+/* Styled Inputs, Selects, and Date Pickers */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 15px 18px;
+    margin-bottom: 25px;
+    border: 1px solid var(--input-border);
+    border-radius: 18px;
+    background: var(--input-bg);
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text-main);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    appearance: none; /* Removes default arrow for cleaner look */
+}
+
+/* Custom Arrow for Select Dropdowns */
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e67e22' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 40px;
+}
+
+/* Date Input Tweak */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(48%) sepia(89%) saturate(400%) hue-rotate(1deg) brightness(95%) contrast(90%);
+    cursor: pointer;
+}
+
+/* Placeholder Styling */
+::placeholder {
+    color: #ccbcaf;
+    opacity: 1;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-orange);
+    background: var(--pure-white);
+    box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Submit Button - Radiating Love */
+button[type="submit"] {
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-orange), var(--deep-orange));
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(230, 126, 34, 0.2);
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(230, 126, 34, 0.3);
+    filter: brightness(1.05);
+}
+
+/* Back Link */
+.back-link {
+    margin-top: 30px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    color: var(--deep-orange);
+}
+
+@media (max-width: 600px) {
+    form { padding: 30px 20px; }
+    h1 { font-size: 1.8rem; }
+}

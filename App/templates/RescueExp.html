@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rescue Guide | StrayLink</title>
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f9fbfd;
+        margin: 0;
+        padding: 0;
+        color: #2c3e50;
+    }
+
+    .container {
+        max-width: 850px;
+        margin: 40px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+
+    h1 {
+        text-align: center;
+        color: #1e3d59;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #6c7a89;
+        margin-bottom: 40px;
+    }
+
+    .step {
+        margin-bottom: 25px;
+        padding: 20px;
+        border-left: 5px solid #ff7a00;
+        background-color: #fff8f2;
+        border-radius: 8px;
+        transition: 0.3s ease;
+    }
+
+    .step:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .step h3 {
+        margin-top: 0;
+        color: #e67e22;
+    }
+
+    .note {
+        margin-top: 35px;
+        padding: 20px;
+        background-color: #fff3cd;
+        border-left: 6px solid #ff9800;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    .note strong {
+        color: #d35400;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            margin: 20px;
+            padding: 20px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🐾 A Guide to Saving Lives</h1>
+    <p class="subtitle">Every rescue matters. Follow these steps to ensure a safe and successful mission.</p>
+
+    <div class="step">
+        <h3>Step 1: Claim the Case</h3>
+        <p>When you're ready to help, click <strong>"Claim"</strong>. This prevents duplicate rescues and lets others know the case is in safe hands.</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 2: Connect & Verify</h3>
+        <p>Contact the reporter to confirm the exact location and current condition of the animal. Accuracy saves time — and lives.</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 3: Reach Out for Support</h3>
+        <p>You are never alone. Contact nearby volunteers, veterinarians, or adoption centers if you need help or guidance.</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 4: Lead the Rescue</h3>
+        <p>Move forward carefully. Prioritize your safety and the animal’s well-being at all times.</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 5: Share the Good News</h3>
+        <p>Upload rescue details to the site. After verification, the case will be officially marked as <strong>“Rescued.”</strong> 🎉</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 6: Ensure Post-Rescue Care</h3>
+        <p>Coordinate with a local vet or adoption center to begin medical care, recovery, and rehabilitation.</p>
+    </div>
+
+    <div class="step">
+        <h3>Step 7: Help Them Find a Forever Home</h3>
+        <p>Keep the animal’s profile updated. Your updates help adopters discover their future best friend.</p>
+    </div>
+
+    <div class="note">
+        <strong>Friendly Reminder:</strong> If you’re unable to continue a claimed rescue, please <strong>unclaim the case immediately</strong> so another volunteer can step in without delay.
+    </div>
+    
+
+    <a href="{% url 'ReportDetail' report.id %}" class="view-btn" style="text-decoration: none;">I understand</a>
+</div>
+
+
+
+</body>
+</html>

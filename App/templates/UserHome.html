@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrayLink - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        nav {
+            background: #007BFF;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: #e9f2ff;
+        }
+
+        header h1 {
+            margin: 0 0 20px 0;
+            font-size: 2.5em;
+            color: #007BFF;
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        header a {
+            display: inline-block;
+            margin-top: 20px;
+            background: #FF6600;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 40px 20px;
+            margin-bottom: 30px;
+        }
+
+        section h2 {
+            color: #007BFF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 20px;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider {
+            scrollbar-width: none;
+        }
+
+        .card {
+            min-width: 250px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .card h4 {
+            margin: 10px 0 5px 0;
+        }
+
+        .card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .card a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            padding: 8px;
+            background: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .arrow {
+            background: #007BFF;
+            color: white;
+            border: none;
+            font-size: 25px;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2em;
+            }
+            .card {
+                min-width: 200px;
+            }
+            .arrow {
+                font-size: 20px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+
+        <a href="{% url 'Report' %}">Report Animal</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserLogout' %}">Logout</a>
+        <a href="{% url 'AdminAdoptionDashboard' %}">Dashboard</a>
+    </nav>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome to StrayLink</h1>
+        <p>Together, we can rescue and find loving homes for stray animals. Explore recent reports and adoptable animals below.</p>
+        <a href="{% url 'Report' %}">Report a Case</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a>
+    </header>
+
+    <!-- Recent Rescue Reports Slider -->
+    <section>
+        <h2>Recent Rescue Reports</h2>
+        <div class="slider-container">
+            <button class="arrow" onclick="scrollSlider('reportsSlider', -300)">&#10094;</button>
+            <div class="slider" id="reportsSlider">
+                {% for case in cases %}
+                <div class="card">
+                    {% if case.images.first %}
+                        <img src="{{ case.images.first.image.url }}" alt="Animal Image">
+                    {% endif %}
+                    <h4>{{ case.animal_type }}</h4>
+                    <p>Location: {{ case.manual_location }}</p>
+                    <p>Status: {{ case.status|title }}</p>
+                    <a href="{% url 'ReportList' %}">View Details</a>
+                </div>
+                {% empty %}
+                <p style="text-align:center; color:#555;">No recent rescue reports.</p>
+                {% endfor %}
+            </div>
+            <button class="arrow" onclick="scrollSlider('reportsSlider', 300)">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- Animals Available for Adoption Slider -->
+    <section>
+        <h2>Animals Ready for Adoption</h2>
+        <div id="adoptionSlider">
+            {% for animal in animals %}
+            <div>
+                {% if animal.image %}
+                    <img src="{{ animal.image.url }}" width="200" alt="{{ animal.name }}">
+                {% else %}
+                    <div style="width:200px; height:150px; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
+                        No Image
+                    </div>
+                {% endif %}
+
+                <h4>{{ animal.name }}</h4>
+                <p>Breed: {{ animal.breed|default:"Unknown" }}</p>
+                <p>Age: {{ animal.age }}</p>
+                <p>Status: <strong>{{ animal.status }}</strong></p>
+                
+                <a href="{% url 'AnimalAdoptDetail' animal.id %}">View Details & Adopt</a>
+            </div>
+            <br>
+            {% empty %}
+            <p>No animals currently available for adoption.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script>
+        function scrollSlider(sliderId, distance) {
+            document.getElementById(sliderId).scrollBy({
+                left: distance,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Hai us stray link developers</h2>
+    <h3>One day we noticed a huge problem in the our state kerala</h3>
+    <h1>Yes the ignored Stray life ,and we want the public need to rise a voice against</h1>
+    <h3>So as a solution we made straylink a website the connects public with the government,ngos,adoptions and vetenary </h3>
+    <h4>What we actually,</h4>
+    <p>We provide with a platform were you a public person can report about a stray which need help to the government,ngos,our volunteers,fellow humanitarians 
+        like you etc..where anyone can claim the case and rescue the stray.If you successfully give the stray to the adoption center then it also can be updated
+        in this site so other pet lovers can easily contact the adoption center.Theirs life matter also....love you guys for supporting as
+    </p>
+
+</body>
+</html> -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Mission | StrayLink Kerala</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+</head>
+<body>
+
+    <nav class="nav-bar">
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'ReportList' %}">Rescue Feed</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'About' %}" class="active">Our Story</a>
+    </nav>
+
+    <div class="about-container">
+        <header class="mission-header">
+            <span class="location-tag">📍 Born in Kerala</span>
+            <h1>Every Stray Life Matters.</h1>
+            <p class="tagline">Connecting hearts, homes, and heroes.</p>
+        </header>
+
+        <div class="content-card">
+            <div class="story-section">
+                <h2>The Spark Behind StrayLink</h2>
+                <p>
+                    Walking through the vibrant streets of Kerala, we noticed a silent shadow over our state: 
+                    <strong>the ignored struggle of our stray animals.</strong> We saw lives that needed a voice, 
+                    wounds that needed healing, and souls that just wanted a home.
+                </p>
+                
+                <div class="highlight-box">
+                    <p>"We realized that the problem wasn't a lack of kindness, but a lack of connection."</p>
+                </div>
+
+                <p>
+                    <strong>StrayLink</strong> was built to be that bridge. We connect compassionate citizens like you 
+                    directly with Government authorities, NGOs, Veterinary clinics, and dedicated volunteers. 
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="icon">📢</div>
+                    <h3>Report</h3>
+                    <p>Found an animal in distress? Post a report with GPS coordinates so local heroes can find them instantly.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🚑</div>
+                    <h3>Rescue</h3>
+                    <p>NGOs and volunteers can claim cases, providing medical care and transport to safety.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🏠</div>
+                    <h3>Adopt</h3>
+                    <p>Once safe, animals are listed for adoption, turning a street struggle into a family fairy tale.</p>
+                </div>
+            </div>
+
+            <footer class="about-footer">
+                <h3>Thank you for being the change.</h3>
+                <p>Their lives matter. With StrayLink, they are never alone again.</p>
+                <div class="signature">With love, The StrayLink Developers 🧡</div>
+                <a href="{% url 'Report' %}" class="cta-btn">Start Helping Now</a>
+            </footer>
+        </div>
+    </div>
+
+</body>
+</html>

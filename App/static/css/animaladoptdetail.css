@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --accent: #ff9f43;
+    --accent-dark: #ee5253;
+    --soft-peach: #fff5f0;
+    --white: #ffffff;
+    --text: #57606f;
+    --glass: rgba(255, 255, 255, 0.8);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top left, #fffaf5 0%, #fdf6f0 100%);
+    margin: 0;
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+/* Header/Nav Adjustments */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 25px;
+    background: transparent;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--soft-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 50px;
+}
+
+nav a:hover {
+    background: white;
+    color: var(--hope-orange);
+    box-shadow: var(--hug-shadow);
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes entrance {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.main-container {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 0 20px;
+    animation: entrance 0.8s ease-out;
+}
+
+.detail-wrapper {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+/* Left Column: Image Styling */
+.left-col {
+    flex: 1;
+    position: relative;
+}
+
+.image-container {
+    position: relative;
+    border-radius: 40px; /* Extra rounded for a friendly feel */
+    padding: 15px;
+    background: var(--white);
+    box-shadow: 0 20px 40px rgba(255, 159, 67, 0.15);
+}
+
+.main-animal-img {
+    width: 100%;
+    border-radius: 30px;
+    display: block;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+}
+
+.status-tag {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: var(--glass);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 2;
+}
+
+.status-tag.available { color: #2ed573; border: 1px solid #2ed573; }
+
+/* Right Column: Content */
+.right-col { flex: 1.2; }
+
+.animal-name {
+    font-family: 'Fredoka', sans-serif; /* Playful rounded font */
+    font-size: 3.5rem;
+    color: var(--accent-dark);
+    margin: 0;
+    line-height: 1;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-bottom: 25px;
+}
+
+.quick-stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat-box {
+    background: var(--soft-peach);
+    flex: 1;
+    padding: 15px;
+    border-radius: 20px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.stat-box:hover {
+    background: var(--accent);
+    transform: translateY(-5px);
+}
+
+.stat-box:hover span, .stat-box:hover strong { color: white; }
+
+.stat-box span { font-size: 0.8rem; color: #a4b0be; text-transform: uppercase; }
+.stat-box strong { display: block; font-size: 1.1rem; color: var(--text); }
+
+.info-block h3 {
+    font-family: 'Fredoka', sans-serif;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-block p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #747d8c;
+}
+
+/* Button Revamp */
+.primary-btn {
+    background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%);
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 20px;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.primary-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4);
+}
+
+@media (max-width: 900px) {
+    .detail-wrapper { flex-direction: column; text-align: center; }
+    .quick-stats { justify-content: center; }
+    .animal-name { font-size: 2.8rem; }
+}

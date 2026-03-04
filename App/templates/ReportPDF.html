@@ -1,4 +1,167 @@
+{% load static %}
 <!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { size: A4; margin: 1.5cm; }
+        body { font-family: Helvetica, sans-serif; font-size: 12px; color: #000; }
+        .header { text-align: right; font-size: 11px; }
+        .section-title { font-weight: bold; margin-top: 20px; text-decoration: underline; }
+        .info-table { width: 100%; margin-top: 10px; border-collapse: collapse; }
+        .info-table td { padding: 6px; border: 1px solid #ccc; }
+        .label { font-weight: bold; width: 30%; }
+        .photo { width: 250px; margin-top: 10px; }
+        .signature { margin-top: 60px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+
+        <a href="{% url 'Report' %}">Report Animal</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserLogout' %}">Logout</a>
+    </nav>
+
+    <!-- Reference Section -->
+    <div class="header">
+        Reference No: STRAY/{{ report.id }} <br>
+        Date: {{ report.created_at|date:"d M Y, H:i" }}
+    </div>
+
+    <br>
+
+    <!-- Address Section -->
+    <p>
+        To,<br>
+        The Station House Officer,<br>
+        [Concerned Police Station]<br>
+        [District Name]
+    </p>
+
+    <br>
+
+    <!-- Subject -->
+    <p><strong>Subject: Complaint Regarding Injured / Abandoned Stray Animal – Request for Immediate Action</strong></p>
+
+    <br>
+
+    <!-- Complaint Body -->
+    <p>
+        Respected Sir/Madam,
+    </p>
+
+    <p>
+        I hereby submit this complaint regarding a stray 
+        <strong>{{ report.animal_type|title }}</strong> 
+        spotted at <strong>{{ report.manual_location }}</strong> 
+        on {{ report.created_at|date:"d M Y" }}.
+    </p>
+
+    <p>
+        The animal appears to be in the following condition(s):
+        {% for c in report.conditions.all %}
+            {{ c.name|title }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Not specified
+        {% endfor %}.
+    </p>
+
+    <p>
+        A total of {{ report.animal_count }} animal(s) were observed at the location.
+        I kindly request immediate intervention and necessary action under applicable animal welfare regulations to prevent further suffering and ensure public safety.
+    </p>
+
+    {% if report.auto_latitude and report.auto_longitude %}
+    <p>
+        The GPS coordinates of the location are:<br>
+        Latitude: {{ report.auto_latitude }}<br>
+        Longitude: {{ report.auto_longitude }}
+    </p>
+    {% endif %}
+
+    <br>
+
+    <!-- Incident Summary Table -->
+    <div class="section-title">Incident Summary</div>
+
+    <table class="info-table">
+        <tr>
+            <td class="label">Animal Type</td>
+            <td>{{ report.animal_type|title }}</td>
+        </tr>
+        <tr>
+            <td class="label">Condition(s)</td>
+            <td>
+                {% for c in report.conditions.all %}
+                    {{ c.name|title }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Not specified
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Number of Animals</td>
+            <td>{{ report.animal_count }}</td>
+        </tr>
+        <tr>
+            <td class="label">Location</td>
+            <td>{{ report.manual_location }}</td>
+        </tr>
+        {% if report.auto_latitude and report.auto_longitude %}
+        <tr>
+            <td class="label">GPS Coordinates</td>
+            <td>
+                {{ report.auto_latitude }}, {{ report.auto_longitude }}
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <br>
+
+    <!-- Evidence Section -->
+    <div class="section-title">Photographic Evidence</div>
+
+    {% for img in report.images.all %}
+        <p><strong>Photo {{ forloop.counter }}</strong></p>
+        <img src="{{ img.image.path }}" class="photo">
+        <br>
+    {% empty %}
+        <p>No photographs were attached to this complaint.</p>
+    {% endfor %}
+
+    <br>
+
+    <!-- Declaration -->
+    <div class="section-title">Declaration</div>
+
+    <p>
+        I hereby declare that the information provided above is true and accurate to the best of my knowledge. 
+        I am willing to cooperate further if required for investigation or verification.
+    </p>
+
+    <div class="signature">
+        ___________________________<br>
+        Signature of Complainant
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -44,4 +207,4 @@
         <p>__________________________<br>Volunteer Signature</p>
     </div>
 </body>
-</html>
+</html> -->

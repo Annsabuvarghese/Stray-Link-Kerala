@@ -1,0 +1,137 @@
+:root {
+    --primary-warm: #f39c12;
+    --secondary-warm: #e67e22;
+    --bg-soft: #fdfaf6;
+    --text-dark: #2c3e50;
+    --white: #ffffff;
+    --volunteer-bg: #fff5eb;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-soft);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+    max-width: 550px;
+    text-align: center;
+    animation: popIn 0.5s ease-out;
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    background: #2ecc71;
+    color: white;
+    font-size: 35px;
+    line-height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+}
+
+/* Instructions Styling */
+.instruction-container {
+    text-align: left;
+    margin: 30px 0;
+    background: #fcfcfc;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step-icon { font-size: 1.4rem; }
+
+.step p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.volunteer-alert {
+    background: var(--volunteer-bg);
+    border-radius: 10px;
+    border: 1px solid #f9ebe0;
+}
+
+.volunteer-alert a {
+    color: var(--secondary-warm);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background: var(--secondary-warm);
+    color: white;
+}
+
+.btn-outline {
+    border: 1px solid #ddd;
+    color: #7f8c8d;
+}
+
+.btn:hover { filter: brightness(1.1); }
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 25px;
+    background: transparent;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--soft-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 50px;
+}
+
+nav a:hover {
+    background: white;
+    color: var(--hope-orange);
+    box-shadow: var(--hug-shadow);
+}

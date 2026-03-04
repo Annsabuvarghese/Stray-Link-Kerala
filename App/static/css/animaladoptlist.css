@@ -1,0 +1,160 @@
+:root {
+    --accent: #ff9f43;
+    --accent-dark: #ee5253;
+    --white: #ffffff;
+    --text: #57606f;
+    --bg: #fdfaf6;
+    --warm-cream: #fdfaf5;
+    --hope-orange: #ff9d6c;
+    --heart-red: #e8635a;
+    --leaf-green: #7ca982;
+    --soft-text: #4a3f35;
+    --ray-of-light: #fffcf0;
+    --hug-shadow: 0 10px 30px rgba(74, 63, 53, 0.08);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+    margin: 0;
+    color: var(--text);
+}
+
+/* Nav & Header */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 25px;
+    background: transparent;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--soft-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 50px;
+}
+
+nav a:hover {
+    background: white;
+    color: var(--hope-orange);
+    box-shadow: var(--hug-shadow);
+}
+
+.list-header {
+    text-align: center;
+    padding: 60px 20px 40px;
+}
+
+.list-header h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 2.8rem;
+    color: var(--accent-dark);
+    margin: 0;
+}
+
+/* Grid Layout */
+.animal-grid {
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+
+/* Card Styling */
+.animal-card {
+    background: var(--white);
+    border-radius: 30px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 25px rgba(230, 126, 34, 0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.animal-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(230, 126, 34, 0.15);
+}
+
+.card-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.animal-card:hover .card-image img {
+    transform: scale(1.1);
+}
+
+.gender-badge {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-dark);
+}
+
+.card-content {
+    padding: 25px;
+    text-align: center;
+}
+
+.card-content h2 {
+    font-family: 'Fredoka', sans-serif;
+    margin: 0 0 10px;
+    color: var(--text);
+    font-size: 1.6rem;
+}
+
+.short-info {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #a4b0be;
+}
+
+/* Button */
+.view-btn {
+    display: block;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.view-btn:hover {
+    filter: brightness(1.1);
+    letter-spacing: 0.5px;
+}
+
+.no-animals {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 100px;
+    font-size: 1.2rem;
+    color: #ccc;
+}

@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrayLink - Home</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+
+        <a href="{% url 'Report' %}">Report Animal</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserLogout' %}">Logout</a>
+        <a href="{% url 'AdminAdoptionDashboard' %}">Dashboard</a>
+    </nav>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome to StrayLink</h1>
+        <p>Together, we can rescue and find loving homes for stray animals. Explore recent reports and adoptable animals below.</p>
+        <a href="{% url 'Report' %}">Report a Case</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a>
+    </header>
+
+    <!-- Recent Rescue Reports Slider -->
+    <section>
+        <h2>Recent Rescue Reports</h2>
+        <div class="slider-container">
+            <button class="arrow" onclick="scrollSlider('reportsSlider', -300)">&#10094;</button>
+            <div class="slider" id="reportsSlider">
+                {% for case in cases %}
+                <div class="card">
+                    {% if case.images.first %}
+                        <img src="{{ case.images.first.image.url }}" alt="Animal Image">
+                    {% endif %}
+                    <h4>{{ case.animal_type }}</h4>
+                    <p>Location: {{ case.manual_location }}</p>
+                    <p>Status: {{ case.status|title }}</p>
+                    <a href="{% url 'ReportList' %}">View Details</a>
+                </div>
+                {% empty %}
+                <p style="text-align:center; color:#555;">No recent rescue reports.</p>
+                {% endfor %}
+            </div>
+            <button class="arrow" onclick="scrollSlider('reportsSlider', 300)">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- Animals Available for Adoption Slider -->
+<section>
+    <h2>Animals Ready for Adoption</h2>
+    <div class="slider-container">
+        <div class="slider">
+            {% for animal in animals %}
+            <div class="card">
+                {% if animal.image %}
+                    <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
+                {% else %}
+                    <div style="height: 160px; background: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 8px;">No Image</div>
+                {% endif %}
+                
+                <h4>{{ animal.name }}</h4>
+                <p>Breed: {{ animal.breed }}</p>
+                <p>Age: {{ animal.age }}</p>
+                <p>Status: <strong>{{ animal.status }}</strong></p>
+                
+                <a href="{% url 'AnimalAdoptDetail' animal.pk %}">View Details & Adopt</a>
+            </div>
+            {% empty %}
+                <p style="text-align: center; width: 100%;">No animals available for adoption at the moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+    <script>
+        function scrollSlider(sliderId, distance) {
+            document.getElementById(sliderId).scrollBy({
+                left: distance,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>

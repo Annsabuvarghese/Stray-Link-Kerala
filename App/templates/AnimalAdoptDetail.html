@@ -1,0 +1,154 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animal Details</title>
+    <link rel="stylesheet" href="{% static 'css/animaladoptdetails.css' %}">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+   
+        <a href="{% url 'Report' %}">Report Animal</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserLogout' %}">Logout</a>
+    </nav>
+
+
+    <h1>Animal Details</h1>
+
+    <h2>{{ animal.name }}</h2>
+
+    <p><strong>Breed:</strong> {{ animal.breed }}</p>
+    <p><strong>Age:</strong> {{ animal.age }}</p>
+    <p><strong>Gender:</strong> {{ animal.gender }}</p>
+    <p><strong>Description:</strong> {{ animal.description }}</p>
+
+    {% if animal.image %}
+        <img src="{{ animal.image.url }}" alt="Animal Image" width="300"><br>
+    {% endif %}
+<a href="{% url 'ApplyAdoption' animal.id %}">
+    <button>Apply For Adoption</button>
+</a>
+
+{% if animal.status == 'Adopted' %}
+<p>Status: Successfully Adopted</p>
+{% elif animal.applications.exists %}
+<p>Status: On Process of Adoption</p>
+{% else %}
+<p>Status: Available for Adoption</p>
+{% endif %}
+
+</body>
+</html> -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ animal.name }} | Adoption Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/animaladoptdetail.css' %}">
+</head>
+<body>
+ <nav>
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+         {% if user.is_authenticated %}
+        <div class="user-menu">
+            <a href="{% url 'UserProfile' %}" class="profile-icon">
+                <span class="icon">👤</span> 
+                {{ user.username }}
+            </a>
+            <a href="{% url 'UserLogout' %}">Logout</a>
+        </div>
+    {% else %}
+        <a href="{% url 'UserLogin' %}">Login</a>
+        <a href="{% url 'UserRegister' %}">Register</a>
+    {% endif %}
+    </nav>
+
+    <div class="main-container">
+        <div class="detail-wrapper">
+            
+            <div class="left-col">
+                <div class="image-container">
+                    {% if animal.image %}
+                        <img src="{{ animal.image.url }}" alt="{{ animal.name }}" class="main-animal-img">
+                    {% else %}
+                        <div class="placeholder-img">No Image Provided</div>
+                    {% endif %}
+                    
+                    <div class="status-tag {{ animal.status|lower }}">
+                        {% if animal.status == 'Adopted' %} 🎉 Adopted {% elif animal.applications.exists %} ⏳ Processing {% else %} ✨ Available {% endif %}
+                    </div>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat-box">
+                        <span>Age</span>
+                        <strong>{{ animal.age }}</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Breed</span>
+                        <strong>{{ animal.breed }}</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Gender</span>
+                        <strong>{{ animal.gender }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-col">
+                <div class="content-card">
+                    <h1 class="animal-name">I'm {{ animal.name }}!</h1>
+                    <p class="subtitle">Looking for a family to call my own.</p>
+                    
+                    <hr class="divider">
+
+                    <div class="info-block">
+                        <h3><span class="icon"></span> My Story</h3>
+                        <p>{{ animal.description }}</p>
+                    </div>
+
+                    {% if animal.medical_history %}
+                    <div class="info-block">
+                        <h3><span class="icon"></span> Medical Info</h3>
+                        <p>{{ animal.medical_history }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if animal.temperament %}
+                    <div class="info-block">
+                        <h3><span class="icon"></span> Temperament</h3>
+                        <p>{{ animal.temperament }}</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="action-footer">
+                        {% if animal.status != 'Adopted' %}
+                            <a href="{% url 'ApplyAdoption' animal.id %}" class="primary-btn">
+                                Adopt {{ animal.name }} <span>🐾</span>
+                            </a>
+                        {% else %}
+                            <div class="adopted-banner">
+                                ❤️ Cheers! This lucky soul has been adopted.
+                            </div>
+                        {% endif %}
+                        <p class="disclaimer">By clicking apply, you agree to our adoption screening process.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

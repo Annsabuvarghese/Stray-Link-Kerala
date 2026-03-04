@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Adoption | StrayLink</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/addadopt.css' %}">
+</head>
+
+<body>
+
+<h2>Add a New Life to Adoption</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- ================= ANIMAL PROFILE ================= -->
+    <div class="form-section">
+        <div class="section-title">
+            <h3>Animal Profile</h3>
+        </div>
+
+        <div class="input-group">
+            <label>Name</label>
+            <input type="text" name="name" value="{{ animal.name }}" placeholder="e.g. Bella">
+        </div>
+
+        <div class="input-group">
+            <label>Approx. Age</label>
+            <select name="age" required>
+                <option value="" disabled selected>Select age range</option>
+                <option value="Puppy/Kitten">Puppy/Kitten (0-6 months)</option>
+                <option value="Young">Young (6 months - 2 years)</option>
+                <option value="Adult">Adult (2 - 7 years)</option>
+                <option value="Senior">Senior (7+ years)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Breed</label>
+            <input type="text" name="breed" value="{{ animal.breed }}" placeholder="e.g. Golden Retriever Mix">
+        </div>
+
+        <div class="input-group">
+                    <label>Upload Photo</label>
+                    <input type="file" name="image" class="file-input">
+                </div>
+            </div>
+
+        <div class="input-group">
+            <label>Gender</label>
+            <div class="radio-group">
+                <label class="radio-item">
+                    <input type="radio" name="gender" value="male" required>
+                    <span>Male</span>
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="gender" value="female">
+                    <span>Female</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Medical Checklist (Select all that apply)</label>
+            <div class="check-grid">
+                <label class="check-item">
+                    <input type="checkbox" name="medical" value="vaccinated">
+                    <span>Vaccinated</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" name="medical" value="neutered">
+                    <span>Neutered/Spayed</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" name="medical" value="dewormed">
+                    <span>Dewormed</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" name="medical" value="disabled">
+                    <span>Physically Challenged</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ================= CENTER INFORMATION ================= -->
+    <div class="form-section">
+        <div class="section-title">
+            <h3>Center Information</h3>
+        </div>
+
+        <div class="input-group">
+            <label>Type of Facility</label>
+            <div class="radio-group">
+                <label class="radio-item">
+                    <input type="radio" name="center_type" value="ngo" required>
+                    <span>NGO</span>
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="center_type" value="government">
+                    <span>Govt Shelter</span>
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="center_type" value="foster">
+                    <span>Foster</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Name of the Center</label>
+            <input type="text" name="center_name" placeholder="Official name" required>
+        </div>
+
+        <div class="form-grid">
+            <div class="input-group">
+                <label>Official Email</label>
+                <input type="email" name="center_email" placeholder="shelter@example.com" required>
+            </div>
+
+            <div class="input-group">
+                <label>Contact Phone</label>
+                <input type="text" name="center_phone" placeholder="Contact number" required>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Facility Amenities (Multiple Choice)</label>
+            <div class="check-grid">
+                <label class="check-item">
+                    <input type="checkbox" name="amenities" value="medical_on_site">
+                    <span>Medical On-site</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" name="amenities" value="no_kill">
+                    <span>No-Kill Policy</span>
+                </label>
+                <label class="check-item">
+                    <input type="checkbox" name="amenities" value="pickup">
+                    <span>Pickup Available</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Center Address</label>
+            <textarea name="center_address" rows="2" placeholder="Full location details..." required></textarea>
+        </div>
+    </div>
+
+    <button type="submit">Available for adoption🐾</button>
+
+</form>
+
+</body>
+</html>

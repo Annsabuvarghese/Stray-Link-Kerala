@@ -1,0 +1,173 @@
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Adoption | StrayLink</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/adoptapplication.css' %}">
+</head>
+
+<body>
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'Report' %}">Report</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+        <a href="{% url 'UserLogout' %}">Logout</a>
+    </nav>
+
+    <h1>Final Step</h1>
+    <p class="subtitle">Confirm your details to apply for your new companion.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="animal_id" value="{{ animal.id }}">
+
+        <div class="animal-info full-width">
+            🐾 <p>Applying for: <span>{{ animal.name }}</span></p>
+        </div>
+
+        <div class="field-wrap">
+            <label>Your Full Name</label>
+            <input type="text" name="name" value="{{ request.user.profile.full_name }}" required>
+        </div>
+
+        <div class="field-wrap">
+            <label>Email Address</label>
+            <input type="email" name="email" value="{{ request.user.email }}" required>
+        </div>
+
+        <div class="field-wrap">
+            <label>Phone Number</label>
+            <input type="text" name="phone" value="{{ request.user.profile.phone }}" required>
+        </div>
+
+        <div class="field-wrap">
+            <label>Date of Birth</label>
+            <input type="date" name="dob" value="{{ request.user.profile.dob|date:'Y-m-d' }}" required>
+        </div>
+
+        <div class="field-wrap">
+            <label>District</label>
+            <input type="text" name="district" value="{{ request.user.profile.district }}" readonly>
+        </div>
+
+        <div class="field-wrap">
+            <label>Local Body</label>
+            <input type="text" name="local_body" value="{{ request.user.profile.local_body }}" readonly>
+        </div>
+
+        <div class="field-wrap">
+            <label>Ward No.</label>
+            <input type="text" name="ward_no" value="{{ request.user.profile.ward_no }}" readonly>
+        </div>
+
+        <div class="field-wrap">
+            <label>House No.</label>
+            <input type="text" name="house_no" value="{{ request.user.profile.house_no }}" required>
+        </div>
+
+        <div class="field-wrap full-width">
+            <label>Full Address</label>
+            <textarea name="address" rows="2" required>{{ request.user.profile.address }}</textarea>
+        </div>
+
+
+        <div class="form-divider full-width">Eligibility Questionnaire</div>
+
+        <div class="field-wrap full-width">
+            <label>Are you 18 years or older?</label>
+            <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="is_18" value="yes" required> Yes</label>
+                <label class="radio-label"><input type="radio" name="is_18" value="no"> No</label>
+            </div>
+        </div>
+
+        <div class="field-wrap">
+            <label>Stable Family Income?</label>
+            <select name="stable_income" required>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+
+        <div class="field-wrap">
+            <label>Job / Income Source</label>
+            <input type="text" name="income_source" placeholder="e.g. Private Sector, Business" required>
+        </div>
+
+        <div class="field-wrap">
+            <label>Monthly/Annual Income</label>
+            <input type="text" name="income_amount" placeholder="Approximate amount" required>
+        </div>
+
+        <div class="field-wrap">
+            <label>Type of Residence</label>
+            <select name="residence_type" required>
+                <option value="house">House</option>
+                <option value="flat">Flat</option>
+                <option value="apartment">Apartment</option>
+            </select>
+        </div>
+
+        <div class="field-wrap">
+            <label>Ownership</label>
+            <select name="home_ownership" required>
+                <option value="owned">Owned</option>
+                <option value="rented">Rented</option>
+            </select>
+        </div>
+
+        <div class="field-wrap">
+            <label>Landlord Permission (If Rented)</label>
+            <select name="landlord_permission">
+                <option value="not_applicable">N/A (Owned)</option>
+                <option value="yes">Yes, allowed</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+
+        <div class="field-wrap">
+            <label>Do you currently have a pet?</label>
+            <select name="has_pet" required>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+        </div>
+
+        <div class="field-wrap">
+            <label>If yes, which pet?</label>
+            <select name="current_pet_type">
+                <option value="none">None</option>
+                <option value="cat">Cat</option>
+                <option value="dog">Dog</option>
+                <option value="both">Both</option>
+            </select>
+        </div>
+
+        <div class="field-wrap full-width">
+            <label>Home Environment Quality</label>
+            <select name="env_quality" required>
+                <option value="good">Good (Safe and Spacious)</option>
+                <option value="okay">Okay (Average)</option>
+                <option value="bad">Bad (Needs Improvement)</option>
+            </select>
+        </div>
+
+        <button type="submit" class="full-width">Submit Application 🐾</button>
+    </form>
+
+    <a href="{% url 'AnimalAdoptList' %}" class="back-link">← Return to Adoption List</a>
+
+
+
+</body>
+
+</html>

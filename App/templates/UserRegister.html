@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/UserRegister.css' %}">
+</head>
+
+<body>
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+        <a href="{% url 'Report' %}">Report Animal</a>
+        <a href="{% url 'ReportList' %}">Report List</a>
+        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+    </nav>
+    <h2>User Registration</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Username" required><br><br>
+        <input type="email" name="email" placeholder="Email" required><br><br>
+
+        <input type="text" name="full_name" placeholder="Full Name" required><br><br>
+        <input type="text" name="phone" placeholder="Phone Number" required><br><br>
+        <textarea name="address" placeholder="Full Address" required></textarea><br><br>
+
+
+        <label for="district"></label>
+        <select name="district" id="districtSelect" required onchange="updateLocalBodies()">
+            <option value="">Select District</option>
+            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+            <option value="Kollam">Kollam</option>
+            <option value="Idukki">Idukki</option>
+            <option value="Ernakulam">Ernakulam</option>
+        </select><br><br>
+
+        <select name="local_body" id="localBodySelect" required>
+            <option value="">Local Body (Panchayat/Municipality)</option>
+        </select><br><br>
+
+        <select name="ward_no" required>
+            <option value="">Select Ward</option>
+            <script>
+                for (let i = 1; i <= 50; i++) {
+                    document.write(`<option value="${i}">${i}</option>`);
+                }
+            </script>
+        </select><br><br>
+
+
+        <input type="text" name="house_no" placeholder="House Number" required><br><br>
+
+
+        <input type="date" name="dob" required><br><br>
+
+        <input type="password" name="password1" placeholder="Password" required><br><br>
+        <input type="password" name="password2" placeholder="Confirm Password" required><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+
+
+    <script>
+        const keralaData = {
+    "Thiruvananthapuram": ["Varkala", "Neyyattinkara", "Attingal", "Nedumangad"],
+    "Idukki": ["Thodupuzha", "Munnar", "Kattappana", "Adimali", "Nedumkandam"],
+    "Ernakulam": ["Kochi", "Aluva", "Muvattupuzha", "Perumbavoor", "Angamaly"],
+    "Kollam": ["Punalur", "Karunagappally", "Paravur"],
+    // Add the rest of the 14 districts and their main bodies
+};
+
+function updateLocalBodies() {
+    const districtSelect = document.getElementById("districtSelect");
+    const localBodySelect = document.getElementById("localBodySelect");
+    const selectedDistrict = districtSelect.value;
+
+    // Clear previous options
+    localBodySelect.innerHTML = '<option value="">Select Local Body</option>';
+
+    if (selectedDistrict && keralaData[selectedDistrict]) {
+        keralaData[selectedDistrict].forEach(place => {
+            let option = document.createElement("option");
+            option.value = place;
+            option.text = place;
+            localBodySelect.add(option);
+        });
+    }
+}
+    </script>
+
+</body>
+
+
+</html>
