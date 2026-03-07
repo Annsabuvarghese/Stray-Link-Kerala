@@ -1,3 +1,6 @@
+from email.mime import application
+from urllib import request
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template.loader import get_template
@@ -9,6 +12,7 @@ from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.contrib.auth import logout
+from urllib3 import request
 from .models import ReportSubmit, ReportImage, Condition, Profile,Animal,AdoptionApplication,Sponsorship
 from django.db.models import Q
 
@@ -16,19 +20,38 @@ from xhtml2pdf import pisa
 from io import BytesIO
 
 
+# def Home(request):
+#     # Get the latest 10 rescue reports
+#     cases = ReportSubmit.objects.all().order_by('-id')[:4]
+    
+#     # FIX: Show all animals marked for adoption except those already Adopted
+#     animals = Animal.objects.filter(
+#         in_adoption=True
+#     ).exclude(status='Adopted').order_by('-id')[:4]
+    
+#     return render(request, 'home.html', {
+#         'cases': cases,
+#         'animals': animals
+#     })
+
+
 def Home(request):
-    # Get the latest 10 rescue reports
-    cases = ReportSubmit.objects.all().order_by('-id')[:4]
-    
-    # FIX: Show all animals marked for adoption except those already Adopted
-    animals = Animal.objects.filter(
-        in_adoption=True
-    ).exclude(status='Adopted').order_by('-id')[:4]
-    
-    return render(request, 'home.html', {
+    # 1. Prepare the data that everyone (Guest or Regular User) should see
+    cases = ReportSubmit.objects.all().order_by('-created_at')[:4]
+    animals = Animal.objects.filter(in_adoption=True).exclude(status='Adopted').order_by('-id')[:4]
+
+    context = {
         'cases': cases,
         'animals': animals
-    })
+    }
+
+    if request.user.is_authenticated:
+        try:
+            if request.user.profile.is_volunteer:
+                return redirect('VolunteerHome')
+        except Profile.DoesNotExist:
+            pass
+    return render(request, 'Home.html', context)
 
 def AdminHome(request):
     # Get the latest 10 rescue reports
@@ -209,7 +232,7 @@ def generate_pdf_in_memory(report):
 
 @login_required
 def ReportList(request):
-    cases = ReportSubmit.objects.all().order_by('-id')
+    cases = ReportSubmit.objects.exclude(status='rescued').order_by('-id')
 
     # Add adoption info to each case dynamically
     for case in cases:
@@ -481,9 +504,19 @@ def AddToAdoption(request, id):
 def ApplyAdoption(request, animal_id):
     animal = get_object_or_404(Animal, id=animal_id)
 
-    if animal.status != "Available":
-        messages.error(request, "This animal is no longer available for adoption.")
+    if animal.status == "Adopted":
+        messages.error(request, "Sorry, this animal has already been adopted!")
         return redirect('AnimalAdoptList')
+
+    # 2. Prevent duplicate applications from the same user
+    already_applied = AdoptionApplication.objects.filter(
+        animal=animal, 
+        applicant_email=request.user.email
+    ).exists()
+    
+    if already_applied:
+        messages.warning(request, "You have already submitted an application for this animal.")
+        return redirect('UserProfile')
 
     if request.method == 'POST':
         # 1. Save Application to DB
@@ -504,10 +537,6 @@ def ApplyAdoption(request, animal_id):
             env_quality=request.POST.get('env_quality'),
             status="Waiting"
         )
-
-        # 2. Mark Animal as 'On Process'
-        animal.status = "On Process"
-        animal.save()
 
         # 3. Send the Detailed Email
 #         center_email = animal.center_email
@@ -597,9 +626,7 @@ def ProcessAdoption(request, app_id, action):
 
     if action == 'accept':
         application.status = 'Accepted'
-        # Change animal status to Adopted
-        application.animal.status = 'Adopted'
-        application.animal.save()
+
     elif action == 'reject':
         application.status = 'Rejected'
 
@@ -614,7 +641,11 @@ def AdoptionSuccess(request):
 def UserProfile(request):
     # Since Profile has a OneToOne relationship with User:
     user_profile = get_object_or_404(Profile, user=request.user)
-    return render(request, 'UserProfile.html', {'profile': user_profile})
+    user_applications = AdoptionApplication.objects.filter(applicant_email=request.user.email)
+    return render(request, 'UserProfile.html', {
+        'profile': user_profile,
+        'user_applications': user_applications
+    })
 
 
 
@@ -640,17 +671,14 @@ def FinalizeRescue(request, id):
         # 2. Save the data
         report.rescue_image = proof_pic
         report.rescue_notes = notes
-        report.status = 'rescued' # Now it's officially rescued
-        report.is_verified_rescue = True
+        report.status = 'awaiting_verification' # 
+        report.is_verified_rescue = False  # This will be set to True by admin after verification
         report.save()
 
-        messages.success(request, "Rescue successfully verified! You can now list it for adoption.")
+        messages.success(request, "Proof submitted! Waiting for Admin to verify and mark as Rescued.")
         return redirect('ReportList')
 
     return render(request, 'FinalizeRescue.html', {'report': report})
-
-
-
 
 
 
@@ -716,10 +744,10 @@ def About(request):
 @login_required
 def VolunteerIns(request):
     if request.method == "POST":
-        # Note: We use .profile here because that's your related_name
         profile, created = Profile.objects.get_or_create(user=request.user)
         
-        profile.is_volunteer = True
+        profile.is_volunteer_pending = True
+        profile.is_volunteer = False
         profile.save()
         
         messages.success(request, "Welcome to the team! You are now a StrayLink Volunteer. 🧡")
@@ -731,12 +759,262 @@ def VolunteerIns(request):
 def VolunteerWelcome(request):
     return render(request, 'VolunteerWelcome.html')
 
-# @login_required
-# def RescueExp(request):
-#     case = get_object_or_404(ReportSubmit, id=id)
-#     return render(request, 'RescueExp.html',{'case': case})
 
 @login_required
 def RescueExp(request,id):
     report = get_object_or_404(ReportSubmit, id=id)
     return render(request, 'RescueExp.html', {'report': report})
+
+
+@login_required
+def VolunteerIns(request):
+    if request.method == "POST":
+        # related_name='profile' upayogichu profile edukunnu
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        
+        profile.is_volunteer_pending = True
+        profile.is_volunteer = False # Admin approve cheythaal mathram True aakum
+        profile.save()
+        
+        messages.success(request, "Ningalude application ayachittundu. Admin approval-nu shesham update labhikku.")
+        return redirect('UserProfile')
+    
+    return render(request, 'VolunteerIns.html')
+
+@login_required
+def AdminVolunteerDashboard(request):
+    if not request.user.is_staff:
+        messages.error(request, "Access Denied. Admins only.")
+        return redirect('Home')
+    
+    # Request ayacha pakshe approve aakaathavar
+    pending_profiles = Profile.objects.filter(is_volunteer_pending=True, is_volunteer=False)
+    
+    return render(request, 'AdminVolDashboard.html', {
+        'pending_profiles': pending_profiles
+    })
+
+@login_required
+def ApproveVolunteer(request, profile_id):
+    if not request.user.is_staff:
+        return redirect('Home')
+    
+    profile = get_object_or_404(Profile, id=profile_id)
+    profile.is_volunteer = True
+    profile.is_volunteer_pending = False # Process poorthiyaayi
+    profile.save()
+    
+    messages.success(request, f"{profile.full_name} ippol official volunteer aanu!")
+    return redirect('AdminVolunteerDashboard')
+
+@login_required
+def RejectVolunteer(request, profile_id):
+    if not request.user.is_staff:
+        return redirect('Home')
+    
+    profile = get_object_or_404(Profile, id=profile_id)
+    profile.is_volunteer_pending = False # Reset the pending status
+    profile.save()
+    
+    messages.warning(request, f"{profile.full_name}'s volunteer request has been removed.")
+    return redirect('AdminVolunteerDashboard')
+
+
+def VolunteerHome(request):
+    # Get the latest 10 rescue reports
+    cases = ReportSubmit.objects.all().order_by('-id')[:4]
+    
+    # FIX: Show all animals marked for adoption except those already Adopted
+    animals = Animal.objects.filter(
+        in_adoption=True
+    ).exclude(status='Adopted').order_by('-id')[:4]
+    
+    return render(request, 'VolunteerHome.html', {
+        'cases': cases,
+        'animals': animals
+    })
+@login_required
+def FinalizeRescue(request, report_id):
+    # Fetch the specific report
+    report = get_object_or_404(ReportSubmit, id=report_id)
+
+    # Logic: Only the person who 'claimed' the report (or an admin) should be able to finalize it
+    if report.claimed_by != request.user and not request.user.is_staff:
+        messages.error(request, "You are not authorized to finalize this rescue.")
+        return redirect('Home')
+
+    if request.method == 'POST':
+        rescue_img = request.FILES.get('rescue_image')
+        notes = request.POST.get('rescue_notes')
+
+        if rescue_img:
+            # Update report details
+            report.rescue_image = rescue_img
+            report.rescue_notes = notes
+            report.status = 'awaiting_verification' # Moves it to admin review
+            report.save()
+
+            messages.success(request, "Rescue proof submitted! Once an admin verifies it, the case will be closed. Great job!")
+            return redirect('Home')
+        else:
+            messages.error(request, "Please upload a photo as proof of rescue.")
+
+    return render(request, 'FinalizeRescue.html', {'report': report})
+
+
+@login_required
+def VerifyRescue(request):  # Removed 'id' from here because this is the LIST view
+    # 1. Permission Check
+    is_volunteer = getattr(request.user.profile, 'is_volunteer', False)
+    if not (request.user.is_staff or is_volunteer):
+        messages.error(request, "Access denied. Only volunteers can verify rescues.")
+        return redirect('Home')
+
+    # 2. Fetch all reports that have proof but aren't verified
+    pending_verifications = ReportSubmit.objects.filter(
+        status='awaiting_verification', 
+        is_verified_rescue=False
+    ).exclude(rescue_image='').order_by('-created_at')
+
+    return render(request, 'VerifyRescue.html', {
+        'pending_verifications': pending_verifications
+    })
+
+@login_required
+def VerifyRescueDetail(request, id):
+    # This function handles the specific Approval/Rejection
+    report = get_object_or_404(ReportSubmit, id=id)
+    is_volunteer = getattr(request.user.profile, 'is_volunteer', False)
+
+    # Permission check
+    if not (request.user.is_staff or is_volunteer):
+        messages.error(request, "Access Denied.")
+        return redirect('Home')
+
+    # Prevent self-verification
+    if report.claimed_by == request.user and not request.user.is_staff:
+        messages.warning(request, "You cannot verify your own mission. Please wait for another volunteer.")
+        return redirect('VerifyRescue')
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'approve':
+            report.status = 'rescued'
+            report.is_verified_rescue = True
+            report.verified_at = timezone.now()
+            report.save()
+            messages.success(request, f"Mission #{report.id} Approved! Animal marked as safe. 🐾")
+        
+        elif action == 'reject':
+            report.rescue_image = None
+            report.rescue_notes = ""
+            report.status = 'in_progress'
+            report.save()
+            messages.warning(request, f"Proof for Mission #{report.id} was rejected and sent back.")
+
+        # After action, go back to the QUEUE to see other cases
+        return redirect('VerifyRescue')
+
+    return render(request, 'VerifyRescueDetail.html', {'report': report})
+
+@login_required
+def VerifyAdoption(request):
+    is_volunteer = getattr(request.user.profile, 'is_volunteer', False)
+
+    if not (request.user.is_staff or is_volunteer):
+        messages.error(request, "Access denied.")
+        return redirect('Home')
+
+    pending_proofs = AdoptionApplication.objects.filter(
+        is_submitted_for_final_verify=True,
+        status='Proof_Submitted' 
+    ).order_by('-applied_at')
+
+    return render(request, 'VerifyAdoption.html', {
+        'pending_adoptions': pending_proofs
+    })
+@login_required
+def VerifyAdoptionDetail(request, id):
+
+    is_volunteer = getattr(request.user.profile, 'is_volunteer', False)
+    if not (request.user.is_staff or is_volunteer):
+        messages.error(request, "Access denied.")
+        return redirect('Home')
+
+    application = get_object_or_404(AdoptionApplication, id=id)
+    animal = application.animal
+
+    if application.applicant_email == request.user.email and not request.user.is_staff:
+        messages.warning(request, "You cannot verify your own adoption proof.")
+        return redirect('VerifyAdoption')
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'approve':
+            # Proof ഓക്കെയാണ്, ഇനി പട്ടി ഒഫീഷ്യൽ ആയി Adopted ആണ്
+            animal.status = 'Adopted'
+            animal.save()
+            application.status = 'Verified' # ഫൈനൽ സ്റ്റാറ്റസ്
+            application.save()
+            messages.success(request, f"Proof Approved! {animal.name} status updated to Adopted.")
+
+        elif action == 'reject':
+            # Proof ശരിയല്ല, മൃഗം വീണ്ടും ലഭ്യമാണ്
+            animal.status = 'Available'
+            animal.save()
+            application.status = 'Rejected'
+            application.is_submitted_for_final_verify = False
+            application.save()
+            messages.warning(request, "Proof Rejected. Animal is now back to Available status.")
+
+        return redirect('VerifyAdoption')
+
+    return render(request, 'VerifyAdoptionDetail.html', {'application': application})
+
+@login_required
+def SubmitAdoptionProof(request, app_id):
+    # Ensure the person uploading is the person who applied
+    application = get_object_or_404(AdoptionApplication, id=app_id, applicant_email=request.user.email)
+    
+    if request.method == "POST":
+        img1 = request.FILES.get('proof1')
+        img2 = request.FILES.get('proof2')
+        notes = request.POST.get('notes')
+        
+        if img1:
+            # 1. Update Application Proof
+            application.proof_image_1 = img1
+            application.proof_image_2 = img2
+            application.user_notes = notes
+            application.is_submitted_for_final_verify = True
+            application.status = 'Proof_Submitted' # Automatically mark as accepted since they have the pet
+            application.save()
+
+            messages.success(request, "Proof submitted! Waiting for volunteer verification.")
+            return redirect('UserProfile')
+        else:
+            messages.error(request, "Please provide a photo to finalize the record.")
+
+    return render(request, 'FinalizeAdoption.html', {'application': application})
+
+@login_required
+def RescuedList(request):
+
+    rescued_cases = ReportSubmit.objects.filter(
+        status='rescued',
+        is_verified_rescue=True
+    ).order_by('-verified_at')
+
+    return render(request, 'RescuedList.html', {
+        'rescued_cases': rescued_cases
+    })
+
+@login_required
+def AdoptedList(request):
+
+    adopted_animals = Animal.objects.filter(status='Adopted')
+    return render(request, 'AdoptedList.html', {
+        'adopted_animals': adopted_animals,
+    })

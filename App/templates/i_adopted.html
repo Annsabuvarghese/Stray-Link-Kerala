@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Adopted! | Final Steps</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; }
+        .upload-card { border-radius: 20px; border: none; overflow: hidden; }
+        .drop-zone { border: 2px dashed #cbd5e0; border-radius: 10px; padding: 20px; text-align: center; background: #f8fafc; transition: 0.3s; }
+        .drop-zone:hover { border-color: #3b82f6; background: #eff6ff; }
+        .animal-header { background: #3b82f6; color: white; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card upload-card shadow-lg">
+                <div class="animal-header">
+                    <i class="fas fa-paw fa-2x mb-2"></i>
+                    <h3>Congratulations!</h3>
+                    <p class="mb-0">Finalizing adoption for <strong>{{ application.animal.name }}</strong></p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <p class="text-muted text-center small">To complete the verification, please upload two photos of the animal in its new home and tell us how the first few days are going.</p>
+                    
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Photo 1 -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Photo 1: At Home</label>
+                            <div class="drop-zone">
+                                <input type="file" name="image1" class="form-control" accept="image/*" required>
+                                <div class="small text-muted mt-1">Wide shot of the animal in its new space</div>
+                            </div>
+                        </div>
+
+                        <!-- Photo 2 -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Photo 2: With Family</label>
+                            <div class="drop-zone">
+                                <input type="file" name="image2" class="form-control" accept="image/*" required>
+                                <div class="small text-muted mt-1">A photo of the animal with you or its new bed</div>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Settling In Details</label>
+                            <textarea name="notes" class="form-control" rows="4" placeholder="How is the appetite? Is the animal comfortable? Any funny stories yet?" required></textarea>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow">
+                                <i class="fas fa-cloud-upload-alt"></i> Submit for Verification
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{% url 'UserProfile' %}" class="text-secondary text-decoration-none small">
+                    <i class="fas fa-times"></i> Cancel and return to profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -86,8 +86,14 @@
                         <div class="placeholder-img">No Image Provided</div>
                     {% endif %}
                     
-                    <div class="status-tag {{ animal.status|lower }}">
-                        {% if animal.status == 'Adopted' %} 🎉 Adopted {% elif animal.applications.exists %} ⏳ Processing {% else %} ✨ Available {% endif %}
+                    <div class="status-tag {{ animal.status|lower|slugify }}">
+                    {% if animal.status == 'Adopted' %} 
+                    🎉 Adopted 
+                    {% elif animal.applications.exists %} 
+                    🌟 Available <small>(Processing {{ animal.applications.count }} Applications)</small>
+                    {% else %} 
+                    🌟 Available 
+                    {% endif %}
                     </div>
                 </div>
 

@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,22 +30,202 @@
     <div class="profile-container">
     <h2>My Profile</h2>
 
-    <div class="volunteer-status-area">
-        {% if profile.is_volunteer %}
-            <div class="status-badge volunteer">
-                <span class="icon">🐾</span> Verified StrayLink Volunteer
-            </div>
-        {% else %}
-            <div class="volunteer-invite-card">
-                <p>Want to do more for the strays in {{ profile.district }}?</p>
-                <a href="{% url 'VolunteerIns' %}" class="btn-join-volunteer">Join as a Volunteer</a>
-            </div>
-        {% endif %}
-    </div>
+    <div class="volunteer-status">
+    {% if profile.is_volunteer %}
+        <span class="badge verified">Verified Volunteer 🐾</span>
+    {% elif profile.is_volunteer_pending %}
+        <span class="badge pending">Application Pending Approval... ⏳</span>
+        <p style="font-size: 0.8rem; color: #888;">Njangalude team ningalude profile check cheyyukayanu. Thayavu cheythu kathirikkuka.</p>
+    {% else %}
+        <a href="{% url 'VolunteerIns' %}" class="btn-join">Join as a Volunteer</a>
+    {% endif %}
+</div>
 
     <div class="profile-card">
+    </div>
+
+    <div class="card shadow-sm mt-4">
+    <div class="card-header bg-white fw-bold">My Adoption Applications</div>
+    <div class="list-group list-group-flush">
+        {% for app in user_applications %}
+            <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div>
+                    <h6 class="mb-0">{{ app.animal.name }}</h6>
+                    <small class="text-muted">Status: 
+                        <span class="badge {% if app.status == 'Accepted' %}bg-success{% elif app.status == 'Rejected' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                            {{ app.status }}
+                        </span>
+                    </small>
+                </div>
+
+   
+                {% if app.status == 'Accepted' and not app.is_submitted_for_final_verify %}
+                    <a href="{% url 'SubmitAdoptionProof' app.id %}" class="btn btn-primary btn-sm rounded-pill shadow-sm">
+                        <i class="fas fa-camera"></i> I Adopted This Pet!
+                    </a>
+                {% elif app.is_submitted_for_final_verify %}
+                    <span class="badge bg-info text-dark">Proof Submitted - Pending Verification</span>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p class="p-3 text-muted">You haven't applied for any adoptions yet.</p>
+        {% endfor %}
+    </div>
+</div>
+        
+</div>
+</div>
+</body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | PetRescue</title>
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Inter', sans-serif; }
+        .profile-header { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; padding: 40px 0; border-radius: 0 0 30px 30px; margin-bottom: 30px; }
+        .card { border: none; border-radius: 15px; transition: transform 0.2s; }
+        .info-label { color: #6c757d; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .info-value { font-size: 1.1rem; color: #2d3436; font-weight: 500; }
+        .status-card { border-left: 5px solid #2575fc; }
+        .badge-custom { padding: 8px 15px; border-radius: 50px; font-weight: 600; }
+        .btn-adopt-claim { background-color: #ff7675; border: none; color: white; transition: 0.3s; }
+        .btn-adopt-claim:hover { background-color: #d63031; transform: translateY(-2px); color: white; }
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<div class="profile-header shadow-sm text-center">
+    <div class="container">
+        <div class="mb-3">
+            <i class="fas fa-user-circle fa-5x"></i>
         </div>
+        <h2 class="fw-bold">{{ profile.full_name }}</h2>
+        <p class="opacity-75 mb-0"><i class="fas fa-envelope me-2"></i>{{ user.email }}</p>
+    </div>
 </div>
+
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-pill px-4" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row g-4">
+        <!-- Left: Personal Details -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm p-4 mb-4">
+                <h5 class="fw-bold mb-4"><i class="fas fa-info-circle text-primary me-2"></i> Account Details</h5>
+                
+                <div class="mb-3">
+                    <div class="info-label">Phone</div>
+                    <div class="info-value">{{ profile.phone }}</div>
+                </div>
+                <div class="mb-3">
+                    <div class="info-label">Date of Birth</div>
+                    <div class="info-value">{{ profile.dob }}</div>
+                </div>
+                <hr>
+                <div class="mb-2">
+                    <div class="info-label">District</div>
+                    <div class="info-value text-capitalize">{{ profile.district }}</div>
+                </div>
+                <div class="mb-2">
+                    <div class="info-label">Address</div>
+                    <div class="info-value small text-muted">{{ profile.address }}</div>
+                </div>
+
+                <div class="mt-4 pt-3 border-top text-center">
+                    {% if profile.is_volunteer %}
+                        <span class="badge bg-success-subtle text-success badge-custom w-100 mb-2">
+                            <i class="fas fa-shield-dog me-2"></i>Verified Volunteer
+                        </span>
+                    {% elif profile.is_volunteer_pending %}
+                        <div class="alert alert-warning py-2 small mb-0">
+                            <i class="fas fa-hourglass-half me-1"></i> Volunteer Approval Pending
+                        </div>
+                    {% else %}
+                        <a href="{% url 'VolunteerIns' %}" class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+                            Become a Volunteer
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <a href="{% url 'Home' %}" class="btn btn-light w-100 rounded-pill shadow-sm mb-4">
+                <i class="fas fa-chevron-left me-2"></i>Back to Home
+            </a>
+        </div>
+
+        <!-- Right: Adoption Section -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-paw text-primary me-2"></i> My Adoption Applications</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for app in user_applications %}
+                            <div class="list-group-item p-4 border-0 border-bottom">
+                                <div class="d-md-flex justify-content-between align-items-center">
+                                    <div class="mb-3 mb-md-0">
+                                        <h5 class="fw-bold mb-1 text-primary">{{ app.animal.name }}</h5>
+                                        <p class="text-muted small mb-2">Applied on: {{ app.applied_at|date:"M d, Y" }}</p>
+                                        
+                                        <!-- Application Status Badge -->
+                                        <span class="badge rounded-pill 
+                                            {% if app.status == 'Accepted' %}bg-success{% elif app.status == 'Rejected' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+                                            Application {{ app.status }}
+                                        </span>
+                                    </div>
+
+                                    <div class="text-md-end">
+                                        {% if not app.is_submitted_for_final_verify %}
+                                            <p class="small text-muted mb-2">Got the pet home offline?</p>
+                                            <a href="{% url 'SubmitAdoptionProof' app.id %}" 
+                                               class="btn btn-adopt-claim btn-sm px-4 rounded-pill shadow-sm">
+                                                <i class="fas fa-heart me-1"></i> I Adopted This Pet!
+                                            </a>
+                                        {% else %}
+                                            <div class="text-success fw-bold">
+                                                <i class="fas fa-check-circle me-1"></i> Verified Success Story
+                                            </div>
+                                            <small class="text-muted">Thank you for adopting!</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-folder-open fa-3x text-light mb-3"></i>
+                                <p class="text-muted">No adoption applications found.</p>
+                                <a href="{% url 'AnimalAdoptList' %}" class="btn btn-primary btn-sm rounded-pill">Find a Friend</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<footer class="mt-5 py-4 text-center text-muted">
+    <small>&copy; 2026 PetRescue Network</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

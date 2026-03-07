@@ -17,9 +17,10 @@ urlpatterns = [
     path('rescue-details/', views.RescueDetails, name='RescueDetails'),
     path('mark-rescued/<int:id>/', views.MarkRescued, name='MarkRescued'),
     path('finalize-rescue/<int:id>/', views.FinalizeRescue, name='FinalizeRescue'),
-    # path('RescueExp/', views.RescueExp, name='RescueExp'),
     path('RescueExp/<int:id>/', views.RescueExp, name='RescueExp'),
-  
+    path('verify-queue/', views.VerifyRescue, name='VerifyRescue'),
+    path('VerifyRescueDetail/<int:id>/', views.VerifyRescueDetail, name='VerifyRescueDetail'),
+
 
     path('UserRegister', views.UserRegister, name="UserRegister"),
     path('profile/', views.UserProfile, name='UserProfile'),
@@ -33,13 +34,22 @@ urlpatterns = [
     path('add-to-adoption/<int:id>/', views.AddToAdoption, name='AddToAdoption'),
     path('admin/adoptions/process/<int:app_id>/<str:action>/', views.ProcessAdoption, name='ProcessAdoption'),
     path('adoptionsuccess/', views.AdoptionSuccess, name='AdoptionSuccess'),
+    path('VerifyAdoption/', views.VerifyAdoption, name='VerifyAdoption'),
+    path('VerifyAdoptionDetail/<int:id>/', views.VerifyAdoptionDetail, name='VerifyAdoptionDetail'),
+    path('SubmitAdoptionProof/<int:app_id>/', views.SubmitAdoptionProof, name='SubmitAdoptionProof'),
+    path('rescued-list/', views.RescuedList, name='RescuedList'),
+    path('adopted-list/', views.AdoptedList, name='AdoptedList'),
 
 
     path('AdminHome', views.AdminHome, name='AdminHome'),
     path('admin-adoption-dashboard/', views.AdminAdoptionDashboard, name='AdminAdoptionDashboard'),
 
+    path('VolunteerHome/', views.VolunteerHome, name='VolunteerHome'),
     path('VolunteerIns/', views.VolunteerIns, name='VolunteerIns'),
     path('VolunteerWelcome/', views.VolunteerWelcome, name='VolunteerWelcome'),
+    path('admin-panel/volunteers/', views.AdminVolunteerDashboard, name='AdminVolunteerDashboard'),
+    path('admin-panel/volunteers/approve/<int:profile_id>/', views.ApproveVolunteer, name='ApproveVolunteer'),
+    path('admin-panel/volunteers/reject/<int:profile_id>/', views.RejectVolunteer, name='RejectVolunteer'),
 
 
     path('about/', views.About, name='About'),

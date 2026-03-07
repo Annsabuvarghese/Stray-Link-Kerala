@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Proofs | Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
+        .navbar { background: #2c3e50 !important; }
+        .main-card { border: none; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .table thead th { background-color: #f8f9fa; color: #7f8c8d; font-size: 0.85rem; border: none; }
+        .status-badge { font-size: 0.75rem; padding: 5px 12px; border-radius: 50px; }
+        .animal-img-sm { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; }
+        .btn-view { border-radius: 8px; font-weight: 500; transition: 0.2s; }
+        .btn-view:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark mb-4 py-3">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'Home' %}">🐾 PetRescue <span class="text-info">Admin</span></a>
+    </div>
+</nav>
+
+<div class="container pb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">Pending Proof Verification</h2>
+            <p class="text-muted">Review photos and documents submitted by adopters.</p>
+        </div>
+        <div class="bg-white p-3 rounded shadow-sm text-center">
+            <h4 class="mb-0 fw-bold text-primary">{{ pending_adoptions|length }}</h4>
+            <small class="text-muted text-uppercase fw-bold" style="font-size: 0.6rem;">Pending Proofs</small>
+        </div>
+    </div>
+
+    <div class="card main-card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Adopter Name</th>
+                        <th>Pet Info</th>
+                        <th>Proof Status</th>
+                        <th>Submission Date</th>
+                        <th class="text-end pe-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in pending_adoptions %}
+                    <tr>
+                        <td class="ps-4">
+                            <div class="fw-bold text-dark">{{ app.full_name }}</div>
+                            <div class="small text-muted"><i class="fas fa-envelope fa-xs"></i> {{ app.applicant_email }}</div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light me-2 rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-paw text-secondary"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">{{ app.animal.name }}</div>
+                                    <span class="text-muted small">{{ app.animal.species }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">
+                                <i class="fas fa-file-upload me-1"></i> Submitted
+                            </span>
+                        </td>
+                        <td>
+                            <span class="small text-muted">{{ app.updated_at|date:"M d, Y" }}</span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <!-- ഇവിടുന്ന് ഡീറ്റെയിൽ പേജിലേക്ക് പോകുന്നു -->
+                            <a href="{% url 'VerifyAdoptionDetail' app.id %}" class="btn btn-primary btn-sm btn-view px-4 shadow-sm">
+                                Review Proof <i class="fas fa-chevron-right ms-1 small"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="fas fa-check-circle fa-3x text-light mb-3"></i>
+                            <h5 class="text-muted">No proofs waiting for verification!</h5>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

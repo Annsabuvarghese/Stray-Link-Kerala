@@ -5,8 +5,9 @@ from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    full_name = models.CharField(max_length=1501)
+    full_name = models.CharField(max_length=150)
     is_volunteer = models.BooleanField(default=False)
+    is_volunteer_pending = models.BooleanField(default=False)
     phone = models.CharField(max_length=15)
     dob = models.DateField(verbose_name="Date of Birth")
 
@@ -48,6 +49,7 @@ class ReportSubmit(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('in_progress', 'In Progress'),
+        ('awaiting_verification', 'Awaiting Verification'),
         ('rescued', 'Rescued'),
     
     ]
@@ -84,7 +86,7 @@ class ReportSubmit(models.Model):
     )
 
     status = models.CharField(
-        max_length=20,
+        max_length=30,
         choices=STATUS_CHOICES,
         default='pending'
     )
@@ -198,7 +200,10 @@ class AdoptionApplication(models.Model):
         ('Waiting', 'Waiting for Reply'),
         ('Accepted', 'Accepted'),
         ('Rejected', 'Rejected'),
+        ('Proof_Submitted', 'Proof Submitted'),
+        ('Verified', 'Verified'),
     )
+    
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='applications')
     applicant_name = models.CharField(max_length=100)
     applicant_email = models.EmailField()
@@ -219,6 +224,12 @@ class AdoptionApplication(models.Model):
     env_quality = models.CharField(max_length=50, default="good")
     amenities = models.CharField(max_length=255, blank=True)
 
+    # Add these to your AdoptionApplication model
+    proof_image_1 = models.ImageField(upload_to='adoption_proof/', null=True, blank=True)
+    proof_image_2 = models.ImageField(upload_to='adoption_proof/', null=True, blank=True)
+    user_notes = models.TextField(blank=True, null=True, help_text="Tell us how the animal is settling in!")
+    is_submitted_for_final_verify = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.applicant_name} applying for {self.animal.name}"
 
@@ -231,17 +242,5 @@ class Sponsorship(models.Model):
 
     def __str__(self):
         return f"{self.sponsor_name} sponsored {self.animal.name}"
-
-
-
-
-
-
-
-
-
-
-
-
 
 

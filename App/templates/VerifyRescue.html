@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rescue Verification Queue | StrayLink</title>
+    <style>
+        :root {
+            --primary: #f39c12;
+            --secondary: #e67e22;
+            --success: #27ae60;
+            --bg: #fffaf5;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 { color: var(--secondary); margin-bottom: 10px; }
+
+        .verification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .v-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .v-card:hover { transform: translateY(-5px); }
+
+        .image-preview {
+            display: flex;
+            height: 140px;
+            background: #fdf2e9;
+            align-items: center;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .image-preview img {
+            width: 42%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #fff;
+        }
+
+        .arrow { font-size: 1.5rem; color: var(--primary); }
+
+        .card-body { padding: 20px; }
+
+        .card-body h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
+
+        .info-row { font-size: 0.9rem; margin: 5px 0; color: #666; }
+
+        /* Notification for messages */
+        .messages {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .warning { background-color: #fff3cd; color: #856404; }
+
+        .btn-review {
+            display: block;
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .btn-review:hover { background: var(--secondary); }
+
+        .self-badge {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #f1f1f1;
+            color: #888;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            border: 1px dashed #ccc;
+        }
+
+        .empty-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 100px;
+            background: #fff;
+            border-radius: 20px;
+            border: 2px dashed #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="header">
+            <h1>Verification Queue</h1>
+            <p>Select a mission to review and confirm the rescue.</p>
+        </div>
+
+        <div class="verification-grid">
+            {% for report in pending_verifications %}
+                <div class="v-card">
+                    <div class="image-preview">
+                        {% if report.images.all %}
+                            <img src="{{ report.images.first.image.url }}" alt="Before">
+                        {% else %}
+                            <div style="width:42%; background:#ddd; height:120px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:10px;">No Image</div>
+                        {% endif %}
+                        
+                        <span class="arrow">→</span>
+                        
+                        <img src="{{ report.rescue_image.url }}" alt="After">
+                    </div>
+                    
+                    <div class="card-body">
+                        <h3>{{ report.get_animal_type_display }} #{{ report.id }}</h3>
+                        <div class="info-row">📍 {{ report.manual_location }}</div>
+                        <div class="info-row">👤 Rescuer: <strong>{{ report.claimed_by.username }}</strong></div>
+                        
+                        {% if report.claimed_by == request.user and not request.user.is_staff %}
+                            <span class="self-badge">Waiting for Peer Review</span>
+                        {% else %}
+                            <a href="{% url 'VerifyRescueDetail' report.id %}" class="btn-review">View Proof & Verify ✅</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-msg">
+                    <h3>All caught up! 🐾</h3>
+                    <p>There are no rescues currently waiting for verification. Great work!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

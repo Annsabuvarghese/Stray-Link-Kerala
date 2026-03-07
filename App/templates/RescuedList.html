@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Rescued Animals</title>
+</head>
+
+<body>
+
+<h2>Rescued Animals</h2>
+
+{% if rescued_cases %}
+    {% for case in rescued_cases %}
+        <div style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+
+            <h3>Rescue Mission #{{ case.id }}</h3>
+
+            <p><b>Animal Type:</b> {{ case.animal_type }}</p>
+            <p><b>Location:</b> {{ case.manual_location }}</p>
+            <p><b>Rescued At:</b> {{ case.verified_at }}</p>
+
+            {% if case.rescue_image %}
+                <img src="{{ case.rescue_image.url }}" width="300">
+            {% endif %}
+
+            <p><b>Notes:</b> {{ case.rescue_notes }}</p>
+
+        </div>
+    {% endfor %}
+
+{% else %}
+    <p>No rescued animals yet.</p>
+{% endif %}
+
+</body>
+</html>

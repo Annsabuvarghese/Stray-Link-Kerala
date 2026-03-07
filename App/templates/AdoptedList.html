@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adopted Animals</title>
+</head>
+
+<body>
+
+<h2>Adopted Animals</h2>
+
+{% if adopted_animals %}
+    {% for animal in adopted_animals %}
+
+        <div style="border:1px solid #ccc; padding:15px; margin-bottom:20px;">
+
+            <h3>{{ animal.name }}</h3>
+
+            <p><b>Breed:</b> {{ animal.breed }}</p>
+            <p><b>Age:</b> {{ animal.age }}</p>
+            <p><b>Status:</b> {{ animal.status }}</p>
+            <p>Adopted by: {{ app.applicant_name }}</p>
+            <p>Email: {{ app.applicant_email }}</p>
+
+            {% if animal.image %}
+                <img src="{{ animal.image.url }}" width="300">
+            {% endif %}
+
+            <p><b>Description:</b> {{ animal.description }}</p>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+<p>No animals have been adopted yet.</p>
+
+{% endif %}
+
+</body>
+</html>
