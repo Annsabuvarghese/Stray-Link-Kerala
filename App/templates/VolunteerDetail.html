@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Volunteer Details</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #2c7be5;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1a5fd1;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        {% if v.image %}
+        <img src="{{ v.image.url }}" alt="Volunteer Image">
+        {% else %}
+        <img src="{% static 'images/default_user.png' %}" alt="Default Image">
+        {% endif %}
+
+        <h2>{{ volunteer.full_name }}</h2>
+
+        <p><b>Phone:</b> {{ volunteer.phone }}</p>
+
+        <p><b>Date of Birth:</b> {{ volunteer.dob }}</p>
+
+        <p><b>District:</b> {{ volunteer.district }}</p>
+
+        <p><b>City:</b> {{ volunteer.city }}</p>
+
+        <p><b>Local Body:</b> {{ volunteer.local_body }}</p>
+
+        <p><b>Ward Number:</b> {{ volunteer.ward_no }}</p>
+
+        <p><b>House Number:</b> {{ volunteer.house_no }}</p>
+
+        <p><b>Address:</b> {{ volunteer.address }}</p>
+
+    </div>
+
+</body>
+
+</html>

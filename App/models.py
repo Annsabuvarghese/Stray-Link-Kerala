@@ -11,6 +11,7 @@ class Profile(models.Model):
     phone = models.CharField(max_length=15)
     dob = models.DateField(verbose_name="Date of Birth",blank=True, null=True)
     city = models.CharField(max_length=100,default="Thrissur")
+    image = models.ImageField(upload_to="profiles/", blank=True, null=True)
 
 
     district = models.CharField(max_length=100)
@@ -242,5 +243,38 @@ class Sponsorship(models.Model):
 
     def __str__(self):
         return f"{self.sponsor_name} sponsored {self.animal.name}"
+
+
+from django.db import models
+
+class Organization(models.Model):
+
+    ORG_TYPES = [
+        ("ngo", "NGO"),
+        ("vet", "Veterinary Clinic"),
+        ("adoption", "Adoption Center"),
+    ]
+
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+
+    org_type = models.CharField(max_length=20, choices=ORG_TYPES)
+
+    district = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+
+    local_body = models.CharField(max_length=100)
+
+    address = models.TextField()
+
+    registration_number = models.CharField(max_length=100)
+
+    image = models.ImageField(upload_to="organizations/", blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 

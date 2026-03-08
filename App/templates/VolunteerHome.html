@@ -16,7 +16,15 @@
     <div class="nav-container">
         <ul class="nav-menu">
             <!-- Simple Link -->
-            <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    <li><a href="{% url 'About' %}">About</a></li>
+                </ul>
+            </li>
+
 
             <!-- Dropdown: Reports -->
             <li class="has-dropdown">
@@ -61,15 +69,12 @@
 </nav>
     <header>
         <h1>Welcome to StrayLink</h1>
-        <p>Together, we can rescue and find loving homes for stray animals. Explore recent reports and adoptable animals
-            below.</p>
+        <p>As a volunteer, you play a vital role in helping stray animals. View reported cases, respond to rescue requests, and work together with organizations to ensure animals receive care and find safe homes.</p></p>
         <a href="{% url 'Report' %}">Report a Case</a>
         <a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a>
 
 
     </header>
-
-    <h1>This is volunteer page</h1>
 
     <div id="success-stories-container" style="position: relative; overflow: hidden;">
 

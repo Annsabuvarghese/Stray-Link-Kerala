@@ -20,6 +20,8 @@
             <li class="has-dropdown">
                 <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown">
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
                     <li><a href="{% url 'About' %}">About</a></li>
                 </ul>
             </li>
@@ -31,6 +33,7 @@
                     <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
                     <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
                     <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
                 </ul>
             </li>
 
@@ -58,7 +61,14 @@
                     </div>
                 {% else %}
                     <a href="{% url 'UserLogin' %}">Login</a>
-                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+                    <!-- <a href="{% url 'UserRegister' %}" class="register-btn">Register</a> -->
+                     <li class="has-dropdown">
+                <a href="#">Register<i class="fas fa-caret-down" class="register-btn"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'UserRegister' %}" >Register as a User</a></li>
+                    <li><a href="{% url 'VolunteerRegister' %}">Register as a Volunteer</a></li>
+                    <li><a href="{% url 'OrganizationRegister' %}">Register as a Organization</a></li>
+                </ul>
                 {% endif %}
             </li>
         </ul>

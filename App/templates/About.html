@@ -7,14 +7,381 @@
     <title>Our Mission | StrayLink Kerala</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <style>
+        :root {
+    --nav-bg: #ffffff;
+    --text-color: #4a3f35;   /* Soft Brown */
+    --hover-color: #e67e22;  /* Hope Orange */
+    --accent-red: #e74c3c;   /* Love Red */
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* box-shadow: var(--shadow); */
+    /* border-bottom: 2px solid #f9f5f0; */
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 35px; /* Links തമ്മിലുള്ള അകലം */
+    margin: 0;
+    padding: 0;
+    height: 65px;
+}
+
+/* Nav Links */
+.nav-menu li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Hover & Active State */
+.nav-menu li a:hover, 
+.nav-menu li a.active {
+    color: var(--hover-color);
+    background-color: #fff5ed; /* Light orange tint */
+}
+
+/* --- Dropdown Styles --- */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: 12px;
+    padding: 10px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: none; /* Default hidden */
+    list-style: none;
+    border: 1px solid #f1f1f1;
+    z-index: 10000;
+}
+
+.dropdown li a {
+    color: var(--text-color);
+    display: block;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: 0.95rem;
+    margin-top: 0;
+}
+
+.dropdown li a:hover {
+    background-color: #fdfaf7;
+    color: var(--accent-red);
+    padding-left: 25px; /* Tiny slide effect */
+}
+
+.has-dropdown:hover .dropdown {
+    display: block;
+    animation: slideDown 0.7s ease;
+}
+
+/* --- User Auth Section (Right Aligned) --- */
+.user-auth-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.register-btn {
+    background-color: var(--accent-red) !important;
+    color: white !important;
+    padding: 10px 22px !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+.register-btn:hover {
+    background-color: #c0392b !important;
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    color: #888;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+/* Simple Animation */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ---------- PAGE BACKGROUND ---------- */
+body{
+    font-family:'Poppins',sans-serif;
+    background:#fff7f0;
+    margin:0;
+}
+
+/* ---------- ABOUT PAGE CONTAINER ---------- */
+.about-container{
+    max-width:1100px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+/* ---------- HEADER SECTION ---------- */
+.mission-header{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.location-tag{
+    background:#ffe5d3;
+    color:#e67e22;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:0.85rem;
+    font-weight:600;
+}
+
+.mission-header h1{
+    font-family:'Fredoka',sans-serif;
+    font-size:2.8rem;
+    margin:15px 0 10px;
+    color:#4a3f35;
+}
+
+.tagline{
+    color:#8a6d5c;
+    font-size:1.1rem;
+}
+
+/* ---------- MAIN CARD ---------- */
+.content-card{
+    background:white;
+    padding:40px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+
+/* ---------- STORY SECTION ---------- */
+.story-section h2{
+    font-family:'Fredoka',sans-serif;
+    color:#e67e22;
+    margin-bottom:15px;
+}
+
+.story-section p{
+    color:#5f5247;
+    line-height:1.7;
+    font-size:0.95rem;
+}
+
+/* ---------- HIGHLIGHT QUOTE ---------- */
+.highlight-box{
+    background:#fff3ea;
+    border-left:4px solid #e67e22;
+    padding:15px 20px;
+    margin:20px 0;
+    font-style:italic;
+    border-radius:8px;
+    color:#6d4c41;
+}
+
+/* ---------- DIVIDER ---------- */
+.divider{
+    margin:35px 0;
+    border:none;
+    height:1px;
+    background:#f1e6df;
+}
+
+/* ---------- FEATURE GRID ---------- */
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.feature-item{
+    background:#fffaf6;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    transition:all 0.25s ease;
+    border:1px solid #f4e5db;
+}
+
+.feature-item:hover{
+    transform:translateY(-6px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.feature-item h3{
+    color:#e67e22;
+    margin-bottom:10px;
+}
+
+.feature-item p{
+    font-size:0.9rem;
+    color:#6d5d52;
+}
+
+/* ---------- FOOTER MESSAGE ---------- */
+.about-footer{
+    text-align:center;
+    margin-top:40px;
+}
+
+.about-footer h3{
+    font-family:'Fredoka',sans-serif;
+    color:#4a3f35;
+}
+
+.about-footer p{
+    color:#7b6a5f;
+}
+
+.signature{
+    margin:15px 0;
+    font-weight:600;
+    color:#e67e22;
+}
+
+/* ---------- CTA BUTTON ---------- */
+.cta-btn{
+    display:inline-block;
+    background:#ff8c42;
+    color:white;
+    padding:12px 26px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.25s;
+}
+
+.cta-btn:hover{
+    background:#e67622;
+    transform:translateY(-2px);
+}
+
+.main-footer {
+    background-color: #f9f5f0; 
+    padding: 80px 0 20px;
+    color: var(--soft-text);
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.footer-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    color: #2d2620;
+}
+
+.footer-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.footer-logo span {
+    color: var(--hope-orange);
+}
+
+.footer-section p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    line-height: 1.8;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: var(--soft-text);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    opacity: 1;
+    color: var(--hope-orange);
+    padding-left: 5px;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: var(--soft-text);
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: var(--hope-orange);
+    opacity: 1;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+</style>
 </head>
 <body>
 
-    <nav class="navbar">
+<nav class="navbar">
     <div class="nav-container">
         <ul class="nav-menu">
             <!-- Simple Link -->
-            <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    <li><a href="{% url 'About' %}">About</a></li>
+                </ul>
+            </li>
 
             <!-- Dropdown: Reports -->
             <li class="has-dropdown">
@@ -23,6 +390,7 @@
                     <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
                     <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
                     <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
                 </ul>
             </li>
 
@@ -50,7 +418,14 @@
                     </div>
                 {% else %}
                     <a href="{% url 'UserLogin' %}">Login</a>
-                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+                    <!-- <a href="{% url 'UserRegister' %}" class="register-btn">Register</a> -->
+                     <li class="has-dropdown">
+                <a href="#">Register<i class="fas fa-caret-down" class="register-btn"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'UserRegister' %}" >Register as a User</a></li>
+                    <li><a href="{% url 'VolunteerRegister' %}">Register as a Volunteer</a></li>
+                    <li><a href="{% url 'OrganizationRegister' %}">Register as a Organization</a></li>
+                </ul>
                 {% endif %}
             </li>
         </ul>
@@ -59,7 +434,7 @@
 
     <div class="about-container">
         <header class="mission-header">
-            <span class="location-tag">📍 Born in Kerala</span>
+            <span class="location-tag">Born in Kerala</span>
             <h1>Every Stray Life Matters.</h1>
             <p class="tagline">Connecting hearts, homes, and heroes.</p>
         </header>
@@ -87,12 +462,12 @@
 
             <div class="feature-grid">
                 <div class="feature-item">
-                    <div class="icon">📢</div>
+                    <div class="icon"></div>
                     <h3>Report</h3>
                     <p>Found an animal in distress? Post a report with GPS coordinates so local heroes can find them instantly.</p>
                 </div>
                 <div class="feature-item">
-                    <div class="icon">🚑</div>
+                    <div class="icon"></div>
                     <h3>Rescue</h3>
                     <p>NGOs and volunteers can claim cases, providing medical care and transport to safety.</p>
                 </div>

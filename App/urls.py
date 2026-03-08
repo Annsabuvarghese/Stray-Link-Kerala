@@ -46,14 +46,25 @@ urlpatterns = [
     path('admin-adoption-dashboard/', views.AdminAdoptionDashboard, name='AdminAdoptionDashboard'),
 
     path('VolunteerHome/', views.VolunteerHome, name='VolunteerHome'),
+    path('VolunteerRegister/', views.VolunteerRegister, name='VolunteerRegister'),
     path('VolunteerIns/', views.VolunteerIns, name='VolunteerIns'),
     path('VolunteerWelcome/', views.VolunteerWelcome, name='VolunteerWelcome'),
     path('admin-panel/volunteers/', views.AdminVolunteerDashboard, name='AdminVolunteerDashboard'),
     path('admin-panel/volunteers/approve/<int:profile_id>/', views.ApproveVolunteer, name='ApproveVolunteer'),
     path('admin-panel/volunteers/reject/<int:profile_id>/', views.RejectVolunteer, name='RejectVolunteer'),
+    path("volunteers/", views.OurVolunteer, name="OurVolunteer"),
+    path("volunteer/<int:volunteer_id>/",views.VolunteerDetail,name="VolunteerDetail"),
+
+
+    path('OrganizationRegister/', views.OrganizationRegister, name='OrganizationRegister'),
+    path("organizations/", views.OrganizationDisplay, name="OrganizationDisplay"),
+    path("organization/<int:org_id>/", views.OrganizationDetail, name="OrganizationDetail"),
 
 
     path('about/', views.About, name='About'),
+    path('contact/', views.Contact, name='Contact'),
+
+
 
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

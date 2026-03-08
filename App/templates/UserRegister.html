@@ -74,6 +74,14 @@ button:hover{
 <form method="POST">
 {% csrf_token %}
 
+<!-- <label>
+  <input type="checkbox" name="is_volunteer" value="true"
+    {% if is_volunteer %} checked {% endif %} disabled>
+    Register as Volunteer
+</label> -->
+
+<input type="hidden" name="is_volunteer" value="{% if is_volunteer %}true{% else %}false{% endif %}">
+
 <label>Username</label>
 <input type="text" name="username" required>
 

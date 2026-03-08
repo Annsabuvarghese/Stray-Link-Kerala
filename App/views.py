@@ -13,7 +13,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 from django.contrib.auth import logout
 from urllib3 import request
-from .models import ReportSubmit, ReportImage, Condition, Profile,Animal,AdoptionApplication,Sponsorship
+from .models import ReportSubmit, ReportImage, Condition, Profile,Animal,AdoptionApplication,Sponsorship,Organization
 from django.db.models import Q
 
 from xhtml2pdf import pisa
@@ -265,58 +265,58 @@ def UserHome(request):
 
 
 
-def UserRegister(request):
-    if request.method == "POST":
-        # User auth fields
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
+# def UserRegister(request):
+#     if request.method == "POST":
+#         # User auth fields
+#         username = request.POST.get("username")
+#         email = request.POST.get("email")
+#         password1 = request.POST.get("password1")
+#         password2 = request.POST.get("password2")
 
-        # Profile fields
-        full_name = request.POST.get("full_name")
-        phone = request.POST.get("phone")
-        address = request.POST.get("address")
-        district = request.POST.get("district")
-        city = request.POST.get("city")  
-        local_body = request.POST.get("local_body")  # From our new select tag
-        ward_no = request.POST.get("ward_no")        # From our new select tag
-        house_no = request.POST.get("house_no")
-        dob = request.POST.get("dob")
+#         # Profile fields
+#         full_name = request.POST.get("full_name")
+#         phone = request.POST.get("phone")
+#         address = request.POST.get("address")
+#         district = request.POST.get("district")
+#         city = request.POST.get("city")  
+#         local_body = request.POST.get("local_body")  # From our new select tag
+#         ward_no = request.POST.get("ward_no")        # From our new select tag
+#         house_no = request.POST.get("house_no")
+#         dob = request.POST.get("dob")
 
-        # Validation logic
-        if password1 != password2:
-            messages.error(request, "Passwords do not match")
-            return redirect("UserRegister")
+#         # Validation logic
+#         if password1 != password2:
+#             messages.error(request, "Passwords do not match")
+#             return redirect("UserRegister")
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already exists")
-            return redirect("UserRegister")
+#         if User.objects.filter(username=username).exists():
+#             messages.error(request, "Username already exists")
+#             return redirect("UserRegister")
 
-        # Create user
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password1
-        )
+#         # Create user
+#         user = User.objects.create_user(
+#             username=username,
+#             email=email,
+#             password=password1
+#         )
 
-        # Create profile using the edited model fields
-        Profile.objects.create(
-            user=user,
-            full_name=full_name,
-            phone=phone,
-            address=address,
-            district=district,
-            local_body=local_body,
-            ward_no=ward_no,
-            house_no=house_no,
-            dob=dob
-        )
+#         # Create profile using the edited model fields
+#         Profile.objects.create(
+#             user=user,
+#             full_name=full_name,
+#             phone=phone,
+#             address=address,
+#             district=district,
+#             local_body=local_body,
+#             ward_no=ward_no,
+#             house_no=house_no,
+#             dob=dob
+#         )
 
-        login(request, user)
-        return redirect("Home") 
+#         login(request, user)
+#         return redirect("Home") 
 
-    return render(request, "UserRegister.html")
+#     return render(request, "UserRegister.html")
 
 
 def UserLogin(request):
@@ -1073,6 +1073,7 @@ def EditProfile(request):
         dob = request.POST.get("dob")
         profile.dob = dob if dob else None
 
+        profile.image = request.FILES.get("image") or profile.image  # Keep existing image if no new one uploaded
         profile.full_name = request.POST.get("full_name")
         profile.phone = request.POST.get("phone")
         profile.district = request.POST.get("district")
@@ -1089,3 +1090,201 @@ def EditProfile(request):
 
     return render(request, "EditProfile.html", {"profile": profile})
 
+
+
+
+
+# Normal User Registration
+def UserRegister(request):
+    return handle_registration(request, is_volunteer=False)
+
+# Direct Volunteer Registration
+def VolunteerRegister(request):
+    return handle_registration(request, is_volunteer=True)
+
+# Shared logic for both
+def handle_registration(request, is_volunteer=False):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        full_name = request.POST.get("full_name")
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+        district = request.POST.get("district")
+        city = request.POST.get("city")  
+        local_body = request.POST.get("local_body")
+        ward_no = request.POST.get("ward_no")
+        house_no = request.POST.get("house_no")
+        dob = request.POST.get("dob")
+        image= request.FILES.get("image")  
+        
+
+        if password1 != password2:
+            messages.error(request, "Passwords do not match")
+            return redirect(request.path)
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return redirect(request.path)
+
+        # Create user
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password1
+        )
+
+        # Create profile
+        Profile.objects.create(
+            user=user,
+            full_name=full_name,
+            phone=phone,
+            address=address,
+            district=district,
+            city=city,
+            local_body=local_body,
+            ward_no=ward_no,
+            house_no=house_no,
+            dob=dob if dob else None,
+            is_volunteer=is_volunteer,
+            image=image
+        )
+
+        login(request, user)
+        return redirect("Home")
+
+    return render(request, "UserRegister.html", {"is_volunteer": is_volunteer})
+
+
+
+
+
+
+
+
+def OrganizationRegister(request):
+
+    if request.method == "POST":
+
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        org_type = request.POST.get("org_type")
+
+        district = request.POST.get("district")
+        city = request.POST.get("city")
+        local_body = request.POST.get("local_body")
+
+        address = request.POST.get("address")
+        reg_no = request.POST.get("registration_number")
+
+        image = request.FILES.get("image")
+
+        Organization.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            org_type=org_type,
+            district=district,
+            city=city,
+            local_body=local_body,
+            address=address,
+            registration_number=reg_no,
+            image=image
+        )
+
+        return redirect("Home")
+
+    return render(request,"OrganizationRegister.html")
+
+
+
+
+
+
+
+def OrganizationDisplay(request):
+
+    org_type = request.GET.get("type")
+
+    if org_type:
+        organizations = Organization.objects.filter(org_type=org_type)
+    else:
+        organizations = Organization.objects.all()
+
+    return render(request, "OrganizationDisplay.html", {
+        "organizations": organizations,
+        "selected_type": org_type
+    })
+
+
+def OrganizationDetail(request, org_id):
+
+    org = Organization.objects.get(id=org_id)
+
+    return render(request, "OrganizationDetail.html", {
+        "org": org
+    })
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def OurVolunteer(request):
+
+    user_profile = request.user.profile
+
+    city_filter = request.GET.get("city")
+    local_body_filter = request.GET.get("local_body")
+
+    volunteers = Profile.objects.filter(is_volunteer=True)
+
+    # Apply filters
+    if city_filter:
+        volunteers = volunteers.filter(city=city_filter)
+
+    if local_body_filter:
+        volunteers = volunteers.filter(local_body=local_body_filter)
+
+    # Prioritize nearby volunteers
+    volunteers = sorted(
+        volunteers,
+        key=lambda v: (
+            v.city != user_profile.city,
+            v.local_body != user_profile.local_body
+        )
+    )
+
+    # For filter dropdown
+    cities = Profile.objects.filter(is_volunteer=True).values_list("city", flat=True).distinct()
+    local_bodies = Profile.objects.filter(is_volunteer=True).values_list("local_body", flat=True).distinct()
+
+    return render(request, "OurVolunteer.html", {
+        "volunteers": volunteers,
+        "cities": cities,
+        "local_bodies": local_bodies,
+        "selected_city": city_filter,
+        "selected_local_body": local_body_filter
+    })
+
+
+def VolunteerDetail(request, volunteer_id):
+
+    volunteer = get_object_or_404(Profile, id=volunteer_id, is_volunteer=True)
+
+    return render(request, "VolunteerDetail.html", {
+        "volunteer": volunteer
+    })
+
+def Contact(request):
+    return render(request, "Contact.html")
