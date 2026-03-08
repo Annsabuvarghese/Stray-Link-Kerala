@@ -9,14 +9,16 @@ class Profile(models.Model):
     is_volunteer = models.BooleanField(default=False)
     is_volunteer_pending = models.BooleanField(default=False)
     phone = models.CharField(max_length=15)
-    dob = models.DateField(verbose_name="Date of Birth")
+    dob = models.DateField(verbose_name="Date of Birth",blank=True, null=True)
+    city = models.CharField(max_length=100,default="Thrissur")
 
 
     district = models.CharField(max_length=100)
 
     local_body = models.CharField(
         max_length=100, 
-        help_text="Name of the Panchayat or Municipality"
+        help_text="Name of the Panchayat or Municipality",
+        default=""
     )
     
     # Address details
@@ -214,8 +216,6 @@ class AdoptionApplication(models.Model):
 
     is_18 = models.CharField(max_length=5, default="yes")
     stable_income = models.CharField(max_length=5, default="yes")
-    income_source = models.CharField(max_length=100, blank=True)
-    income_amount = models.CharField(max_length=50, blank=True)
     residence_type = models.CharField(max_length=50, default="house")
     home_ownership = models.CharField(max_length=50, default="owned")
     landlord_permission = models.CharField(max_length=50, default="not_applicable")

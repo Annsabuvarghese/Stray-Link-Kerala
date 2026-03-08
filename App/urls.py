@@ -26,6 +26,7 @@ urlpatterns = [
     path('profile/', views.UserProfile, name='UserProfile'),
     path('userlogin/', views.UserLogin, name="UserLogin"),
     path('userlogout/', views.UserLogout, name="UserLogout"),
+    path("edit-profile/", views.EditProfile, name="EditProfile"),
 
 
     path('animals/', views.AnimalList, name='AnimalAdoptList'),

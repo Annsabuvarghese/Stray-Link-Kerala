@@ -278,6 +278,7 @@ def UserRegister(request):
         phone = request.POST.get("phone")
         address = request.POST.get("address")
         district = request.POST.get("district")
+        city = request.POST.get("city")  
         local_body = request.POST.get("local_body")  # From our new select tag
         ward_no = request.POST.get("ward_no")        # From our new select tag
         house_no = request.POST.get("house_no")
@@ -1047,3 +1048,44 @@ def AdoptedList(request):
     return render(request, 'AdoptedList.html', {
         'adopted_animals': adopted_animals,
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def EditProfile(request):
+
+    profile = request.user.profile
+
+    if request.method == "POST":
+
+        dob = request.POST.get("dob")
+        profile.dob = dob if dob else None
+
+        profile.full_name = request.POST.get("full_name")
+        profile.phone = request.POST.get("phone")
+        profile.district = request.POST.get("district")
+        profile.city = request.POST.get("city")
+        profile.address = request.POST.get("address")
+        profile.local_body = request.POST.get("local_body")
+        profile.ward_no = request.POST.get("ward_no")
+        profile.house_no = request.POST.get("house_no")
+        profile.address = request.POST.get("address")
+
+        profile.save()
+
+        return redirect("UserProfile")
+
+    return render(request, "EditProfile.html", {"profile": profile})
+
