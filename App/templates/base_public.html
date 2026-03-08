@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>{% block title %}StrayLink{% endblock %}</title>
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+{% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+<nav>
+<a href="{% url 'Home' %}">Home</a>
+<a href="{% url 'ReportList' %}">Report List</a>
+<a href="{% url 'AnimalAdoptList' %}">Adopt</a>
+</nav>
+
+{% block content %}
+{% endblock %}
+
+<footer>
+<p>© 2026 StrayLink</p>
+</footer>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>
