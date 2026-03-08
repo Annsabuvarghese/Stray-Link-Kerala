@@ -6,6 +6,52 @@
     <title>Document</title>
 </head>
 <body>
+<nav class="navbar">
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <!-- Simple Link -->
+            <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+
+            <!-- Dropdown: Reports -->
+            <li class="has-dropdown">
+                <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                    <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                    <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                </ul>
+            </li>
+
+            <!-- Dropdown: Services -->
+            <li class="has-dropdown">
+                <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <!-- Right Aligned User Menu -->
+            <li class="user-auth-section">
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown">
+                        <a href="{% url 'UserProfile' %}" class="profile-link">
+                            <span class="icon">👤</span> {{ user.username }}
+                        </a>
+                        <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'UserLogin' %}">Login</a>
+                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
     
     <div class="Instructions">
         <h1>welcome new member</h1>

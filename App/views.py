@@ -637,16 +637,45 @@ def AdoptionSuccess(request):
     return render(request,'AdoptionSuccess.html')
 
 
-@login_required
-def UserProfile(request):
-    # Since Profile has a OneToOne relationship with User:
-    user_profile = get_object_or_404(Profile, user=request.user)
-    user_applications = AdoptionApplication.objects.filter(applicant_email=request.user.email)
-    return render(request, 'UserProfile.html', {
-        'profile': user_profile,
-        'user_applications': user_applications
-    })
+# @login_required
+# def UserProfile(request):
+#     # Since Profile has a OneToOne relationship with User:
+#     user_profile = get_object_or_404(Profile, user=request.user)
+#     user_applications = AdoptionApplication.objects.filter(applicant_email=request.user.email)
+#     return render(request, 'UserProfile.html', {
+#         'profile': user_profile,
+#         'user_applications': user_applications
+#     })
 
+
+
+def UserProfile(request):
+    
+    profile = request.user.profile
+
+    # Adoption applications
+    user_applications = AdoptionApplication.objects.filter(
+        applicant_email=request.user.email
+    )
+
+    # Reports submitted by user
+    my_reports = ReportSubmit.objects.filter(
+        user=request.user
+    ).order_by("-created_at")
+
+    # Rescues done by volunteer
+    my_rescues = ReportSubmit.objects.filter(
+        claimed_by=request.user,
+        status="rescued"
+    ).order_by("-verified_at")
+
+
+    return render(request, 'UserProfile.html', {
+        "profile": profile,
+        "user_applications": user_applications,
+        "my_reports": my_reports,
+        "my_rescues": my_rescues,
+    })
 
 
 
@@ -834,9 +863,9 @@ def VolunteerHome(request):
         'animals': animals
     })
 @login_required
-def FinalizeRescue(request, report_id):
+def FinalizeRescue(request,id):
     # Fetch the specific report
-    report = get_object_or_404(ReportSubmit, id=report_id)
+    report = get_object_or_404(ReportSubmit, id=id)
 
     # Logic: Only the person who 'claimed' the report (or an admin) should be able to finalize it
     if report.claimed_by != request.user and not request.user.is_staff:

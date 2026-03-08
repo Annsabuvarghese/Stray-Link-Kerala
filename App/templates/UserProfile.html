@@ -1,192 +1,209 @@
-<!-- {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-<style>
-
-</style>
-</head>
-<body>
-    <div class="profile-container">
-    <h2>My Profile</h2>
-    <div class="profile-card">
-        <p><strong>Full Name:</strong> {{ profile.full_name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Phone:</strong> {{ profile.phone }}</p>
-        <p><strong>Date of Birth:</strong> {{ profile.dob }}</p>
-        <hr>
-        <h3>Address Details</h3>
-        <p><strong>District:</strong> {{ profile.district }}</p>
-        <p><strong>Local Body:</strong> {{ profile.local_body }}</p>
-        <p><strong>Ward No:</strong> {{ profile.ward_no }}</p>
-        <p><strong>House No:</strong> {{ profile.house_no }}</p>
-        <p><strong>Address:</strong> {{ profile.address }}</p>
-    </div>
-    <a href="{% url 'Home' %}">Back to Home</a>
-
-    <div class="profile-container">
-    <h2>My Profile</h2>
-
-    <div class="volunteer-status">
-    {% if profile.is_volunteer %}
-        <span class="badge verified">Verified Volunteer 🐾</span>
-    {% elif profile.is_volunteer_pending %}
-        <span class="badge pending">Application Pending Approval... ⏳</span>
-        <p style="font-size: 0.8rem; color: #888;">Njangalude team ningalude profile check cheyyukayanu. Thayavu cheythu kathirikkuka.</p>
-    {% else %}
-        <a href="{% url 'VolunteerIns' %}" class="btn-join">Join as a Volunteer</a>
-    {% endif %}
-</div>
-
-    <div class="profile-card">
-    </div>
-
-    <div class="card shadow-sm mt-4">
-    <div class="card-header bg-white fw-bold">My Adoption Applications</div>
-    <div class="list-group list-group-flush">
-        {% for app in user_applications %}
-            <div class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <div>
-                    <h6 class="mb-0">{{ app.animal.name }}</h6>
-                    <small class="text-muted">Status: 
-                        <span class="badge {% if app.status == 'Accepted' %}bg-success{% elif app.status == 'Rejected' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
-                            {{ app.status }}
-                        </span>
-                    </small>
-                </div>
-
-   
-                {% if app.status == 'Accepted' and not app.is_submitted_for_final_verify %}
-                    <a href="{% url 'SubmitAdoptionProof' app.id %}" class="btn btn-primary btn-sm rounded-pill shadow-sm">
-                        <i class="fas fa-camera"></i> I Adopted This Pet!
-                    </a>
-                {% elif app.is_submitted_for_final_verify %}
-                    <span class="badge bg-info text-dark">Proof Submitted - Pending Verification</span>
-                {% endif %}
-            </div>
-        {% empty %}
-            <p class="p-3 text-muted">You haven't applied for any adoptions yet.</p>
-        {% endfor %}
-    </div>
-</div>
-        
-</div>
-</div>
-</body>
-</html> -->
+<!-- 
 
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile | PetRescue</title>
-    <!-- Bootstrap 5 & FontAwesome -->
+   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <style>
-        body { background-color: #f4f7f6; font-family: 'Inter', sans-serif; }
-        .profile-header { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; padding: 40px 0; border-radius: 0 0 30px 30px; margin-bottom: 30px; }
-        .card { border: none; border-radius: 15px; transition: transform 0.2s; }
-        .info-label { color: #6c757d; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-        .info-value { font-size: 1.1rem; color: #2d3436; font-weight: 500; }
-        .status-card { border-left: 5px solid #2575fc; }
-        .badge-custom { padding: 8px 15px; border-radius: 50px; font-weight: 600; }
-        .btn-adopt-claim { background-color: #ff7675; border: none; color: white; transition: 0.3s; }
-        .btn-adopt-claim:hover { background-color: #d63031; transform: translateY(-2px); color: white; }
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 40px 0;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.2s;
+        }
+
+        .info-label {
+            color: #6c757d;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: #2d3436;
+            font-weight: 500;
+        }
+
+        .status-card {
+            border-left: 5px solid #2575fc;
+        }
+
+        .badge-custom {
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .btn-adopt-claim {
+            background-color: #ff7675;
+            border: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .btn-adopt-claim:hover {
+            background-color: #d63031;
+            transform: translateY(-2px);
+            color: white;
+        }
     </style>
 </head>
+
 <body>
 
-<!-- Header Section -->
-<div class="profile-header shadow-sm text-center">
-    <div class="container">
-        <div class="mb-3">
-            <i class="fas fa-user-circle fa-5x"></i>
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-menu">
+         
+                <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+
+
+                <li class="has-dropdown">
+                    <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                        <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                        <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                    </ul>
+                </li>
+
+                <li class="has-dropdown">
+                    <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                        <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                        {% if user.is_authenticated and user.profile.is_volunteer %}
+
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+
+      
+                <li class="user-auth-section">
+                    {% if user.is_authenticated %}
+                    <div class="user-dropdown">
+                        <a href="{% url 'UserProfile' %}" class="profile-link">
+                            <span class="icon">👤</span> {{ user.username }}
+                        </a>
+                        <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'UserLogin' %}">Login</a>
+                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+                    {% endif %}
+                </li>
+            </ul>
         </div>
-        <h2 class="fw-bold">{{ profile.full_name }}</h2>
-        <p class="opacity-75 mb-0"><i class="fas fa-envelope me-2"></i>{{ user.email }}</p>
-    </div>
-</div>
+    </nav>
 
-<div class="container">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-pill px-4" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="profile-header shadow-sm text-center">
+        <div class="container">
+            <div class="mb-3">
+                <i class="fas fa-user-circle fa-5x"></i>
             </div>
+            <h2 class="fw-bold">{{ profile.full_name }}</h2>
+            <p class="opacity-75 mb-0"><i class="fas fa-envelope me-2"></i>{{ user.email }}</p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-pill px-4" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {% endfor %}
-    {% endif %}
+        {% endif %}
 
-    <div class="row g-4">
-        <!-- Left: Personal Details -->
-        <div class="col-lg-4">
-            <div class="card shadow-sm p-4 mb-4">
-                <h5 class="fw-bold mb-4"><i class="fas fa-info-circle text-primary me-2"></i> Account Details</h5>
-                
-                <div class="mb-3">
-                    <div class="info-label">Phone</div>
-                    <div class="info-value">{{ profile.phone }}</div>
-                </div>
-                <div class="mb-3">
-                    <div class="info-label">Date of Birth</div>
-                    <div class="info-value">{{ profile.dob }}</div>
-                </div>
-                <hr>
-                <div class="mb-2">
-                    <div class="info-label">District</div>
-                    <div class="info-value text-capitalize">{{ profile.district }}</div>
-                </div>
-                <div class="mb-2">
-                    <div class="info-label">Address</div>
-                    <div class="info-value small text-muted">{{ profile.address }}</div>
-                </div>
+        <div class="row g-4">
 
-                <div class="mt-4 pt-3 border-top text-center">
-                    {% if profile.is_volunteer %}
+            <div class="col-lg-4">
+                <div class="card shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold mb-4"><i class="fas fa-info-circle text-primary me-2"></i> Account Details</h5>
+
+                    <div class="mb-3">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value">{{ profile.phone }}</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="info-label">Date of Birth</div>
+                        <div class="info-value">{{ profile.dob }}</div>
+                    </div>
+                    <hr>
+                    <div class="mb-2">
+                        <div class="info-label">District</div>
+                        <div class="info-value text-capitalize">{{ profile.district }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <div class="info-label">Address</div>
+                        <div class="info-value small text-muted">{{ profile.address }}</div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top text-center">
+                        {% if profile.is_volunteer %}
                         <span class="badge bg-success-subtle text-success badge-custom w-100 mb-2">
                             <i class="fas fa-shield-dog me-2"></i>Verified Volunteer
                         </span>
-                    {% elif profile.is_volunteer_pending %}
+                        {% elif profile.is_volunteer_pending %}
                         <div class="alert alert-warning py-2 small mb-0">
                             <i class="fas fa-hourglass-half me-1"></i> Volunteer Approval Pending
                         </div>
-                    {% else %}
+                        {% else %}
                         <a href="{% url 'VolunteerIns' %}" class="btn btn-outline-primary btn-sm w-100 rounded-pill">
                             Become a Volunteer
                         </a>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-            
-            <a href="{% url 'Home' %}" class="btn btn-light w-100 rounded-pill shadow-sm mb-4">
-                <i class="fas fa-chevron-left me-2"></i>Back to Home
-            </a>
-        </div>
 
-        <!-- Right: Adoption Section -->
-        <div class="col-lg-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white py-3 border-0">
-                    <h5 class="mb-0 fw-bold"><i class="fas fa-paw text-primary me-2"></i> My Adoption Applications</h5>
-                </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush">
-                        {% for app in user_applications %}
+                <a href="{% url 'Home' %}" class="btn btn-light w-100 rounded-pill shadow-sm mb-4">
+                    <i class="fas fa-chevron-left me-2"></i>Back to Home
+                </a>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="mb-0 fw-bold"><i class="fas fa-paw text-primary me-2"></i> My Adoption Applications
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            {% for app in user_applications %}
                             <div class="list-group-item p-4 border-0 border-bottom">
                                 <div class="d-md-flex justify-content-between align-items-center">
                                     <div class="mb-3 mb-md-0">
                                         <h5 class="fw-bold mb-1 text-primary">{{ app.animal.name }}</h5>
-                                        <p class="text-muted small mb-2">Applied on: {{ app.applied_at|date:"M d, Y" }}</p>
-                                        
-                                        <!-- Application Status Badge -->
-                                        <span class="badge rounded-pill 
+                                        <p class="text-muted small mb-2">Applied on: {{ app.applied_at|date:"M d, Y" }}
+                                        </p>
+
+
+                                        <span
+                                            class="badge rounded-pill 
                                             {% if app.status == 'Accepted' %}bg-success{% elif app.status == 'Rejected' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
                                             Application {{ app.status }}
                                         </span>
@@ -194,35 +211,122 @@
 
                                     <div class="text-md-end">
                                         {% if not app.is_submitted_for_final_verify %}
-                                            <p class="small text-muted mb-2">Got the pet home offline?</p>
-                                            <a href="{% url 'SubmitAdoptionProof' app.id %}" 
-                                               class="btn btn-adopt-claim btn-sm px-4 rounded-pill shadow-sm">
-                                                <i class="fas fa-heart me-1"></i> I Adopted This Pet!
-                                            </a>
+                                        <p class="small text-muted mb-2">Got the pet home offline?</p>
+                                        <a href="{% url 'SubmitAdoptionProof' app.id %}"
+                                            class="btn btn-adopt-claim btn-sm px-4 rounded-pill shadow-sm">
+                                            <i class="fas fa-heart me-1"></i> I Adopted This Pet!
+                                        </a>
                                         {% else %}
-                                            <div class="text-success fw-bold">
-                                                <i class="fas fa-check-circle me-1"></i> Verified Success Story
-                                            </div>
-                                            <small class="text-muted">Thank you for adopting!</small>
+                                        <div class="text-success fw-bold">
+                                            <i class="fas fa-check-circle me-1"></i> Verified Success Story
+                                        </div>
+                                        <small class="text-muted">Thank you for adopting!</small>
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
-                        {% empty %}
+                            {% empty %}
                             <div class="text-center py-5">
                                 <i class="fas fa-folder-open fa-3x text-light mb-3"></i>
                                 <p class="text-muted">No adoption applications found.</p>
-                                <a href="{% url 'AnimalAdoptList' %}" class="btn btn-primary btn-sm rounded-pill">Find a Friend</a>
+                                <a href="{% url 'AnimalAdoptList' %}" class="btn btn-primary btn-sm rounded-pill">Find a
+                                    Friend</a>
                             </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+<div class="card mt-4 shadow-sm">
+<div class="card-header bg-white">
+<h5 class="mb-0">My Reports</h5>
 </div>
 
-<footer class="mt-5 py-4 text-center text-muted">
+<div class="card-body">
+
+{% for report in my_reports %}
+
+<div class="border-bottom pb-2 mb-2">
+
+<strong>{{ report.get_animal_type_display }}</strong>
+
+<p class="text-muted mb-1">
+{{ report.manual_location }}
+</p>
+
+<span class="badge bg-secondary">
+{{ report.status }}
+</span>
+
+</div>
+
+{% empty %}
+
+<p class="text-muted">You haven't submitted any reports.</p>
+
+{% endfor %}
+
+</div>
+</div>
+
+
+
+
+<div class="card mt-4 shadow-sm">
+
+<div class="card-header bg-white">
+<h5 class="mb-0">My Rescues</h5>
+</div>
+
+<div class="card-body">
+
+{% for rescue in my_rescues %}
+
+<div class="border-bottom pb-2 mb-2">
+
+<strong>{{ rescue.get_animal_type_display }}</strong>
+
+<p class="text-muted mb-1">
+{{ rescue.manual_location }}
+</p>
+
+<span class="badge bg-success">
+Rescued
+</span>
+
+</div>
+
+{% empty %}
+
+<p class="text-muted">
+No rescues completed yet.
+</p>
+
+{% endfor %}
+
+</div>
+</div>
+ -->
+
+
+
+
+
+
+
+
+<!-- <footer class="mt-5 py-4 text-center text-muted">
     <small>&copy; 2026 PetRescue Network</small>
 </footer>
 
@@ -276,4 +380,448 @@
     </div>
 </footer>
 </body>
+
+</html> -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | PetRescue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 40px 0;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.2s;
+        }
+
+        .info-label {
+            color: #6c757d;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: #2d3436;
+            font-weight: 500;
+        }
+
+        .badge-custom {
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .btn-adopt-claim {
+            background-color: #ff7675;
+            border: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .btn-adopt-claim:hover {
+            background-color: #d63031;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .profile-tabs .nav-link {
+            border-radius: 30px;
+            font-weight: 600;
+            margin: 0 5px;
+        }
+
+        .profile-tabs .nav-link.active {
+            background: #2575fc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-menu">
+
+                <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+
+                <li class="has-dropdown">
+                    <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                        <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                        <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                    </ul>
+                </li>
+
+                <li class="has-dropdown">
+                    <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                        <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+
+                        {% if user.is_authenticated and user.profile.is_volunteer %}
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
+                        {% endif %}
+
+                    </ul>
+                </li>
+
+                <li class="user-auth-section">
+
+                    {% if user.is_authenticated %}
+
+                    <div class="user-dropdown">
+                        <a href="{% url 'UserProfile' %}" class="profile-link">
+                            <span class="icon">👤</span> {{ user.username }}
+                        </a>
+                        <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
+                    </div>
+
+                    {% else %}
+
+                    <a href="{% url 'UserLogin' %}">Login</a>
+                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+
+                    {% endif %}
+
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <div class="profile-header shadow-sm text-center">
+        <div class="container">
+            <div class="mb-3">
+                <i class="fas fa-user-circle fa-5x"></i>
+            </div>
+            <h2 class="fw-bold">{{ profile.full_name }}</h2>
+            <p class="opacity-75 mb-0"><i class="fas fa-envelope me-2"></i>{{ user.email }}</p>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- TOP BUTTONS -->
+        <ul class="nav nav-pills profile-tabs justify-content-center mb-4">
+
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#me">
+                    <i class="fas fa-user"></i> Me
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#applications">
+                    <i class="fas fa-paw"></i> My Adoptions
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#reports">
+                    <i class="fas fa-file-alt"></i> My Reports
+                </button>
+            </li>
+
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#rescues">
+                    <i class="fas fa-hand-holding-heart"></i> My Rescues
+                </button>
+            </li>
+
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- ME TAB -->
+            <div class="tab-pane fade show active" id="me">
+
+                <div class="row g-4">
+
+                    <div class="col-lg-4">
+
+                        <div class="card shadow-sm p-4 mb-4">
+
+                            <h5 class="fw-bold mb-4">
+                                <i class="fas fa-info-circle text-primary me-2"></i>
+                                Account Details
+                            </h5>
+
+                            <div class="mb-3">
+                                <div class="info-label">Phone</div>
+                                <div class="info-value">{{ profile.phone }}</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="info-label">Date of Birth</div>
+                                <div class="info-value">{{ profile.dob }}</div>
+                            </div>
+
+                            <hr>
+
+                            <div class="mb-2">
+                                <div class="info-label">District</div>
+                                <div class="info-value text-capitalize">{{ profile.district }}</div>
+                            </div>
+
+                            <div class="mb-2">
+                                <div class="info-label">Address</div>
+                                <div class="info-value small text-muted">{{ profile.address }}</div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-top text-center">
+
+                                {% if profile.is_volunteer %}
+
+                                <span class="badge bg-success-subtle text-success badge-custom w-100 mb-2">
+                                    <i class="fas fa-shield-dog me-2"></i>Verified Volunteer
+                                </span>
+
+                                {% elif profile.is_volunteer_pending %}
+
+                                <div class="alert alert-warning py-2 small mb-0">
+                                    <i class="fas fa-hourglass-half me-1"></i> Volunteer Approval Pending
+                                </div>
+
+                                {% else %}
+
+                                <a href="{% url 'VolunteerIns' %}"
+                                    class="btn btn-outline-primary btn-sm w-100 rounded-pill">
+                                    Become a Volunteer
+                                </a>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+                    
+
+                        <a href="{% url 'Home' %}" class="btn btn-light w-100 rounded-pill shadow-sm mb-4">
+                            <i class="fas fa-chevron-left me-2"></i>Back to Home
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- APPLICATIONS TAB -->
+            <div class="tab-pane fade" id="applications">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-paw text-primary me-2"></i> My Adoptions
+                        </h5>
+                    </div>
+
+                    <div class="card-body p-0">
+
+                        <div class="list-group list-group-flush">
+
+                            {% for app in user_applications %}
+
+                            <div class="list-group-item p-4 border-0 border-bottom">
+
+                                <div class="d-md-flex justify-content-between align-items-center">
+
+                                    <div class="mb-3 mb-md-0">
+
+                                        <h5 class="fw-bold mb-1 text-primary">
+                                            {{ app.animal.name }}
+                                        </h5>
+
+                                        <p class="text-muted small mb-2">
+                                            Applied on: {{ app.applied_at|date:"M d, Y" }}
+                                        </p>
+
+                                        <span class="badge rounded-pill 
+{% if app.status == 'Accepted' %}
+bg-success
+{% elif app.status == 'Rejected' %}
+bg-danger
+{% else %}
+bg-warning text-dark
+{% endif %}">
+
+                                            Your Adoption Details are checked by our volunteers and is {{ app.status }}
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="text-md-end">
+
+                                        {% if not app.is_submitted_for_final_verify %}
+
+                                        <p class="small text-muted mb-2">
+                                            Got the pet home offline?
+                                        </p>
+
+                                        <a href="{% url 'SubmitAdoptionProof' app.id %}"
+                                            class="btn btn-adopt-claim btn-sm px-4 rounded-pill shadow-sm">
+
+                                            <i class="fas fa-heart me-1"></i>
+                                            I Adopted This Pet!
+
+                                        </a>
+
+                                        {% else %}
+
+                                        <div class="text-success fw-bold">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            Verified Success Story
+                                        </div>
+
+                                        <small class="text-muted">
+                                            Thank you for adopting!
+                                        </small>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% empty %}
+
+                            <div class="text-center py-5">
+                                <i class="fas fa-folder-open fa-3x text-light mb-3"></i>
+                                <p class="text-muted">No adoption applications found.</p>
+                                <a href="{% url 'AnimalAdoptList' %}" class="btn btn-primary btn-sm rounded-pill">
+                                    Find a Friend
+                                </a>
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- REPORTS TAB -->
+            <div class="tab-pane fade" id="reports">
+
+                <div class="card mt-4 shadow-sm">
+
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">My Reports</h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        {% for report in my_reports %}
+
+                        <div class="border-bottom pb-2 mb-2">
+
+                            <strong>{{ report.get_animal_type_display }}</strong>
+
+                            <p class="text-muted mb-1">
+                                {{ report.manual_location }}
+                            </p>
+
+                            <span class="badge bg-secondary">
+                                {{ report.status }}
+                            </span>
+
+                        </div>
+
+                        {% empty %}
+
+                        <p class="text-muted">
+                            You haven't submitted any reports.
+                        </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RESCUES TAB -->
+            <div class="tab-pane fade" id="rescues">
+
+                <div class="card mt-4 shadow-sm">
+
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">My Rescues</h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        {% for rescue in my_rescues %}
+
+                        <div class="border-bottom pb-2 mb-2">
+
+                            <strong>{{ rescue.get_animal_type_display }}</strong>
+
+                            <p class="text-muted mb-1">
+                                {{ rescue.manual_location }}
+                            </p>
+
+                            <span class="badge bg-success">
+                                Rescued
+                            </span>
+
+                        </div>
+
+                        {% empty %}
+
+                        <p class="text-muted">
+                            No rescues completed yet.
+                        </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
 </html>

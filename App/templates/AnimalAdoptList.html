@@ -1,49 +1,3 @@
-<!-- {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Animals for Adoption</title>
-    <link rel="stylesheet" href="{% static 'css/animaladoptlist.css' %}">
-</head>
-<body>
-
-    <nav>
-        <a href="{% url 'Home' %}">Home</a>
-    
-        <a href="{% url 'Report' %}">Report Animal</a>
-        <a href="{% url 'ReportList' %}">Report List</a>
-        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
-        <a href="{% url 'UserRegister' %}">Register</a>
-        <a href="{% url 'UserLogin' %}">Login</a>
-        <a href="{% url 'UserLogout' %}">Logout</a>
-    </nav>
-
-    <h1>Animals Available for Adoption</h1>
-
-
-    {% for animal in animals %}
-        <div style="border:1px solid #ccc; padding:10px; margin-bottom:15px;">
-            
-            <h2>{{ animal.name }}</h2>
-
-            {% if animal.image %}
-                <img src="{{ animal.image.url }}" alt="Animal Image" width="200">
-            {% endif %}
-
-            <p><strong>Breed:</strong> {{ animal.breed }}</p>
-            <p><strong>Age:</strong> {{ animal.age }}</p>
-
-            <a href="{% url 'AnimalAdoptDetail' animal.pk %}">View Details</a>
-                View Details
-            </a>
-
-        </div>
-    {% empty %}
-        <p>No animals available for adoption.</p>
-    {% endfor %}
-
-</body>
-</html> -->
 
 
 {% load static %}
@@ -58,23 +12,52 @@
 </head>
 <body>
 
- <nav>
-        <a href="{% url 'Home' %}">Home</a>
-        <a href="{% url 'ReportList' %}">Report List</a>
-        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
-         {% if user.is_authenticated %}
-        <div class="user-menu">
-            <a href="{% url 'UserProfile' %}" class="profile-icon">
-                <span class="icon">👤</span> 
-                {{ user.username }}
-            </a>
-            <a href="{% url 'UserLogout' %}">Logout</a>
-        </div>
-    {% else %}
-        <a href="{% url 'UserLogin' %}">Login</a>
-        <a href="{% url 'UserRegister' %}">Register</a>
-    {% endif %}
-    </nav>
+<nav class="navbar">
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <!-- Simple Link -->
+            <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+
+            <!-- Dropdown: Reports -->
+            <li class="has-dropdown">
+                <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                    <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                    <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                </ul>
+            </li>
+
+            <!-- Dropdown: Services -->
+            <li class="has-dropdown">
+                <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <!-- Right Aligned User Menu -->
+            <li class="user-auth-section">
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown">
+                        <a href="{% url 'UserProfile' %}" class="profile-link">
+                            <span class="icon">👤</span> {{ user.username }}
+                        </a>
+                        <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'UserLogin' %}">Login</a>
+                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
 
     <header class="list-header">
         <h1>Find Your New Best Friend</h1>
