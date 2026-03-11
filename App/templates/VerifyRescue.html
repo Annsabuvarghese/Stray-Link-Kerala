@@ -12,6 +12,11 @@
             --success: #27ae60;
             --bg: #fffaf5;
             --text: #2c3e50;
+            --nav-bg: #ffffff;
+            --text-color: #4a3f35;   /* Soft Brown */
+            --hover-color: #e67e22;  /* Hope Orange */
+            --accent-red: #e74c3c;   /* Love Red */
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         body {
@@ -128,6 +133,134 @@
             border-radius: 20px;
             border: 2px dashed #ddd;
         }
+        /* Responsive adjustment */
+@media (max-width: 768px) {
+    .milestones-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+/* --- Warm & Caring Navbar Styling --- */
+
+
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* box-shadow: var(--shadow); */
+    /* border-bottom: 2px solid #f9f5f0; */
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 35px; /* Links തമ്മിലുള്ള അകലം */
+    margin: 0;
+    padding: 0;
+    height: 65px;
+}
+
+/* Nav Links */
+.nav-menu li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Hover & Active State */
+.nav-menu li a:hover, 
+.nav-menu li a.active {
+    color: var(--hover-color);
+    background-color: #fff5ed; /* Light orange tint */
+}
+
+/* --- Dropdown Styles --- */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: 12px;
+    padding: 10px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: none; /* Default hidden */
+    list-style: none;
+    border: 1px solid #f1f1f1;
+    z-index: 10000;
+}
+
+.dropdown li a {
+    color: var(--text-color);
+    display: block;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: 0.95rem;
+    margin-top: 0;
+}
+
+.dropdown li a:hover {
+    background-color: #fdfaf7;
+    color: var(--accent-red);
+    padding-left: 25px; /* Tiny slide effect */
+}
+
+.has-dropdown:hover .dropdown {
+    display: block;
+    animation: slideDown 0.7s ease;
+}
+
+/* --- User Auth Section (Right Aligned) --- */
+.user-auth-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.register-btn {
+    background-color: var(--accent-red) !important;
+    color: white !important;
+    padding: 10px 22px !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+.register-btn:hover {
+    background-color: #c0392b !important;
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    color: #888;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+/* Simple Animation */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
     </style>
 </head>
 <body>
@@ -135,7 +268,15 @@
     <div class="nav-container">
         <ul class="nav-menu">
             <!-- Simple Link -->
-            <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
 
             <!-- Dropdown: Reports -->
             <li class="has-dropdown">

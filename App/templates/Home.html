@@ -23,6 +23,7 @@
                     <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
                     <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
                     <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
                 </ul>
             </li>
 
@@ -81,11 +82,9 @@
             below.</p>
         <a href="{% url 'Report' %}">Report a Case</a>
         <a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a>
-
-
     </header>
 
-    <h1>This is volunteer page</h1>
+
 
     <div id="success-stories-container" style="position: relative; overflow: hidden;">
 
@@ -256,11 +255,11 @@
             <div class="footer-section links">
                 <h3>Resources</h3>
                 <ul>
-                    <li><a href="#">Pet Care Tips</a></li>
-                    <li><a href="#">Vet Directory</a></li>
-                    <li><a href="#">Report a Stray</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                    <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+		            <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
                 </ul>
             </div>
 

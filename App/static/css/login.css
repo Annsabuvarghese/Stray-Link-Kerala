@@ -12,6 +12,11 @@
     --soft-text: #4a3f35;
     --ray-of-light: #fffcf0;
     --hug-shadow: 0 10px 30px rgba(74, 63, 53, 0.08);
+    --nav-bg: #ffffff;
+    --text-color: #4a3f35;   /* Soft Brown */
+    --hover-color: #e67e22;  /* Hope Orange */
+    --accent-red: #e74c3c;   /* Love Red */
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 body {
@@ -22,26 +27,7 @@ body {
     min-height: 100vh;
 }
 
-/* Nav Styling */
-.nav {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    gap: 15px;
-}
 
-.nav a {
-    text-decoration: none;
-    color: #a69a8f;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 8px 18px;
-    transition: 0.3s;
-}
-
-.nav a:hover {
-    color: var(--deep-orange);
-}
 
 /* Card Styling */
 .login-wrapper {
@@ -248,4 +234,125 @@ input:focus {
     border-top: 1px solid rgba(0,0,0,0.05);
     font-size: 0.85rem;
     opacity: 0.6;
+}
+
+
+
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* box-shadow: var(--shadow); */
+    /* border-bottom: 2px solid #f9f5f0; */
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 35px; /* Links തമ്മിലുള്ള അകലം */
+    margin: 0;
+    padding: 0;
+    height: 65px;
+}
+
+/* Nav Links */
+.nav-menu li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Hover & Active State */
+.nav-menu li a:hover, 
+.nav-menu li a.active {
+    color: var(--hover-color);
+    background-color: #fff5ed; /* Light orange tint */
+}
+
+/* --- Dropdown Styles --- */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: 12px;
+    padding: 10px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: none; /* Default hidden */
+    list-style: none;
+    border: 1px solid #f1f1f1;
+    z-index: 10000;
+}
+
+.dropdown li a {
+    color: var(--text-color);
+    display: block;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: 0.95rem;
+    margin-top: 0;
+}
+
+.dropdown li a:hover {
+    background-color: #fdfaf7;
+    color: var(--accent-red);
+    padding-left: 25px; /* Tiny slide effect */
+}
+
+.has-dropdown:hover .dropdown {
+    display: block;
+    animation: slideDown 0.7s ease;
+}
+
+/* --- User Auth Section (Right Aligned) --- */
+.user-auth-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.register-btn {
+    background-color: var(--accent-red) !important;
+    color: white !important;
+    padding: 10px 22px !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+.register-btn:hover {
+    background-color: #c0392b !important;
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    color: #888;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+/* Simple Animation */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

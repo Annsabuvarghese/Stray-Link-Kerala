@@ -21,7 +21,13 @@
                 <ul class="dropdown">
                     <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
                     <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li>
+                        <a href="{% url 'AdminVolunteerDashboard' %}">Admin Volunteer Dashboard</a>
+                    </li>
+                    {% endif %}
                     <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
                 </ul>
             </li>
 

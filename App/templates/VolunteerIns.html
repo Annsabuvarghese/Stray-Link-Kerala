@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,10 +9,9 @@
 <nav class="navbar">
     <div class="nav-container">
         <ul class="nav-menu">
-            <!-- Simple Link -->
+  
             <li><a href="{% url 'Home' %}" class="active">Home</a></li>
 
-            <!-- Dropdown: Reports -->
             <li class="has-dropdown">
                 <a href="#">Reports <i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown">
@@ -22,7 +21,6 @@
                 </ul>
             </li>
 
-            <!-- Dropdown: Services -->
             <li class="has-dropdown">
                 <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
                 <ul class="dropdown">
@@ -35,7 +33,7 @@
                 </ul>
             </li>
 
-            <!-- Right Aligned User Menu -->
+        
             <li class="user-auth-section">
                 {% if user.is_authenticated %}
                     <div class="user-dropdown">
@@ -131,5 +129,226 @@
         <p>&copy; 2026 StrayLink. Made with ❤️ for animals.</p>
     </div>
 </footer>
+</body>
+</html> -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Volunteer Instructions | StrayLink</title>
+
+<style>
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background: #fff6ef;
+    margin:0;
+    padding:40px;
+}
+
+/* Page heading */
+
+.page-title{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.page-title h1{
+    color:#c0392b;
+    font-size:32px;
+}
+
+.page-title p{
+    color:#666;
+    font-size:16px;
+}
+
+
+/* Instruction cards */
+
+.instructions-container{
+    max-width:900px;
+    margin:auto;
+}
+
+.Instructions{
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.Instructions:hover{
+    transform:translateY(-3px);
+}
+
+.Instructions h2{
+    color:#e67e22;
+    margin-bottom:10px;
+}
+
+.Instructions p{
+    color:#555;
+    line-height:1.6;
+}
+
+
+/* Submit button */
+
+.form-box{
+    text-align:center;
+    margin-top:30px;
+}
+
+button{
+    background:#ff7a2f;
+    border:none;
+    color:white;
+    padding:12px 28px;
+    font-size:16px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#e8651f;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-title">
+    <h1>Welcome to StrayLink Volunteer Program 🐾</h1>
+    <p>Thank you for joining our mission to rescue and care for stray animals.</p>
+</div>
+
+
+<div class="instructions-container">
+
+    <div class="Instructions">
+        <h2>Welcome New Member</h2>
+        <p>
+        We are thrilled to have you as part of the StrayLink volunteer community.
+        Our platform connects caring individuals who want to help stray animals
+        find safety, medical care, and loving homes.
+        </p>
+
+        <p>
+        As a volunteer, you will help respond to rescue reports, verify animal
+        conditions, assist with adoption processes, and guide the community
+        toward responsible animal care.
+        </p>
+
+        <p>
+        Every small action you take can save a life. Together we can build
+        a safer world for stray animals.
+        </p>
+    </div>
+
+
+    <div class="Instructions">
+        <h2>How Rescue Works</h2>
+
+        <p>
+        When someone reports an injured or distressed stray animal on StrayLink,
+        the report becomes visible to volunteers in nearby locations.
+        </p>
+
+        <p>
+        As a volunteer, your responsibility is to:
+        </p>
+
+        <ul>
+            <li>Review the reported animal details.</li>
+            <li>Check the location and urgency.</li>
+            <li>Visit the location if possible.</li>
+            <li>Confirm whether the animal has been rescued.</li>
+            <li>Update the rescue status in the system.</li>
+        </ul>
+
+        <p>
+        If the animal requires medical care, contact nearby veterinarians
+        or rescue groups for assistance.
+        </p>
+    </div>
+
+
+    <div class="Instructions">
+        <h2>Volunteer Duties</h2>
+
+        <p>Your responsibilities include:</p>
+
+        <ul>
+            <li>Responding to rescue reports in your area.</li>
+            <li>Helping injured or abandoned animals.</li>
+            <li>Verifying rescue and adoption reports.</li>
+            <li>Guiding adopters about pet care.</li>
+            <li>Supporting responsible animal welfare.</li>
+        </ul>
+
+        <p>
+        Remember, volunteers act as the bridge between the community,
+        rescuers, and adopters.
+        </p>
+    </div>
+
+
+    <div class="Instructions">
+        <h2>Important Things to Remember</h2>
+
+        <ul>
+            <li>Always prioritize your personal safety.</li>
+            <li>Do not handle aggressive animals without help.</li>
+            <li>Contact professional rescuers when needed.</li>
+            <li>Be respectful and kind to everyone in the community.</li>
+            <li>Only mark animals as rescued if verified.</li>
+        </ul>
+
+        <p>
+        Accurate information and responsible action are critical for
+        ensuring animal safety.
+        </p>
+    </div>
+
+
+    <div class="Instructions">
+        <h2>Be Like a Family</h2>
+
+        <p>
+        StrayLink is not just a platform — it is a community of compassionate
+        people who believe every animal deserves love and care.
+        </p>
+
+        <p>
+        Treat fellow volunteers, adopters, and reporters with kindness
+        and respect. Collaboration makes rescue efforts faster and more
+        effective.
+        </p>
+
+        <p>
+        Together we can create a network that ensures no stray animal is
+        left helpless.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="form-box">
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">I Understand & Continue</button>
+</form>
+</div>
+
 </body>
 </html>

@@ -81,7 +81,15 @@
     <div class="nav-container">
         <ul class="nav-menu">
             <!-- Simple Link -->
-            <li><a href="{% url 'Home' %}" class="active">Home</a></li>
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
 
             <!-- Dropdown: Reports -->
             <li class="has-dropdown">

@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - StrayLink</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color:#f5f5f5;
+            margin:0;
+            padding:0;
+        }
+
+        .container{
+            width:80%;
+            margin:auto;
+            margin-top:40px;
+            background:white;
+            padding:30px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(210, 136, 136, 0.1);
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .contact-info{
+            margin-bottom:30px;
+        }
+
+        .contact-info p{
+            font-size:16px;
+            margin:8px 0;
+        }
+
+        form{
+            margin-top:20px;
+        }
+
+        input, textarea{
+            width:100%;
+            padding:10px;
+            margin-top:8px;
+            margin-bottom:15px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+            background:#2c7be5;
+            color:white;
+            padding:10px 20px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1a5dc9;
+        }
+
+        /* Responsive adjustment */
+@media (max-width: 768px) {
+    .milestones-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+/* --- Warm & Caring Navbar Styling --- */
+
+:root {
+    --nav-bg: #ffffff;
+    --text-color: #4a3f35;   /* Soft Brown */
+    --hover-color: #e67e22;  /* Hope Orange */
+    --accent-red: #e74c3c;   /* Love Red */
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* box-shadow: var(--shadow); */
+    /* border-bottom: 2px solid #f9f5f0; */
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 35px; /* Links തമ്മിലുള്ള അകലം */
+    margin: 0;
+    padding: 0;
+    height: 65px;
+}
+
+/* Nav Links */
+.nav-menu li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Hover & Active State */
+.nav-menu li a:hover, 
+.nav-menu li a.active {
+    color: var(--hover-color);
+    background-color: #fff5ed; /* Light orange tint */
+}
+
+/* --- Dropdown Styles --- */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: 12px;
+    padding: 10px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: none; /* Default hidden */
+    list-style: none;
+    border: 1px solid #f1f1f1;
+    z-index: 10000;
+}
+
+.dropdown li a {
+    color: var(--text-color);
+    display: block;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: 0.95rem;
+    margin-top: 0;
+}
+
+.dropdown li a:hover {
+    background-color: #fdfaf7;
+    color: var(--accent-red);
+    padding-left: 25px; /* Tiny slide effect */
+}
+
+.has-dropdown:hover .dropdown {
+    display: block;
+    animation: slideDown 0.7s ease;
+}
+
+/* --- User Auth Section (Right Aligned) --- */
+.user-auth-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.register-btn {
+    background-color: var(--accent-red) !important;
+    color: white !important;
+    padding: 10px 22px !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+.register-btn:hover {
+    background-color: #c0392b !important;
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    color: #888;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+/* Simple Animation */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+    </style>
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <!-- Simple Link -->
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
+
+            <!-- Dropdown: Reports -->
+            <li class="has-dropdown">
+                <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                    <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
+
+            <!-- Dropdown: Services -->
+            <li class="has-dropdown">
+                <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Queue</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <!-- Right Aligned User Menu -->
+            <li class="user-auth-section">
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown">
+                        <a href="{% url 'UserProfile' %}" class="profile-link">
+                            <span class="icon">👤</span> {{ user.username }}
+                        </a>
+                        <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'UserLogin' %}">Login</a>
+                    <!-- <a href="{% url 'UserRegister' %}" class="register-btn">Register</a> -->
+                     <li class="has-dropdown">
+                <a href="#">Register<i class="fas fa-caret-down" class="register-btn"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'UserRegister' %}" >Register as a User</a></li>
+                    <li><a href="{% url 'VolunteerRegister' %}">Register as a Volunteer</a></li>
+                    <li><a href="{% url 'OrganizationRegister' %}">Register as a Organization</a></li>
+                </ul>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<br><br>
+
+<div class="container">
+
+    <h1>Contact Us</h1>
+
+    <div class="contact-info">
+
+        <p><strong>Project Name:</strong> StrayLink - Animal Rescue System</p>
+
+        <p><strong>Email:</strong> straylink.support@gmail.com</p>
+
+        <p><strong>Phone:</strong> +91 9XXXXXXXXX</p>
+
+        <p><strong>Location:</strong> Kerala, India</p>
+
+        <p><strong>Volunteer Support:</strong> volunteer@straylink.org</p>
+
+        <p>If you find an injured or abandoned animal, please report it through the system or contact us directly.</p>
+
+    </div>
+
+    <h2>Send us a message</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Name</label>
+        <input type="text" name="name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Message</label>
+        <textarea name="message" rows="5" required></textarea>
+
+        <button type="submit" style="background-color: #c0392b;">Send Message</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -11,28 +11,12 @@ from django.utils import timezone
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
-from django.contrib.auth import logout
-from urllib3 import request
 from .models import ReportSubmit, ReportImage, Condition, Profile,Animal,AdoptionApplication,Sponsorship,Organization
 from django.db.models import Q
 
 from xhtml2pdf import pisa
 from io import BytesIO
 
-
-# def Home(request):
-#     # Get the latest 10 rescue reports
-#     cases = ReportSubmit.objects.all().order_by('-id')[:4]
-    
-#     # FIX: Show all animals marked for adoption except those already Adopted
-#     animals = Animal.objects.filter(
-#         in_adoption=True
-#     ).exclude(status='Adopted').order_by('-id')[:4]
-    
-#     return render(request, 'home.html', {
-#         'cases': cases,
-#         'animals': animals
-#     })
 
 
 def Home(request):
@@ -78,9 +62,9 @@ def Report(request):
         "Abandoned"
     ]
 
-    # Create only if not already created
-    for condition in default_conditions:
-        Condition.objects.get_or_create(name=condition)
+    # Default conditions should be created via migration or management command, not here.
+    # for condition in default_conditions:
+    #     Condition.objects.get_or_create(name=condition)
 
     conditions = Condition.objects.all()
 
@@ -117,65 +101,62 @@ def Report(request):
 
         report.conditions.set(conditions_list)
 
-#         try:
-#         # --- 4. Generate PDF and Send Email ---
-#             pdf_content = generate_pdf_in_memory(report)#function:generate_pdf_in_memory
-#             if pdf_content:
-#                 recipient_list = [
-#                     'straylinkgov@gmail.com',   # The NGO/Gov email
-#                 ]  
-#                 email = EmailMessage(
-#                     subject=f"URGENT: Official Stray Animal Report #{report.id}",
-#                     body = f"""
-# To,
-# The Concerned Authority,
+        try:
+        # --- 4. Generate PDF and Send Email ---
+            pdf_content = generate_pdf_in_memory(report)
+            if pdf_content:
+                recipient_list = [
+                    'straylinkgov@gmail.com',   
+                ]  
+                email = EmailMessage(
+                    subject=f"URGENT: Official Stray Animal Report #{report.id}",
+                    body = f"""
+To,
+The Concerned Authority,
 
-# Subject: URGENT – Official Complaint Regarding Stray Animal Incident (Ref No: STRAY/{report.id})
+Subject: URGENT – Official Complaint Regarding Stray Animal Incident (Ref No: STRAY/{report.id})
 
-# Respected Sir/Madam,
+Respected Sir/Madam,
 
-# This is to formally inform you that a stray animal incident has been reported through the StrayLink reporting system.
+This is to formally inform you that a stray animal incident has been reported through the StrayLink reporting system.
 
-# Incident Details:
-# -----------------------------------------
-# Reference Number : STRAY/{report.id}
-# Date & Time      : {report.created_at.strftime('%d %B %Y, %H:%M')}
-# Animal Type      : {report.animal_type.title()}
-# Number Observed  : {report.animal_count}
-# Location         : {report.manual_location}
-# Latitude         : {report.auto_latitude}
-# Longitude        : {report.auto_longitude}
-# -----------------------------------------
+Incident Details:
+-----------------------------------------
+Reference Number : STRAY/{report.id}
+Date & Time      : {report.created_at.strftime('%d %B %Y, %H:%M')}
+Animal Type      : {report.animal_type.title()}
+Number Observed  : {report.animal_count}
+Location         : {report.manual_location}
+Latitude         : {report.auto_latitude}
+Longitude        : {report.auto_longitude}
+-----------------------------------------
 
-# The animal has been reported in the following condition(s):
-# {", ".join([c.name.title() for c in report.conditions.all()]) if report.conditions.exists() else "Not specified"}
+The animal has been reported in the following condition(s):
+{", ".join([c.name.title() for c in report.conditions.all()]) if report.conditions.exists() else "Not specified"}
 
-# This matter may require immediate attention under applicable animal welfare and public safety regulations.
+This matter may require immediate attention under applicable animal welfare and public safety regulations.
 
-# Please find the attached official complaint document (PDF) containing full details and photographic evidence for your review and necessary action.
+Please find the attached official complaint document (PDF) containing full details and photographic evidence for your review and necessary action.
 
-# Kindly acknowledge receipt of this complaint and initiate appropriate intervention at the earliest.
+Kindly acknowledge receipt of this complaint and initiate appropriate intervention at the earliest.
 
-# Thanking you.
+Thanking you.
 
-# Sincerely,
-# StrayLink Incident Reporting System
-# (Automated Official Notification)
-# """
-# ,             
-#                 from_email=settings.EMAIL_HOST_USER,
-#                     to=recipient_list,
-#                 )
-#                 # Attach the PDF bytes
-#                 email.attach(f'Report_{report.id}.pdf', pdf_content, 'application/pdf')
-#                 # Send it!
-#                 email.send()
-#         except Exception as e:
-#             # We print the error so it shows in your terminal for debugging
-#             print(f"Failed to send email: {e}")
-
-        # redirect to success page
-
+Sincerely,
+StrayLink Incident Reporting System
+(Automated Official Notification)
+"""
+,             
+                from_email=settings.EMAIL_HOST_USER,
+                    to=recipient_list,
+                )
+                # Attach the PDF bytes
+                email.attach(f'Report_{report.id}.pdf', pdf_content, 'application/pdf')
+                # Send it!
+                email.send()
+        except Exception as e:
+            # We print the error so it shows in your terminal for debugging
+            print(f"Failed to send email: {e}")
 
         
         return redirect('ReportSuccess', report_id=report.id)
@@ -234,14 +215,12 @@ def generate_pdf_in_memory(report):
 def ReportList(request):
     cases = ReportSubmit.objects.exclude(status='rescued').order_by('-id')
 
-    # Add adoption info to each case dynamically
+
     for case in cases:
-        # Find if this rescued case has an associated adoption application
-        # Assuming your Animal object has the same ID as the ReportSubmit (adjust if different)
+   
         try:
-            animal = Animal.objects.get(id=case.id)  # Change this if your linking logic is different
-            case.animal_obj = animal  # temporary attribute for template
-            # Check if there is any pending adoption
+            animal = Animal.objects.get(id=case.id)  
+            case.animal_obj = animal  
             case.is_in_adoption = AdoptionApplication.objects.filter(
                 animal=animal,
                 status='Waiting'
@@ -255,68 +234,58 @@ def ReportList(request):
 
 
 
-def UserHome(request):
-    latest_cases = ReportSubmit.objects.all().order_by('-id')[:8]
-    return render(request, 'UserHome.html', {
-        'cases': latest_cases
-    })
+def UserRegister(request):
+    if request.method == "POST":
+        # User auth fields
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
 
+        # Profile fields
+        full_name = request.POST.get("full_name")
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+        district = request.POST.get("district")
+        city = request.POST.get("city")  
+        local_body = request.POST.get("local_body")  # From our new select tag
+        ward_no = request.POST.get("ward_no")        # From our new select tag
+        house_no = request.POST.get("house_no")
+        dob = request.POST.get("dob")
 
+        # Validation logic
+        if password1 != password2:
+            messages.error(request, "Passwords do not match")
+            return redirect("UserRegister")
 
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return redirect("UserRegister")
 
+        # Create user
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password1
+        )
 
-# def UserRegister(request):
-#     if request.method == "POST":
-#         # User auth fields
-#         username = request.POST.get("username")
-#         email = request.POST.get("email")
-#         password1 = request.POST.get("password1")
-#         password2 = request.POST.get("password2")
+        # Create profile using the edited model fields
+        Profile.objects.create(
+            user=user,
+            full_name=full_name,
+            phone=phone,
+            address=address,
+            district=district,
+            local_body=local_body,
+            ward_no=ward_no,
+            house_no=house_no,
+            dob=dob
+        )
 
-#         # Profile fields
-#         full_name = request.POST.get("full_name")
-#         phone = request.POST.get("phone")
-#         address = request.POST.get("address")
-#         district = request.POST.get("district")
-#         city = request.POST.get("city")  
-#         local_body = request.POST.get("local_body")  # From our new select tag
-#         ward_no = request.POST.get("ward_no")        # From our new select tag
-#         house_no = request.POST.get("house_no")
-#         dob = request.POST.get("dob")
+        login(request, user)
+        return redirect("Home") 
 
-#         # Validation logic
-#         if password1 != password2:
-#             messages.error(request, "Passwords do not match")
-#             return redirect("UserRegister")
-
-#         if User.objects.filter(username=username).exists():
-#             messages.error(request, "Username already exists")
-#             return redirect("UserRegister")
-
-#         # Create user
-#         user = User.objects.create_user(
-#             username=username,
-#             email=email,
-#             password=password1
-#         )
-
-#         # Create profile using the edited model fields
-#         Profile.objects.create(
-#             user=user,
-#             full_name=full_name,
-#             phone=phone,
-#             address=address,
-#             district=district,
-#             local_body=local_body,
-#             ward_no=ward_no,
-#             house_no=house_no,
-#             dob=dob
-#         )
-
-#         login(request, user)
-#         return redirect("Home") 
-
-#     return render(request, "UserRegister.html")
+    return render(request, "UserRegister.html")
 
 
 def UserLogin(request):
@@ -364,26 +333,6 @@ def AnimalAdoptDetail(request, pk):
 
 
 
-# @login_required
-# def ClaimCase(request, id):
-
-
-#     case = get_object_or_404(ReportSubmit, id=id)
-#     # SECURITY CHECK: Only the person who claimed it can mark it rescued
-
-#     if case.status == 'pending':
-#         case.status = 'in_progress' 
-
-#     if case.status != 'pending':
-#         messages.error(request, "This case is no longer open for claiming.")
-#     elif case.claimed_by:
-#         messages.warning(request, "Someone else has already claimed this hero mission!")
-#     else:
-#         case.claimed_by = request.user
-#         case.claimed_at = timezone.now()
-#         case.save()
-#     return redirect('ReportDetail', report_id=case.id)
-
 @login_required
 def ClaimCase(request, id):
     case = get_object_or_404(ReportSubmit, id=id)
@@ -411,23 +360,19 @@ def UnclaimCase(request, id):
     
     if report.claimed_by == request.user:
         report.claimed_by = None
-        report.status = 'pending'   # 🔥 THIS WAS MISSING
+        report.status = 'pending'   
         report.claimed_at = None
         report.save()
         messages.info(request, "Case unclaimed. It is now open for other volunteers.")
     else:
         messages.error(request, "You can only unclaim cases that belong to you.")
-        
-    # return redirect('ReportDetail')
     return redirect('ReportDetail', report_id=report.id)
 
 
 
 
 def RescueDetails(request):
-
     rescued_cases = ReportSubmit.objects.filter(status='rescued')
-
     return render(request, 'RescueDetails.html', {
         'rescued_cases': rescued_cases
     })
@@ -437,7 +382,6 @@ def MarkRescued(request, id):
 
     case = get_object_or_404(ReportSubmit, id=id)
 
-    # Only the rescuer can mark as rescued
     if case.claimed_by == request.user:
         case.status = 'rescued'
         case.save()
@@ -449,12 +393,12 @@ def AddToAdoption(request, id):
     report = get_object_or_404(ReportSubmit, id=id)
     
 
-    # SECURITY CHECK: Only the rescuer who claimed the case can list it for adoption
+  
     if report.claimed_by != request.user:
         messages.error(request, "You are not authorized to list this animal. Only the rescuer can do this.")
         return redirect('ReportList')
 
-    # Ensure the case is actually marked as 'rescued' first
+
     if report.status != 'rescued':
         messages.warning(request, "Please mark the animal as 'Rescued' before adding it to adoption.")
         return redirect('ReportList')
@@ -467,15 +411,12 @@ def AddToAdoption(request, id):
         return redirect('AnimalAdoptDetail', pk=animal.id)
     
     if request.method == 'POST':
-        # 1. Basic Info
+
         animal.name = request.POST.get('name')
         animal.age = request.POST.get('age')
         animal.breed = request.POST.get('breed')
         animal.gender = request.POST.get('gender')
         
-        # 2. Medical & Image
-        # Note: In your HTML, name is "medical". You might want to save this to 
-        # a field or just use your existing health_status field.
         medical_selected = request.POST.getlist('medical')
         animal.health_status = ", ".join(medical_selected) 
         
@@ -483,14 +424,12 @@ def AddToAdoption(request, id):
         if image:
             animal.image = image
 
-        # 3. Center Info
         animal.center_type = request.POST.get('center_type')
         animal.center_name = request.POST.get('center_name')
         animal.center_email = request.POST.get('center_email')
         animal.center_phone = request.POST.get('center_phone')
         animal.center_address = request.POST.get('center_address')
 
-        # 5. Finalize
         animal.in_adoption = True
         animal.status = "Available"
         animal.save()
@@ -509,7 +448,7 @@ def ApplyAdoption(request, animal_id):
         messages.error(request, "Sorry, this animal has already been adopted!")
         return redirect('AnimalAdoptList')
 
-    # 2. Prevent duplicate applications from the same user
+
     already_applied = AdoptionApplication.objects.filter(
         animal=animal, 
         applicant_email=request.user.email
@@ -520,7 +459,7 @@ def ApplyAdoption(request, animal_id):
         return redirect('UserProfile')
 
     if request.method == 'POST':
-        # 1. Save Application to DB
+    
         app = AdoptionApplication.objects.create(
             animal=animal,
             applicant_name=request.POST.get('name'),
@@ -539,69 +478,68 @@ def ApplyAdoption(request, animal_id):
             status="Waiting"
         )
 
-        # 3. Send the Detailed Email
-#         center_email = animal.center_email
-#         if center_email:
-#             try:
-#                 subject = f"URGENT: Adoption Application for {animal.name} (Ref #{app.id})"
-#                 body = f"""
-# Dear {animal.center_name} Team,
+  
+        center_email = animal.center_email
+        if center_email:
+            try:
+                subject = f"URGENT: Adoption Application for {animal.name} (Ref #{app.id})"
+                body = f"""
+Dear {animal.center_name} Team,
 
-# A new formal application has been submitted through StrayLink for an animal in your care.
+A new formal application has been submitted through StrayLink for an animal in your care.
 
-# =======================================================
-# 1. ANIMAL INFORMATION
-# =======================================================
-# Name: {animal.name}
-# Reference ID: {animal.id}
-# Breed: {animal.breed if animal.breed else 'Not Specified'}
-# Age Range: {animal.age}
-# Medical History: {animal.health_status}
+=======================================================
+1. ANIMAL INFORMATION
+=======================================================
+Name: {animal.name}
+Reference ID: {animal.id}
+Breed: {animal.breed if animal.breed else 'Not Specified'}
+Age Range: {animal.age}
+Medical History: {animal.health_status}
 
-# =======================================================
-# 2. APPLICANT CONTACT DETAILS
-# =======================================================
-# Full Name: {app.applicant_name}
-# Email: {app.applicant_email}
-# Phone: {app.applicant_phone}
-# Address: {request.user.profile.house_no}, {request.user.profile.address}
-# Location: {request.user.profile.local_body}, {request.user.profile.district}
+=======================================================
+2. APPLICANT CONTACT DETAILS
+=======================================================
+Full Name: {app.applicant_name}
+Email: {app.applicant_email}
+Phone: {app.applicant_phone}
+Address: {request.user.profile.house_no}, {request.user.profile.address}
+Location: {request.user.profile.local_body}, {request.user.profile.district}
 
-# =======================================================
-# 3. ELIGIBILITY & HOUSEHOLD PROFILE
-# =======================================================
-# Age 18+: {app.is_18.upper()}
-# Type of Residence: {app.residence_type.title()} ({app.home_ownership.title()})
-# Landlord Permission: {app.landlord_permission.title()}
-# Home Environment Quality: {app.env_quality.upper()}
+=======================================================
+3. ELIGIBILITY & HOUSEHOLD PROFILE
+=======================================================
+Age 18+: {app.is_18.upper()}
+Type of Residence: {app.residence_type.title()} ({app.home_ownership.title()})
+Landlord Permission: {app.landlord_permission.title()}
+Home Environment Quality: {app.env_quality.upper()}
 
-# Income Stability: {app.stable_income.upper()}
-# Source of Income: {app.income_source}
-# Estimated Income: {app.income_amount}
+Income Stability: {app.stable_income.upper()}
 
-# Current Pet Owner: {app.has_pet.upper()}
-# Existing Pets: {app.current_pet_type.title()}
 
-# =======================================================
-# 4. NEXT STEPS
-# =======================================================
-# 1. Review the applicant's details above.
-# 2. You can contact the applicant directly at {app.applicant_phone}.
-# 3. Update the status in your StrayLink Dashboard.
+Current Pet Owner: {app.has_pet.upper()}
+Existing Pets: {app.current_pet_type.title()}
 
-# Best regards,
-# StrayLink Automated System
-# """
-#                 email = EmailMessage(
-#                     subject=subject,
-#                     body=body,
-#                     from_email=settings.EMAIL_HOST_USER,
-#                     to=[center_email],
-#                     reply_to=[app.applicant_email],
-#                 )
-#                 email.send()
-#             except Exception as e:
-#                 print(f"Email Error: {e}")
+=======================================================
+4. NEXT STEPS
+=======================================================
+1. Review the applicant's details above.
+2. You can contact the applicant directly at {app.applicant_phone}.
+3. Update the status in your StrayLink Dashboard.
+
+Best regards,
+StrayLink Automated System
+"""
+                email = EmailMessage(
+                    subject=subject,
+                    body=body,
+                    from_email=settings.EMAIL_HOST_USER,
+                    to=[center_email],
+                    reply_to=[app.applicant_email],
+                )
+                email.send()
+            except Exception as e:
+                print(f"Email Error: {e}")
 
         return redirect('AdoptionSuccess')
 
@@ -610,9 +548,6 @@ def ApplyAdoption(request, animal_id):
 
 @login_required
 def AdminAdoptionDashboard(request):
-    # # Optional: only allow superuser/admin
-    # if not request.user.is_staff:
-    #     return redirect('Home')  # redirect normal users
 
     applications = AdoptionApplication.objects.all().order_by('-applied_at')
     return render(request, 'AdminAdoptionDashboard.html', 
@@ -637,16 +572,6 @@ def ProcessAdoption(request, app_id, action):
 def AdoptionSuccess(request):
     return render(request,'AdoptionSuccess.html')
 
-
-# @login_required
-# def UserProfile(request):
-#     # Since Profile has a OneToOne relationship with User:
-#     user_profile = get_object_or_404(Profile, user=request.user)
-#     user_applications = AdoptionApplication.objects.filter(applicant_email=request.user.email)
-#     return render(request, 'UserProfile.html', {
-#         'profile': user_profile,
-#         'user_applications': user_applications
-#     })
 
 
 
@@ -737,39 +662,6 @@ def ReportDetail(request, report_id):
 def About(request):
     return render(request,'About.html')
 
-# def VolunteerIns(request):
-#     return render(request,'VolunteerIns.html')
-
-# @login_required
-# def ApplyVolunteer(request):
-#     profile = request.user.userprofile
-#     if request.method == "POST":
-#         profile.is_volunteer = True
-#         profile.save()
-#         messages.success(request, "Welcome to the team! You are now a verified StrayLink Volunteer. 🧡")
-#         return redirect('UserProfile')
-    
-#     return render(request, 'VolWelcome.html')
-
-
-
-# def VolunteerWelcome(request):
-#     return render(request,'VolunteerWelcome.html')
-
-# @login_required
-# def VolunteerIns(request):
-#     if request.method == "POST":
-#         from .models import Profile
-#         profile = Profile.objects.get_or_create(user=request.user)
-
-
-#         profile = request.user.userprofile
-#         profile.is_volunteer = True
-#         profile.save()
-#         messages.success(request, "Welcome to the family! You are now a StrayLink Volunteer. 🐾")
-#         return redirect('VolunteerWelcome') # Redirect to the 'Thank You' page
-    
-#     return render(request, 'VolunteerIns.html')
 
 @login_required
 def VolunteerIns(request):
@@ -1048,17 +940,6 @@ def AdoptedList(request):
     return render(request, 'AdoptedList.html', {
         'adopted_animals': adopted_animals,
     })
-
-
-
-
-
-
-
-
-
-
-
 
 
 
