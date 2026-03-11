@@ -403,7 +403,7 @@ body{
                     <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
                     {% if user.is_authenticated and user.profile.is_volunteer %}
                         <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
-                        <li><a href="{% url 'VerifyAdoption' %}">Verify Queue</a></li>
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
                     {% endif %}
                 </ul>
             </li>
