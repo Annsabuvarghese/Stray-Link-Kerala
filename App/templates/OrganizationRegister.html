@@ -4,225 +4,226 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Organization Registration</title>
+    <title>Organization Registration</title>
 
-<style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
 
-body{
-font-family: Arial, sans-serif;
-background:#f4f6f9;
-padding:30px;
-}
+        nav {
+            margin-bottom: 20px;
+        }
 
-nav{
-margin-bottom:20px;
-}
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-nav a{
-margin-right:15px;
-text-decoration:none;
-font-weight:bold;
-}
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-form{
-background:white;
-padding:25px;
-border-radius:8px;
-max-width:500px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-input,textarea,select{
-width:100%;
-padding:8px;
-margin-top:5px;
-margin-bottom:15px;
-border:1px solid #ccc;
-border-radius:5px;
-}
+        button {
+            background: #2c7be5;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-button{
-background:#2c7be5;
-color:white;
-padding:10px;
-border:none;
-border-radius:5px;
-cursor:pointer;
-}
-
-button:hover{
-background:#1a5fd1;
-}
-
-</style>
+        button:hover {
+            background: #1a5fd1;
+        }
+    </style>
 
 </head>
 
 <body>
 
-<nav>
-<a href="{% url 'Home' %}">Home</a>
-</nav>
+    <nav>
+        <a href="{% url 'Home' %}">Home</a>
+    </nav>
 
-<h2>Organization Registration</h2>
+    <h2>Organization Registration</h2>
 
-<form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data">
 
-{% csrf_token %}
+        {% csrf_token %}
 
-<label>Organization Name</label>
-<input type="text" name="name" required>
+        <label>Organization Name</label>
+        <input type="text" name="name" required>
 
-<label>Organization Type</label>
-<select name="org_type" required>
+        <label>Organization Type</label>
+        <select name="org_type" required>
 
-<option value="">Select Type</option>
-<option value="ngo">NGO</option>
-<option value="vet">Veterinary Clinic</option>
-<option value="adoption">Adoption Center</option>
+            <option value="">Select Type</option>
+            <option value="ngo">NGO</option>
+            <option value="vet">Veterinary Clinic</option>
+            <option value="adoption">Adoption Center</option>
 
-</select>
+        </select>
 
-<label>Email</label>
-<input type="email" name="email" required>
+        <label>Email</label>
+        <input type="email" name="email" required>
 
-<label>Phone</label>
-<input type="text" name="phone" required>
+        <label>Phone</label>
+        <input type="text" name="phone" required>
 
-<label>Upload Logo / Photo</label>
-<input type="file" name="image" accept="image/*">
+        <label>Upload Logo / Photo</label>
+        <input type="file" name="image" accept="image/*">
 
-<label>District</label>
-<select id="district" name="district" required>
-<option>Loading districts...</option>
-</select>
+        <label>District</label>
+        <select id="district" name="district" required>
+            <option>Loading districts...</option>
+        </select>
 
-<label>City</label>
-<select id="city" name="city" disabled required>
-<option>-- Select District First --</option>
-</select>
+        <label>City</label>
+        <select id="city" name="city" disabled required>
+            <option>-- Select District First --</option>
+        </select>
 
-<label>Municipality / Panchayat</label>
-<select id="localBody" name="local_body" disabled required>
-<option>-- Select District First --</option>
-</select>
+        <label>Municipality / Panchayat</label>
+        <select id="localBody" name="local_body" disabled required>
+            <option>-- Select District First --</option>
+        </select>
 
-<label>Full Address</label>
-<textarea name="address" required></textarea>
+        <label>Full Address</label>
+        <textarea name="address" required></textarea>
 
-<label>Organization Registration Number</label>
-<input type="text" name="registration_number" required>
+        <label>Organization Registration Number</label>
+        <input type="text" name="registration_number" required>
 
-<button type="submit">Register Organization</button>
+        <button type="submit">Register Organization</button>
 
-</form>
+    </form>
 
-<script>
+    <script>
 
-const districtSelect = document.getElementById("district");
-const citySelect = document.getElementById("city");
-const localBodySelect = document.getElementById("localBody");
+        const districtSelect = document.getElementById("district");
+        const citySelect = document.getElementById("city");
+        const localBodySelect = document.getElementById("localBody");
 
-const DATA_URL = "https://raw.githubusercontent.com/opendatakerala/map.opendatakerala.org/main/data/lsgkerala.csv";
+        const DATA_URL = "https://raw.githubusercontent.com/opendatakerala/map.opendatakerala.org/main/data/lsgkerala.csv";
 
-let keralaData = {};
+        let keralaData = {};
 
-async function loadKeralaData(){
+        async function loadKeralaData() {
 
-    try{
+            try {
 
-        const response = await fetch(DATA_URL);
-        const text = await response.text();
-        const rows = text.trim().split("\n");
+                const response = await fetch(DATA_URL);
+                const text = await response.text();
+                const rows = text.trim().split("\n");
 
-        rows.slice(1).forEach(row=>{
+                rows.slice(1).forEach(row => {
 
-            const cols = row.split(",");
-            const name = cols[1].trim();
-            const district = cols[3].trim();
+                    const cols = row.split(",");
+                    const name = cols[1].trim();
+                    const district = cols[3].trim();
 
-            if(!keralaData[district]){
-                keralaData[district] = [];
+                    if (!keralaData[district]) {
+                        keralaData[district] = [];
+                    }
+
+                    keralaData[district].push(name);
+
+                });
+
+                districtSelect.innerHTML = '<option value="">Select District</option>';
+
+                Object.keys(keralaData).sort().forEach(dist => {
+
+                    districtSelect.add(
+                        new Option(dist.replace(" district", ""), dist)
+                    );
+
+                });
+
             }
 
-            keralaData[district].push(name);
+            catch (err) {
+
+                console.error(err);
+                districtSelect.innerHTML = '<option>Error loading districts</option>';
+
+            }
+
+        }
+
+        districtSelect.addEventListener("change", function () {
+
+            const dist = this.value;
+
+            citySelect.innerHTML = '<option value="">Select City</option>';
+            citySelect.disabled = !dist;
+
+            if (dist && keralaData[dist]) {
+
+                const citySet = new Set();
+
+                keralaData[dist].forEach(body => {
+
+                    const city = body
+                        .replace(" Municipality", "")
+                        .replace(" Corporation", "")
+                        .replace(" Grama Panchayat", "")
+                        .replace(" Panchayat", "")
+                        .trim();
+
+                    citySet.add(city);
+
+                });
+
+                Array.from(citySet).sort().forEach(city => {
+
+                    citySelect.add(new Option(city, city));
+
+                });
+
+            }
+
+            localBodySelect.innerHTML = '<option value="">Select Local Body</option>';
+            localBodySelect.disabled = !dist;
+
+            if (dist && keralaData[dist]) {
+
+                keralaData[dist].sort().forEach(body => {
+
+                    localBodySelect.add(new Option(body, body));
+
+                });
+
+            }
 
         });
 
-        districtSelect.innerHTML='<option value="">Select District</option>';
+        loadKeralaData();
 
-        Object.keys(keralaData).sort().forEach(dist=>{
-
-            districtSelect.add(
-                new Option(dist.replace(" district",""),dist)
-            );
-
-        });
-
-    }
-
-    catch(err){
-
-        console.error(err);
-        districtSelect.innerHTML='<option>Error loading districts</option>';
-
-    }
-
-}
-
-districtSelect.addEventListener("change", function(){
-
-    const dist = this.value;
-
-    citySelect.innerHTML='<option value="">Select City</option>';
-    citySelect.disabled = !dist;
-
-    if(dist && keralaData[dist]){
-
-        const citySet = new Set();
-
-        keralaData[dist].forEach(body=>{
-
-            const city = body
-            .replace(" Municipality","")
-            .replace(" Corporation","")
-            .replace(" Grama Panchayat","")
-            .replace(" Panchayat","")
-            .trim();
-
-            citySet.add(city);
-
-        });
-
-        Array.from(citySet).sort().forEach(city=>{
-
-            citySelect.add(new Option(city, city));
-
-        });
-
-    }
-
-    localBodySelect.innerHTML='<option value="">Select Local Body</option>';
-    localBodySelect.disabled = !dist;
-
-    if(dist && keralaData[dist]){
-
-        keralaData[dist].sort().forEach(body=>{
-
-            localBodySelect.add(new Option(body, body));
-
-        });
-
-    }
-
-});
-
-loadKeralaData();
-
-</script>
+    </script>
 
 </body>
+
 </html>

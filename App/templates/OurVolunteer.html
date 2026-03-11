@@ -213,68 +213,69 @@
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <ul class="nav-menu">
-                <!-- Simple Link -->
-                <li class="has-dropdown">
-                    <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
-                    <ul class="dropdown">
-                        <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
-                        <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
-                        <li><a href="{% url 'About' %}">About</a></li>
-                        <li><a href="{% url 'Contact' %}">Contact Us</a></li>
-                    </ul>
-                </li>
+<nav class="navbar">
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <!-- Simple Link -->
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
 
-                <!-- Dropdown: Reports -->
-                <li class="has-dropdown">
-                    <a href="#">Reports <i class="fas fa-caret-down"></i></a>
-                    <ul class="dropdown">
-                        <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
-                        <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
-                        <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
-                        <li><a href="{% url 'Contact' %}">Contact Us</a></li>
-                    </ul>
-                </li>
-
-                <!-- Dropdown: Services -->
-                <li class="has-dropdown">
-                    <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
-                    <ul class="dropdown">
-                        <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
-                        <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
-                        {% if user.is_authenticated and user.profile.is_volunteer %}
+            <!-- Dropdown: Reports -->
+            <li class="has-dropdown">
+                <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                    <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
                         <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
-                        <li><a href="{% url 'VerifyAdoption' %}">Verify Queue</a></li>
-                        {% endif %}
-                    </ul>
-                </li>
+                    {% endif %}
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
 
-                <!-- Right Aligned User Menu -->
-                <li class="user-auth-section">
-                    {% if user.is_authenticated %}
+            <!-- Dropdown: Services -->
+            <li class="has-dropdown">
+                <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <!-- Right Aligned User Menu -->
+            <li class="user-auth-section">
+                {% if user.is_authenticated %}
                     <div class="user-dropdown">
                         <a href="{% url 'UserProfile' %}" class="profile-link">
                             <span class="icon">👤</span> {{ user.username }}
                         </a>
                         <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
                     </div>
-                    {% else %}
+                {% else %}
                     <a href="{% url 'UserLogin' %}">Login</a>
                     <!-- <a href="{% url 'UserRegister' %}" class="register-btn">Register</a> -->
-                <li class="has-dropdown">
-                    <a href="#">Register<i class="fas fa-caret-down" class="register-btn"></i></a>
-                    <ul class="dropdown">
-                        <li><a href="{% url 'UserRegister' %}">Register as a User</a></li>
-                        <li><a href="{% url 'VolunteerRegister' %}">Register as a Volunteer</a></li>
-                        <li><a href="{% url 'OrganizationRegister' %}">Register as a Organization</a></li>
-                    </ul>
-                    {% endif %}
-                </li>
-            </ul>
-        </div>
-    </nav>
+                     <li class="has-dropdown">
+                <a href="#">Register<i class="fas fa-caret-down" class="register-btn"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'UserRegister' %}" >Register as a User</a></li>
+                    <li><a href="{% url 'VolunteerRegister' %}">Register as a Volunteer</a></li>
+                    <li><a href="{% url 'OrganizationRegister' %}">Register as a Organization</a></li>
+                </ul>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
 
     <h2>Our Volunteers</h2>
 

@@ -4,8 +4,386 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#fff5ef;
+    margin:0;
+    padding:40px;
+}
+
+/* Page title */
+
+h1{
+    text-align:center;
+    color:#c0392b;
+    margin-bottom:30px;
+}
+
+/* Table */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+/* Table header */
+
+thead{
+    background:#ff7a2f;
+    color:white;
+}
+
+thead th{
+    padding:14px;
+    font-size:14px;
+    text-align:left;
+}
+
+/* Table body */
+
+tbody td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+}
+
+/* Hover row */
+
+tbody tr:hover{
+    background:#fff1e8;
+}
+
+/* Buttons */
+
+.button{
+    text-decoration:none;
+    padding:6px 12px;
+    border-radius:6px;
+    font-size:13px;
+    font-weight:500;
+    display:inline-block;
+}
+
+/* Accept button */
+
+.accept{
+    background:#2ecc71;
+    color:white;
+}
+
+.accept:hover{
+    background:#27ae60;
+}
+
+/* Reject button */
+
+.reject{
+    background:#e74c3c;
+    color:white;
+}
+
+.reject:hover{
+    background:#c0392b;
+}
+
+/* Empty row */
+
+td[colspan]{
+    padding:20px;
+    font-style:italic;
+    color:#777;
+}
+
+
+.main-footer {
+    background-color: #f9f5f0; 
+    padding: 80px 0 20px;
+    color: var(--soft-text);
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.footer-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    color: #2d2620;
+}
+
+.footer-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.footer-logo span {
+    color: var(--hope-orange);
+}
+
+.footer-section p {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    line-height: 1.8;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: var(--soft-text);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    opacity: 1;
+    color: var(--hope-orange);
+    padding-left: 5px;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: var(--soft-text);
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    color: var(--hope-orange);
+    opacity: 1;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .milestones-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+/* --- Warm & Caring Navbar Styling --- */
+
+:root {
+    --nav-bg: #ffffff;
+    --text-color: #4a3f35;   /* Soft Brown */
+    --hover-color: #e67e22;  /* Hope Orange */
+    --accent-red: #e74c3c;   /* Love Red */
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* box-shadow: var(--shadow); */
+    /* border-bottom: 2px solid #f9f5f0; */
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 25px;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 35px; /* Links തമ്മിലുള്ള അകലം */
+    margin: 0;
+    padding: 0;
+    height: 65px;
+}
+
+/* Nav Links */
+.nav-menu li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Hover & Active State */
+.nav-menu li a:hover, 
+.nav-menu li a.active {
+    color: var(--hover-color);
+    background-color: #fff5ed; /* Light orange tint */
+}
+
+/* --- Dropdown Styles --- */
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0;
+    background: white;
+    min-width: 200px;
+    border-radius: 12px;
+    padding: 10px 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: none; /* Default hidden */
+    list-style: none;
+    border: 1px solid #f1f1f1;
+    z-index: 10000;
+}
+
+.dropdown li a {
+    color: var(--text-color);
+    display: block;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: 0.95rem;
+    margin-top: 0;
+}
+
+.dropdown li a:hover {
+    background-color: #fdfaf7;
+    color: var(--accent-red);
+    padding-left: 25px; /* Tiny slide effect */
+}
+
+.has-dropdown:hover .dropdown {
+    display: block;
+    animation: slideDown 0.7s ease;
+}
+
+/* --- User Auth Section (Right Aligned) --- */
+.user-auth-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.register-btn {
+    background-color: var(--accent-red) !important;
+    color: white !important;
+    padding: 10px 22px !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+}
+
+.register-btn:hover {
+    background-color: #c0392b !important;
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    color: #888;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+/* Simple Animation */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 <body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <!-- Simple Link -->
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AdminVolunteerDashboard' %}">Admit Volunteer</a></li>
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li>
+                        <a href="{% url 'AdminVolunteerDashboard' %}">Admin Volunteer Dashboard</a>
+                    </li>
+                    {% endif %}
+                    <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
+
+
+            <!-- Dropdown: Reports -->
+            <li class="has-dropdown">
+                <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'Report' %}">Report a case</a></li>
+                    <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                    <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                    <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                </ul>
+            </li>
+
+            <!-- Dropdown: Services -->
+            <li class="has-dropdown">
+                <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <!-- Right Aligned User Menu -->
+            <li class="user-auth-section">
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown">
+                        <a href="{% url 'UserProfile' %}" class="profile-link">
+                            <span class="icon">👤</span> {{ user.username }}
+                        </a>
+                        <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'UserLogin' %}">Login</a>
+                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
     <table class="table">
     <thead>
         <tr>

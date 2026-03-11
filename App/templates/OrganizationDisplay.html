@@ -224,7 +224,9 @@ select {
                 <ul class="dropdown">
                     <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
                     <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
-                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                    {% endif %}
                     <li><a href="{% url 'Contact' %}">Contact Us</a></li>
                 </ul>
             </li>
@@ -236,8 +238,7 @@ select {
                     <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
                     <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
                     {% if user.is_authenticated and user.profile.is_volunteer %}
-                        <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
-                        <li><a href="{% url 'VerifyAdoption' %}">Verify Queue</a></li>
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
                     {% endif %}
                 </ul>
             </li>

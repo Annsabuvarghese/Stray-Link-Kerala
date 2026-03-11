@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,88 +10,355 @@
 
 
 </head>
+
 <body>
+<nav class="navbar">
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <!-- Simple Link -->
+            <li class="has-dropdown">
+                <a href="{% url 'Home' %}">Home<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AdminVolunteerDashboard' %}">Admit Volunteer</a></li>
+                    <li><a href="{% url 'OurVolunteer' %}">Our Volunteers</a></li>
+                    <li><a href="{% url 'OrganizationDisplay' %}">Registered Organizations</a></li>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li>
+                        <a href="{% url 'AdminVolunteerDashboard' %}">Admin Volunteer Dashboard</a>
+                    </li>
+                    {% endif %}
+                    <li><a href="{% url 'About' %}">About</a></li>
+                    <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                </ul>
+            </li>
 
-    <!-- Navigation -->
-    <nav>
-        <a href="{% url 'Home' %}">Home</a>
 
-        <a href="{% url 'Report' %}">Report Animal</a>
-        <a href="{% url 'ReportList' %}">Report List</a>
-        <a href="{% url 'AnimalAdoptList' %}">Adopt</a>
-        <a href="{% url 'UserRegister' %}">Register</a>
-        <a href="{% url 'UserLogin' %}">Login</a>
-        <a href="{% url 'UserLogout' %}">Logout</a>
-        <a href="{% url 'AdminAdoptionDashboard' %}">Dashboard</a>
-    </nav>
+            <!-- Dropdown: Reports -->
+            <li class="has-dropdown">
+                <a href="#">Reports <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'Report' %}">Report a case</a></li>
+                    <li><a href="{% url 'ReportList' %}">View All Reports</a></li>
+                    <li><a href="{% url 'RescuedList' %}">Rescued Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        <li><a href="{% url 'VerifyRescue' %}">Verify Rescue</a></li>
+                    {% endif %}
+                    
+                </ul>
+            </li>
 
-    <!-- Header Section -->
+            <!-- Dropdown: Services -->
+            <li class="has-dropdown">
+                <a href="#">Adopt a pet<i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    <li><a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a></li>
+                    <li><a href="{% url 'AdoptedList' %}">Adopted Animals</a></li>
+                    {% if user.is_authenticated and user.profile.is_volunteer %}
+                        
+                        <li><a href="{% url 'VerifyAdoption' %}">Verify Adoption</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <!-- Right Aligned User Menu -->
+            <li class="user-auth-section">
+                {% if user.is_authenticated %}
+                    <div class="user-dropdown">
+                        <a href="{% url 'UserProfile' %}" class="profile-link">
+                            <span class="icon">👤</span> {{ user.username }}
+                        </a>
+                        <a href="{% url 'UserLogout' %}" class="logout-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'UserLogin' %}">Login</a>
+                    <a href="{% url 'UserRegister' %}" class="register-btn">Register</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
     <header>
         <h1>Welcome to StrayLink</h1>
-        <p>Together, we can rescue and find loving homes for stray animals. Explore recent reports and adoptable animals below.</p>
+        <p>As a volunteer, you play a vital role in helping stray animals. View reported cases, respond to rescue requests, and work together with organizations to ensure animals receive care and find safe homes.</p></p>
         <a href="{% url 'Report' %}">Report a Case</a>
         <a href="{% url 'AnimalAdoptList' %}">Adopt a Pet</a>
+
+
     </header>
 
-    <!-- Recent Rescue Reports Slider -->
-    <section>
-        <h2>Recent Rescue Reports</h2>
-        <div class="slider-container">
-            <button class="arrow" onclick="scrollSlider('reportsSlider', -300)">&#10094;</button>
-            <div class="slider" id="reportsSlider">
-                {% for case in cases %}
-                <div class="card">
-                    {% if case.images.first %}
-                        <img src="{{ case.images.first.image.url }}" alt="Animal Image">
-                    {% endif %}
-                    <h4>{{ case.animal_type }}</h4>
-                    <p>Location: {{ case.manual_location }}</p>
-                    <p>Status: {{ case.status|title }}</p>
-                    <a href="{% url 'ReportList' %}">View Details</a>
-                </div>
-                {% empty %}
-                <p style="text-align:center; color:#555;">No recent rescue reports.</p>
-                {% endfor %}
+    <div id="success-stories-container" style="position: relative; overflow: hidden;">
+
+
+
+        <div class="success-slide active">
+            <div class="successimage">
+                <img src="/static/images/mina.jpg" alt="Mina">
             </div>
-            <button class="arrow" onclick="scrollSlider('reportsSlider', 300)">&#10095;</button>
+            <div class="successcard">
+                <h1>Meet Tina</h1>
+                <h2>She found a new home now</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mina is now living her best life...</p>
+            </div>
+        </div>
+
+        <div class="success-slide">
+            <div class="successimage">
+                <img src="/static/images/tina.png" alt="Tina">
+            </div>
+            <div class="successcard">
+                <h1>Meet Jimmy</h1>
+                <h2>Found his forever family</h2>
+                <p>Jimmy was found near the park, but now he has a warm bed and endless treats...</p>
+            </div>
+        </div>
+
+        <div class="success-slide">
+            <div class="successimage">
+                <img src="/static/images/mina.jpg" alt="Angel">
+            </div>
+            <div class="successcard">
+                <h1>Meet Angel</h1>
+                <h2>A true ray of light</h2>
+                <p>Angel brought so much joy to her new owners from the very first day...</p>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <section class="rescue-grid-section">
+        <h2 class="section-title">Recent Rescue Reports</h2>
+        <div class="rescue-grid">
+            {% for case in cases %}
+            <div class="rescue-card">
+                <div class="rescue-card-image">
+                    {% if case.images.first %}
+                    <img src="{{ case.images.first.image.url }}" alt="Rescue Case">
+                    {% else %}
+                    <div class="no-img-box">🐾</div>
+                    {% endif %}
+
+
+                    <div class="status-badge">{{ case.status|title }}</div>
+                </div>
+                <div class="rescue-card-info">
+                    <h4>{{ case.animal_type }}</h4>
+                    <p class="location"><i class="fas fa-map-marker-alt"></i> {{ case.manual_location }}</p>
+
+
+                    <div class="case-card">
+                        <a href="{% url 'ReportDetail' case.id %}" class="view-btn"
+                            style="text-decoration: none;color: orange;">View Full Details</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty-msg">No recent reports found.</p>
+            {% endfor %}
         </div>
     </section>
 
-    <!-- Animals Available for Adoption Slider -->
-<section>
-    <h2>Animals Ready for Adoption</h2>
-    <div class="slider-container">
-        <div class="slider">
-            {% for animal in animals %}
-            <div class="card">
-                {% if animal.image %}
-                    <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
-                {% else %}
-                    <div style="height: 160px; background: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 8px;">No Image</div>
-                {% endif %}
-                
-                <h4>{{ animal.name }}</h4>
-                <p>Breed: {{ animal.breed }}</p>
-                <p>Age: {{ animal.age }}</p>
-                <p>Status: <strong>{{ animal.status }}</strong></p>
-                
-                <a href="{% url 'AnimalAdoptDetail' animal.pk %}">View Details & Adopt</a>
+
+
+    <section class="adoption-reports-area">
+        <h2>Animals Ready for Adoption</h2>
+        <div class="adopt-viewport">
+            <div class="adopt-track" id="autoAdoptTrack">
+                {% for animal in animals %}
+                <div class="adopt-slide">
+                    <div class="adopt-img-box">
+                        {% if animal.image %}
+                        <img src="{{ animal.image.url }}" alt="{{ animal.name }}">
+                        {% else %}
+                        <div class="no-img-placeholder">🐾</div>
+                        {% endif %}
+                    </div>
+                    <div class="adopt-info-box">
+                        <h4>Meet {{ animal.name }}</h4>
+                        <p><strong>Breed:</strong> {{ animal.breed }}</p>
+                        <p><strong>Age:</strong> {{ animal.age }}</p>
+                        <p class="stat-text">Status: <span>{{ animal.status }}</span></p>
+                        <a href="{% url 'AnimalAdoptDetail' animal.pk %}" class="view-btn">View Details & Adopt</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="text-align:center; width:100%;">No pets available for adoption right now.</p>
+                {% endfor %}
             </div>
-            {% empty %}
-                <p style="text-align: center; width: 100%;">No animals available for adoption at the moment.</p>
-            {% endfor %}
         </div>
+    </section>
+
+
+    <section class="mission-impact-section">
+        <div class="mission-container">
+            <h2 class="mission-heading">Our Commitment to Animal Welfare</h2>
+            <p class="mission-statement">
+                StrayLink operates at the intersection of community action and digital innovation.
+                Our platform is dedicated to streamlining the rescue process, ensuring that every
+                reported case receives the visibility and urgent care it deserves. By connecting
+                local rescuers with compassionate adopters, we are creating a sustainable
+                ecosystem for stray animal rehabilitation.
+            </p>
+
+            <div class="milestones-grid">
+                <div class="milestone-card">
+                    <span class="milestone-number">40+</span>
+                    <span class="milestone-label">Successful Rescues</span>
+                </div>
+                <div class="milestone-card">
+                    <span class="milestone-number">25</span>
+                    <span class="milestone-label">Verified Adoptions</span>
+                </div>
+                <div class="milestone-card">
+                    <span class="milestone-number">100+</span>
+                    <span class="milestone-label">Active Volunteers</span>
+                </div>
+            </div>
+
+            <p class="mission-vision-footer">Building a safer, more compassionate future for every life we touch.</p>
+        </div>
+    </section>
+
+
+
+
+
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-section about">
+                <h2 class="footer-logo">Stray<span>Link</span></h2>
+                <p>Connecting lonely paws with loving homes. Our mission is to ensure every stray finds their "forever
+                    hug."</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Adopt a Pet</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Foster a Pet</a></li>
+                    <li><a href="#">Volunteer</a></li>
+                    <li><a href="#">Donation</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section links">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Pet Care Tips</a></li>
+                    <li><a href="#">Vet Directory</a></li>
+                    <li><a href="#">Report a Stray</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section contact">
+                <h3>Get in Touch</h3>
+                <p><i class="fas fa-envelope"></i> hello@straylink.com</p>
+                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fas fa-map-marker-alt"></i> Kerala, India</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 StrayLink. Made with ❤️ for animals.</p>
+        </div>
+    </footer>
+
+
+
+
+    <div id="toast-rescued" class="scroll-toast top-left">
+        <p>We have rescued <strong>42+</strong> strays</p>
     </div>
-</section>
+
+    <div id="toast-adoptions" class="scroll-toast bottom-right">
+        <p>We have successfully made <strong>25</strong> adoptions</p>
+    </div>
+
+
+
+
+
+
+
 
     <script>
-        function scrollSlider(sliderId, distance) {
-            document.getElementById(sliderId).scrollBy({
-                left: distance,
+        const slides = document.querySelectorAll('.success-slide');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 5000);
+
+        const track = document.getElementById('autoReportTrack');
+        let reportIndex = 0;
+        let autoMode = true;
+
+        function slideReports() {
+            if (!autoMode) return;
+            const slides = document.querySelectorAll('.report-slide');
+            if (slides.length <= 1) return;
+
+            reportIndex = (reportIndex + 1) % slides.length;
+            track.scrollTo({
+                left: track.offsetWidth * reportIndex,
                 behavior: 'smooth'
             });
         }
-    </script>
 
+        // Manual Arrow Click
+        function manualMove(dir) {
+            autoMode = false; // Stop auto-sliding when user interacts
+            const slides = document.querySelectorAll('.report-slide');
+            reportIndex = (reportIndex + dir + slides.length) % slides.length;
+
+            track.scrollTo({
+                left: track.offsetWidth * reportIndex,
+                behavior: 'smooth'
+            });
+
+            // Re-enable auto-slide after 15 seconds
+            setTimeout(() => { autoMode = true; }, 15000);
+        }
+
+        // Interval for auto-sliding
+        setInterval(slideReports, 6000);
+
+        function setupAutoSlider(trackId, intervalTime) {
+            const track = document.getElementById(trackId);
+            if (!track) return;
+
+            let index = 0;
+            setInterval(() => {
+                const slides = track.querySelectorAll('.adopt-slide, .report-slide');
+                if (slides.length <= 1) return;
+
+                index = (index + 1) % slides.length;
+                track.scrollTo({
+                    left: track.offsetWidth * index,
+                    behavior: 'smooth'
+                });
+            }, intervalTime);
+        }
+
+
+    </script>
 </body>
+
 </html>

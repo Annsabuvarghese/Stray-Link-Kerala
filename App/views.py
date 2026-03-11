@@ -1,5 +1,5 @@
-from email.mime import application
-from urllib import request
+# from email.mime import application
+# from urllib import request
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
@@ -11,7 +11,8 @@ from django.utils import timezone
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .models import ReportSubmit, ReportImage, Condition, Profile,Animal,AdoptionApplication,Sponsorship,Organization
+from urllib3 import request
+from .models import ReportSubmit, ReportImage, Condition, Profile,Animal,AdoptionApplication,Organization
 from django.db.models import Q
 
 from xhtml2pdf import pisa
@@ -20,7 +21,6 @@ from io import BytesIO
 
 
 def Home(request):
-    # 1. Prepare the data that everyone (Guest or Regular User) should see
     cases = ReportSubmit.objects.all().order_by('-created_at')[:4]
     animals = Animal.objects.filter(in_adoption=True).exclude(status='Adopted').order_by('-id')[:4]
 
@@ -30,39 +30,44 @@ def Home(request):
     }
 
     if request.user.is_authenticated:
+        # 1. Check for Superuser first
+        if request.user.is_superuser:
+            return redirect('AdminHome')  # Replace with your actual admin URL name
+
+        # 2. Check for Volunteer status
         try:
             if request.user.profile.is_volunteer:
                 return redirect('VolunteerHome')
         except Profile.DoesNotExist:
             pass
+ 
     return render(request, 'Home.html', context)
 
-def AdminHome(request):
-    # Get the latest 10 rescue reports
-    cases = ReportSubmit.objects.all().order_by('-id')[:10]
+# def AdminHome(request):
+
+#     cases = ReportSubmit.objects.all().order_by('-id')[:10]
+#     animals = Animal.objects.filter(
+#         in_adoption=True
+#     ).exclude(status='Adopted').order_by('-id')[:10]
     
-    # FIX: Show all animals marked for adoption except those already Adopted
-    animals = Animal.objects.filter(
-        in_adoption=True
-    ).exclude(status='Adopted').order_by('-id')[:10]
-    
-    return render(request, 'AdminHome.html', {
-        'cases': cases,
-        'animals': animals
-    })
+#     return render(request, 'AdminHome.html', {
+#         'cases': cases,
+#         'animals': animals
+#     })
+
 @login_required
 def Report(request):
 
         # Default conditions list
-    default_conditions = [
-        "Injured",
-        "Sick",
-        "Pregnant",
-        "Aggressive",
-        "Abandoned"
-    ]
+    # default_conditions = [
+    #     "Injured",
+    #     "Sick",
+    #     "Pregnant",
+    #     "Aggressive",
+    #     "Abandoned"
+    # ]
 
-    # Default conditions should be created via migration or management command, not here.
+    # # Default conditions should be created via migration or management command, not here.
     # for condition in default_conditions:
     #     Condition.objects.get_or_create(name=condition)
 
@@ -152,6 +157,8 @@ StrayLink Incident Reporting System
                 )
                 # Attach the PDF bytes
                 email.attach(f'Report_{report.id}.pdf', pdf_content, 'application/pdf')
+                # MIME type stands for Multipurpose Internet Mail Extensions type.
+                # It is a standard that tells the browser or email client what type of file is being sent.
                 # Send it!
                 email.send()
         except Exception as e:
@@ -216,8 +223,7 @@ def ReportList(request):
     cases = ReportSubmit.objects.exclude(status='rescued').order_by('-id')
 
 
-    for case in cases:
-   
+    for case in cases:#extra code is used to add additional information inside each case before sending it to the template.
         try:
             animal = Animal.objects.get(id=case.id)  
             case.animal_obj = animal  
@@ -467,8 +473,6 @@ def ApplyAdoption(request, animal_id):
             applicant_phone=request.POST.get('phone'),
             is_18=request.POST.get('is_18'),
             stable_income=request.POST.get('stable_income'),
-            income_source=request.POST.get('income_source'),
-            income_amount=request.POST.get('income_amount'),
             residence_type=request.POST.get('residence_type'),
             home_ownership=request.POST.get('home_ownership'),
             landlord_permission=request.POST.get('landlord_permission'),
@@ -1169,3 +1173,18 @@ def VolunteerDetail(request, volunteer_id):
 
 def Contact(request):
     return render(request, "Contact.html")
+
+
+def AdminHome(request):
+    # Get the latest 10 rescue reports
+    cases = ReportSubmit.objects.all().order_by('-id')[:4]
+    
+    # FIX: Show all animals marked for adoption except those already Adopted
+    animals = Animal.objects.filter(
+        in_adoption=True
+    ).exclude(status='Adopted').order_by('-id')[:4]
+    
+    return render(request, 'AdminHome.html', {
+        'cases': cases,
+        'animals': animals
+    })
